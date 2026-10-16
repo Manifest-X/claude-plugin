@@ -1,6 +1,6 @@
 {
   "name": "manifest",
-  "description": "The Manifest plugin for Claude: publish and host websites and apps, and build with the open-source Manifest framework.",
+  "description": "Publish websites and apps that you build with Claude, just by asking.",
   "owner": {
     "name": "Manifest",
     "email": "team@manifestx.dev",
@@ -10,7 +10,7 @@
     {
       "name": "manifest",
       "source": "./",
-      "description": "Build, publish, and run websites and apps from Claude."
+      "description": "Publish websites and apps that you build with Claude, just by asking. Free hosting with your own domains, preview links to share before going live, and visitor analytics, all included. Works with frameworks like React, plain HTML, or the open-source Manifest framework."
     }
   ]
 }
