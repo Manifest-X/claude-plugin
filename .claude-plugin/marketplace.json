@@ -1,0 +1,16 @@
+{
+  "name": "manifest",
+  "description": "The Manifest plugin for Claude: publish and host websites and apps, and build with the open-source Manifest framework.",
+  "owner": {
+    "name": "Manifest",
+    "email": "team@manifestx.dev",
+    "url": "https://manifestx.dev"
+  },
+  "plugins": [
+    {
+      "name": "manifest",
+      "source": "./",
+      "description": "Build, publish, and run websites and apps from Claude."
+    }
+  ]
+}

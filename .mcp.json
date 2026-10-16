@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "manifest": {
+      "type": "http",
+      "url": "https://mcp.manifestx.dev/mcp"
+    }
+  }
+}
