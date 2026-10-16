@@ -1,11 +1,5 @@
 #!/usr/bin/env node
-/**
- * Manifest design guard — Claude Code hook, registered for two events.
- * UserPromptSubmit: nudge design-first when a prompt looks visual.
- * PreToolUse (Write/Edit): flag a <style> block / static inline style in markup.
- * Must FAIL OPEN — any error exits 0 with no output, never blocking the user.
- * Single source of truth; the scaffold and MCP bundle only wire it in settings.
- */
+// Manifest design guard: UserPromptSubmit design-first nudge; PreToolUse(Write/Edit) inline-style flag. Fails open.
 
 let raw = '';
 process.stdin.setEncoding('utf8');
@@ -25,8 +19,7 @@ function handleUserPromptSubmit(data) {
   const prompt = String(data.prompt || '');
   if (!prompt.trim()) return;
 
-  // Visual nouns + styling verbs only; generic add/make/create excluded so
-  // backend prompts stay silent.
+  // Visual nouns and styling verbs only
   const UI = new RegExp(
     '\\b(' +
       'redesign|restyl\\w*|styl(e|es|ed|ing)|stylesheet|css|theme|colou?rs?|fonts?|' +
@@ -47,7 +40,7 @@ function handleUserPromptSubmit(data) {
     'Before writing ANY markup or CSS:',
     '  1. Load the manifest-layout and manifest-styling skills (and manifest-component if you',
     '     are extracting something reusable). Do NOT improvise Manifest idioms from memory — the',
-    '     condensed rules in CLAUDE.md are a pointer, not a substitute for the skills.',
+    '     manifest-framework primer is a pointer, not a substitute for the skills.',
     '  2. Design the structure FIRST, in Manifest terms (semantic layout: page / content / row /',
     '     col / center; pre-styled HTML elements; theme tokens). Design precedes code.',
     '  3. Hard rules, enforced NOW at authoring time (not deferrable to QA or publish):',
@@ -68,7 +61,7 @@ function handlePreToolUse(data) {
 
   const input = data.tool_input || {};
   const file = String(input.file_path || '');
-  if (!/\.html?$/i.test(file)) return; // markup only; CSS files are meant to hold CSS
+  if (!/\.html?$/i.test(file)) return; // markup only
 
   let text = '';
   if (tool === 'Write') text = String(input.content || '');
@@ -79,7 +72,7 @@ function handlePreToolUse(data) {
 
   const hits = [];
   if (/<style[\s>]/i.test(text)) hits.push('a <style> block');
-  // Static inline style only; lookbehind spares :style / x-bind:style.
+  // Static inline style; spares :style / x-bind:style
   if (/(?<![:\-\w])style\s*=\s*["']/i.test(text)) hits.push('a static inline style="..." attribute');
   if (!hits.length) return;
 
