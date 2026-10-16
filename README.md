@@ -1,8 +1,8 @@
 # Manifest for Claude
 
-Put what you build with Claude online, just by asking. Manifest hosts your
-website or app for free, with your own domain, preview links to share before
-you go live, and visitor analytics included. Upgrade a project to Manifest Pro
+Publish websites and apps that you build with Claude, just by asking. Manifest
+hosts them for free, with your own domains, preview links to share before you
+go live, and visitor analytics included. Upgrade a project to Manifest Pro
 for rollbacks, teams, all-time analytics, and no Manifest badge.
 
 It works with any project that builds to files a browser can run, such as

@@ -2,7 +2,7 @@
   "name": "manifest",
   "displayName": "Manifest",
   "version": "0.1.0",
-  "description": "Put what you build with Claude online, just by asking. Free hosting with your own domain, preview links to share before going live, and visitor analytics, all included. Works with React, plain HTML, or the open-source Manifest framework.",
+  "description": "Publish websites and apps that you build with Claude, just by asking. Free hosting with your own domains, preview links to share before going live, and visitor analytics, all included. Works with frameworks like React, plain HTML, or the open-source Manifest framework.",
   "author": {
     "name": "Manifest",
     "email": "team@manifestx.dev",
