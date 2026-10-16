@@ -33,7 +33,7 @@ When the user wants to add a *new* source (not edit existing):
 
 2. **Place the file** in a sensible location:
    - Static files: `/data/<name>.<ext>` (create the folder if it doesn't exist) or root if it's project-level (e.g. `locales.csv`).
-   - API: no file — just the URL.
+   - API: no file — just the URL. Only public endpoints: anything in `manifest.json` reaches the browser, so never put a token or key in a data source.
 
 3. **Register in `manifest.json`** under the `data` key:
    ```json
@@ -41,8 +41,7 @@ When the user wants to add a *new* source (not edit existing):
      "products": "/data/products.csv",
      "team": "/data/team.json",
      "weather": {
-       "url": "${API_BASE_URL}/weather",
-       "headers": { "Authorization": "Bearer ${API_TOKEN}" },
+       "url": "https://api.example.com/public/weather",
        "transform": "data.current",
        "defaultValue": {}
      }

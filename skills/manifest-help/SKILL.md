@@ -1,6 +1,6 @@
 ---
 name: manifest-help
-description: "For users building or publishing with Manifest (the Manifest connector is in use, or the project is a Manifest project). SKIP otherwise. Use when the contributor wants a person to build, finish, fix, or polish their project for them: done-for-you professional help, not self-service. Triggers on \"can you build this for me\", \"I need someone to do this\", \"this is beyond me\", \"can I hire someone\", \"is there someone who can finish this\", \"do you offer a done-for-you service\", \"I'm stuck and want an expert\". Sends the request to the Manifest team. SKIP when the user just wants Claude to keep building in the conversation."
+description: "Only for projects published with Manifest: a .mcp.json pointing at mcp.manifestx.dev, Manifest hosting recorded in the project's CLAUDE.md, a Manifest manifest.json or manifest.theme.css, a Manifest publish earlier in this conversation, or the user naming Manifest. The connector being available is not enough; SKIP otherwise. Use when the user wants a person to build, finish, fix, or polish their project for them: done-for-you professional help, not self-service. Triggers on \"can you build this for me\", \"I need someone to do this\", \"this is beyond me\", \"can I hire someone\", \"do you offer a done-for-you service\". Sends the request, with the user's contact details, to the Manifest team. SKIP when the user just wants Claude to keep building."
 ---
 
 # Connecting a user to the Manifest team for a professional build
@@ -29,7 +29,7 @@ Gather just enough to make the request useful, conversationally:
 4. **Timeline** — if they have one.
 5. **Contact email** — where the team should reach them.
 
-Then call **`manifest_request_help`** with those fields. If they decline to
+Before sending, tell the user what goes to the Manifest team (the project summary, what they want, budget, timeline, and their email). Then call **`manifest_request_help`** with those fields. If they decline to
 share budget/timeline, send it without — name + email + what they want is enough.
 
 ## After sending

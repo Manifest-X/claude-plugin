@@ -2,20 +2,20 @@
 description: "Manifest: take a project published with Manifest live. Promotes the reviewed staging build, publishes straight to production, or promotes the staging branch to the live branch on the project's own host. End to end, no mid-command prompts."
 ---
 
-You are the "Go Live" button. The contributor wants the live site updated. This is for projects built with the Manifest framework or published with Manifest; in any other project, say this command is for Manifest projects and stop. Load the **manifest-workflow** skill: it holds the pipeline logic and the `## Project` state rules this command relies on. Run end to end and report when done. **Don't ask for confirmation between steps.**
+You are the "Go Live" button. The contributor wants the live site updated. It applies only to Manifest projects (manifest-workflow → "Is this a Manifest project?"; the connector being available is not enough); in any other project, say this command is for Manifest projects and stop. Load the **manifest-workflow** skill: it holds the pipeline logic and the project-state rules this command relies on. Run end to end and report when done. **Don't ask for confirmation between steps.**
 
 ## Run
 
-0. **Read state and detect the pipeline** (manifest-workflow → "Detecting the pipeline"). Read the `## Project` block in the project's CLAUDE.md if there is one. Then:
+0. **Read state and detect the pipeline** (manifest-workflow → "Detecting the pipeline"). Read the Manifest project block in the project's CLAUDE.md if there is one. Then:
    - **Manifest managed**: going live is a managed operation, not a git promote.
      - If there's a staging deployment the user just reviewed and wants exactly that live, call `manifest_promote`: it ships that build to production with no rebuild or upload.
-     - Otherwise publish straight to production: build as needed, run the pre-publish checks (**manifest-qa** if functionality changed; **manifest-seo** for a Manifest website), then `manifest_publish` with `env='production'` and run the returned `command` (with a shell), or `manifest_publish_files` with `env='production'` (no shell, or the command can't reach the network). Pass `based_on` on team projects without git.
-     - Record `Hosting`, `Production URL`, and `Last published` in `## Project` (create the minimal block if absent). Confirm the live URL loads, then report it. **Skip every git step below.** Done.
+     - Otherwise publish straight to production: build as needed, run the pre-publish checks (**manifest-qa** if functionality changed; **manifest-seo** for a Manifest website), then `manifest_publish` with `env='production'` and run the returned `command` after checking its shape (manifest-workflow → "Check the publish command before running it"; with a shell), or `manifest_publish_files` with `env='production'` (no shell, or the command can't reach the network). Pass `based_on` on team projects without git.
+     - Record `Hosting`, `Production URL`, and `Last published (production)` in the Manifest project block (create it if absent, per manifest-workflow). Confirm the live URL loads, then report it. **Skip every git step below.** Done.
    - **External (self-managed)**: don't deploy. Say: "This project goes live through your own host, so publish doesn't apply. Want me to set up Manifest or GitHub hosting so I can publish for you?" Stop after the user chooses.
    - **Own host via GitHub** (or a git `origin` remote and nothing managed): continue with steps 1–6. If no host is wired yet, the promotion still pushes the live branch; say the site won't appear until a host is connected (**manifest-deploy**).
    - **Local-only, nothing published**: offer setup, as in `/manifest:staging`: "(a) publish straight to the web on Manifest hosting, instant with no setup, or (b) save to GitHub first for a team workflow." If (a): the managed path above with `env='production'`. Otherwise set up (b) or stop politely.
 
-1. **Project info** from `## Project`: Default branch (fallback `staging`), Live branch (fallback `production`), Production URL (omit from the report if absent).
+1. **Project info** from the Manifest project block: Default branch (fallback `staging`), Live branch (fallback `production`), Production URL (omit from the report if absent).
 
 2. **No uncommitted changes.** `git status --porcelain`. If not empty, stop: "You have unsaved local edits that aren't on `<default>` yet. Run `/manifest:staging` first, then `/manifest:publish`."
 

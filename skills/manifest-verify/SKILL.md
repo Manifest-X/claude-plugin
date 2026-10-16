@@ -52,7 +52,9 @@ why). "I made a pass" is not the deliverable — matching the reference is.
 
 Manifest managed hosting keeps **superseded deployments** — a previous version is
 retained and stays available as a reference even after newer publishes. Use it to
-answer "did this change break something":
+answer "did this change break something". Exporting and rolling back earlier
+versions are part of Manifest Pro; without them, compare against the live site
+or the user's own earlier copy (for example from git history).
 
 1. `manifest_deployments` — list the versions, each with its `deployment_id`, when
    it was published, and which is currently live. Pick the last-known-good one.

@@ -2,7 +2,7 @@
 description: "Manifest: start a local preview of a project built or published with Manifest so the user can see changes live. Nothing is published."
 ---
 
-You are starting a local preview of the user's project so they can see it while they edit. This is for projects built with the Manifest framework or published with Manifest; in any other project, say this command is for Manifest projects and stop. Run end to end and report when ready. **Do not ask for confirmation.**
+You are starting a local preview of the user's project so they can see it while they edit. It applies only to Manifest projects (manifest-workflow → "Is this a Manifest project?"; the connector being available is not enough); in any other project, say this command is for Manifest projects and stop. Run end to end and report when ready. **Do not ask for confirmation.**
 
 ## No shell (Claude chat, mobile, Claude's Free plan)
 

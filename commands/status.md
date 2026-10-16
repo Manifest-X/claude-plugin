@@ -2,15 +2,15 @@
 description: "Manifest: plain-English summary of where a project published with Manifest stands: hosting, staging and live URLs, unsaved edits, and what's ready to publish or promote."
 ---
 
-Give the contributor a quick "where am I?" view. This is for projects built with the Manifest framework or published with Manifest; in any other project, say this command is for Manifest projects and stop. Load the **manifest-workflow** skill for how hosting and source control are detected. Keep it short: no raw git output.
+Give the contributor a quick "where am I?" view. It applies only to Manifest projects (manifest-workflow → "Is this a Manifest project?"; the connector being available is not enough); in any other project, say this command is for Manifest projects and stop. Load the **manifest-workflow** skill for how hosting and source control are detected. Keep it short: no raw git output.
 
 ## Steps
 
-1. **Project info** from the `## Project` block in the project's CLAUDE.md, if present: Default branch (fallback `staging`), Live branch (fallback `production`), Staging URL, Production URL, **Hosting**.
+1. **Project info** from the Manifest project block in the project's CLAUDE.md, if present: Default branch (fallback `staging`), Live branch (fallback `production`), Staging URL, Production URL, **Hosting**.
 
 2. **Two independent axes** (manifest-workflow → "How publishing works"):
    - **Source control**: `git remote get-url origin 2>/dev/null` → GitHub or local-only. With no shell (Claude chat), skip the git checks.
-   - **Hosting**: Manifest managed (Hosting field, a `*.manifestx.ai` URL, or `manifest_deployments` returns rows), own host via GitHub, external, or not published yet. For Manifest hosting, `manifest_status` and `manifest_deployments` give the current staging and live versions.
+   - **Hosting**: Manifest managed (Hosting field, a `*.manifestx.ai` URL, or `manifest_deployments` returns rows), own host via GitHub, external, or not published yet. For Manifest hosting, `manifest_deployments` shows which version is live in each environment and when it was published; the staging and live URLs come from the project block (recorded from publish results), and `manifest_domain_status` lists custom domains.
 
 3. **On GitHub**, run in parallel where possible: `git branch --show-current`; `git status --porcelain` (count changed files); `git fetch origin <default> <live>`; `git rev-list --left-right --count <default>...origin/<default>`; `git rev-list --left-right --count origin/<live>...origin/<default>`.
 

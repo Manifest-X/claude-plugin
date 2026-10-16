@@ -1,6 +1,6 @@
 ---
 name: manifest-github
-description: "For projects published or hosted with Manifest (the Manifest connector, a Manifest manifest.json, a .mcp.json for mcp.manifestx.dev, or Manifest hosting recorded in CLAUDE.md), or when the user asks for Manifest. SKIP in other projects. Use for the one-time GitHub bootstrap of a project published with Manifest, or to bring a teammate onto one: no git remote yet, or the contributor wants to back up, collaborate, or hand the project to someone. Triggers on \"set up GitHub\", \"back this up\", \"put this on GitHub\", \"create a repo\", \"add a teammate/collaborator\", \"let X work on this with me\", \"join the project\", \"I don't have GitHub / don't know git\". Once a remote exists, use the Manifest sync/staging/publish commands. SKIP if a GitHub remote already exists and the user only wants to commit or sync."
+description: "Only for projects published with Manifest: a .mcp.json pointing at mcp.manifestx.dev, Manifest hosting recorded in the project's CLAUDE.md, a Manifest manifest.json or manifest.theme.css, a Manifest publish earlier in this conversation, or the user naming Manifest. The connector being available is not enough; SKIP otherwise. Use for the one-time GitHub setup of such a project, or to bring a teammate onto one: no git remote yet, or the user wants to back up, collaborate, or hand the project over. Triggers on \"set up GitHub\", \"back this up\", \"put this on GitHub\", \"add a teammate\", \"let X work on this with me\", \"join the project\", \"I don't know git\". SKIP if a GitHub remote already exists and the user only wants to commit or sync."
 ---
 
 # Setting up GitHub for a Manifest project
@@ -9,12 +9,12 @@ Most contributors here are not engineers. GitHub is just where the project's fil
 
 Two things are separate and BOTH are needed for a teammate:
 - **GitHub** = the project *files* (this skill).
-- **Manifest** = the project's *tools, tier, and team* (the `manifest_invite` tool / the dashboard).
+- **Manifest** = the project's *tools and team* (the `manifest_invite` tool / the dashboard). Teams on a Manifest project are part of Manifest Pro.
 When adding someone to a project, do both: add them on GitHub here, and add them to the Manifest project so the build tools work for them.
 
-## Prerequisites (check once, fix silently)
+## Prerequisites (check once)
 
-1. **Is `gh` installed?** Run `gh --version`. If not found, install it (`brew install gh` on macOS; otherwise point them to https://cli.github.com). 
+1. **Is `gh` (the GitHub CLI) installed?** Run `gh --version`. If not found, ask before installing anything: "GitHub's command-line tool isn't installed. Shall I install it?" On a yes, install it (`brew install gh` on macOS); otherwise point them to https://cli.github.com.
 2. **Is `gh` signed in?** Run `gh auth status`. If not, run `gh auth login` and tell the user plainly: "A GitHub sign-in will open in your browser — follow it and come back." This is also how someone with **no GitHub account** gets one: the browser flow lets them sign up in about a minute. Wait for it to finish, then continue.
 
 Never print or store tokens. `gh` manages its own credentials.
@@ -28,7 +28,7 @@ Use when `git remote -v` shows no `origin`.
    - `git branch -M staging`
    - `gh repo create <project-name> --private --source=. --remote=origin --push` (creates the repo, pushes `staging`, sets it as default)
    - `git push origin staging:production` (create the `production` branch from the same commit)
-3. **Record it in CLAUDE.md.** In the `## Project` block, set: the repo URL, `Default branch: staging`, `Live branch: production`. This is what `/manifest:sync`, `/manifest:staging`, and `/manifest:publish` read.
+3. **Record it in CLAUDE.md.** In the Manifest project block (see **manifest-workflow**), set: the repo URL, `Default branch: staging`, `Live branch: production`. This is what `/manifest:sync`, `/manifest:staging`, and `/manifest:publish` read.
 4. **Report plainly:** "Your project is now backed up on GitHub (private). You're working on the `staging` branch; `production` is what goes live when you publish."
 
 ## Path B — add a teammate to this project (owner side)
@@ -37,7 +37,7 @@ Use when `git remote -v` shows no `origin`.
 2. **Add them as a collaborator** (push access):
    - `gh api -X PUT "repos/<owner>/<repo>/collaborators/<username>" -f permission=push`
    - This sends them a GitHub invite to accept.
-3. **Also add them to the Manifest project** so their build tools/tier work — use the `manifest_invite` tool with their email (that's the Manifest side; the GitHub step above is the files side). Mention both are done.
+3. **Also add them to the Manifest project** so their build tools work (part of Manifest Pro) — use the `manifest_invite` tool with their email (that's the Manifest side; the GitHub step above is the files side). Mention both are done.
 4. **Tell the teammate what to do next:** accept the GitHub invite, then open Claude in a new folder and say "join my Manifest project" (Path C).
 
 ## Path C — join an existing project (teammate side, their machine)

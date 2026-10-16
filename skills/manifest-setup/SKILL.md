@@ -6,8 +6,8 @@ description: "Getting started with Manifest. Use when the user wants to connect 
 # Getting started with Manifest
 
 Manifest publishes and hosts sites and apps that run in the browser, from the
-conversation: staging and production URLs, promotion, rollback, custom domains,
-and teammates. It doesn't run server code (SSR, API routes, backends). Native
+conversation: staging and production URLs, promotion, and custom domains
+(rollback, export, and teams are part of Manifest Pro). It doesn't run server code (SSR, API routes, backends). Native
 apps are packaged from the same project. New projects can be built on the
 open-source Manifest framework (HTML-first, no build step).
 
@@ -37,15 +37,19 @@ continue." A signed-in user with no projects is the normal start.
    further).
 2. **Tie the folder to a Manifest project.** If the folder's `.mcp.json`
    already names one, use it. Otherwise, with the user's go-ahead, create one
-   with `manifest_init` `mode: 'attach'` and the project's name. In Claude Code
-   or Cowork, write the returned files: `.mcp.json` (committed; holds only the
-   project id) and `.env` (holds a headless publishing key; make sure `.env` is
-   in `.gitignore`, never commit it, never print the key). Claude must be
-   reopened in the folder for a new `.mcp.json` to load, so for this first
-   publish pass the returned `project_id` explicitly.
+   with `manifest_init` `mode: 'attach'` and the project's name. It returns two
+   whole files; in Claude Code or Cowork, merge them rather than overwrite:
+   - `.mcp.json` (committed; holds only the project id): if the file exists,
+     add or replace only `mcpServers.manifest` and keep every other server.
+   - `.env` (a headless publishing key): if the file exists, append the
+     `MANIFEST_API_KEY=` line (or replace an existing `MANIFEST_API_KEY` line)
+     and leave every other line alone. Make sure `.env` is in `.gitignore`,
+     never commit it, and never print the key.
+   Claude must be reopened in the folder for a new `.mcp.json` to load, so for
+   this first publish pass the returned `project_id` explicitly.
 3. **Build and publish to staging first** unless the user asked to go straight
    live, following **manifest-workflow** → "The managed flow". Record the result
-   in the project's `## Project` block.
+   in the Manifest project block in `CLAUDE.md` (see manifest-workflow).
 4. **Report the URL** in one line, and offer the next step: review, then "take
    it live".
 
@@ -54,8 +58,10 @@ continue." A signed-in user with no projects is the normal start.
 - **"With Manifest", or no framework named**: build on the Manifest framework.
   In Claude Code (or any session with a shell), create the project with
   `manifest_init` `mode: 'new'` and run the returned command in the folder the
-  user wants. It scaffolds the starter template, `.mcp.json`, and `.env`. The
-  command carries a secret key: don't print it, never commit `.env`. Then build
+  user wants (it runs the `mnfst-starter` package from npm). It scaffolds the
+  starter template, `.mcp.json`, and `.env` into that folder, so use an empty
+  folder or ask first. The command carries a secret key: don't print it, never
+  commit `.env`. Then build
   the first pass with **manifest-framework**, **manifest-layout**, and
   **manifest-styling**, preview it (`/manifest:preview`), and publish to staging.
 - **Another framework named** ("a React app", "with Astro"): use it. Manifest

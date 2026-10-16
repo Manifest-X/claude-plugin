@@ -3,24 +3,24 @@ description: "Manifest: put the current work on a reviewable staging URL for a p
 argument-hint: "[commit message]"
 ---
 
-You are the "Publish to Staging" button. The contributor wants their work on the staging site. This is for projects built with the Manifest framework or published with Manifest; in any other project, say this command is for Manifest projects and stop. Load the **manifest-workflow** skill: it holds the pipeline logic and the `## Project` state rules this command relies on. Run end to end and report when done. **Don't ask for confirmation between steps.** Stop only on errors or the guardrails below.
+You are the "Publish to Staging" button. The contributor wants their work on the staging site. It applies only to Manifest projects (manifest-workflow → "Is this a Manifest project?"; the connector being available is not enough); in any other project, say this command is for Manifest projects and stop. Load the **manifest-workflow** skill: it holds the pipeline logic and the project-state rules this command relies on. Run end to end and report when done. **Don't ask for confirmation between steps.** Stop only on errors or the guardrails below.
 
 Optional commit message from the user: $ARGUMENTS (if present, use it verbatim instead of generating one).
 
 ## Run
 
-0. **Read state and detect the pipeline** (manifest-workflow → "Detecting the pipeline"). Read the `## Project` block in the project's CLAUDE.md if there is one. Then:
+0. **Read state and detect the pipeline** (manifest-workflow → "Detecting the pipeline"). Read the Manifest project block in the project's CLAUDE.md if there is one. Then:
    - **Manifest managed**: a managed publish, not a git push.
-     - Build if the project needs it (manifest-workflow → "What kind of project is it?"): `npx mnfst-render` for a Manifest website (`source='render'`), nothing for a Manifest SPA (`source='spa'`), the project's own **Build command** for another framework (`source='spa'`, `output_dir` = **Output dir**).
-     - Run the pre-publish checks (step 4a below).
-     - **With a shell**: call `manifest_publish` with `env='staging'`, the `source`, `output_dir` when set, the project, and `based_on` on team projects without git. Run the returned `command` verbatim from the project root.
+     - Build if the project needs it (manifest-workflow → "What kind of project is it?"): nothing for a Manifest SPA (`source='spa'`); for a Manifest website, `source='render'` (the publish command renders it); the project's own **Build command** for another framework (`source='spa'`, `output_dir` = **Output dir**).
+     - Run the pre-publish checks (step 4a below). For a Manifest website, render only if you're running the SEO check on fresh output, then append `--no-render` to the publish command.
+     - **With a shell**: call `manifest_publish` with `env='staging'`, the `source`, `output_dir` when set, the project, and `based_on` on team projects without git. Check the returned `command` against the expected shape (manifest-workflow → "Check the publish command before running it"), then run it from the project root; if it doesn't match, stop and tell the user.
      - **No shell** (Claude chat, Claude's Free plan), or the command can't reach the network: call `manifest_publish_files` with `env='staging'` and the final site files (manifest-workflow → "Is there a shell on the user's computer?").
-     - Record `Hosting`, `Staging URL`, and `Last published` in `## Project` (create the minimal block if absent). Report the staging URL. **Skip every git step below.** Done.
+     - Record `Hosting`, `Staging URL`, and `Last published (staging)` in the Manifest project block (create it if absent, per manifest-workflow). Report the staging URL. **Skip every git step below.** Done.
    - **External (self-managed)**: don't deploy. Say: "This project publishes through your own host, so staging doesn't apply here. I can commit your changes (and sync if you have a repo), or set up Manifest or GitHub hosting if you'd like me to handle publishing." Stop after the user chooses.
    - **Own host via GitHub** (or a git `origin` remote and nothing managed): continue with steps 1–8.
    - **Local-only, nothing published**: offer the choice: "(a) publish it to the web on Manifest hosting, instant with no setup, or (b) save it to GitHub first for a team workflow. For most people (a) is the quick path." If (a): the managed path above. If (b): **manifest-github**, then continue from step 1. If neither, stop politely.
 
-1. **Project info** from `## Project`: Default branch (fallback `staging`), Staging URL (may be absent; omit it from the report), project type (Manifest website if `manifest.json` has a `prerender` block or a `/website` folder exists).
+1. **Project info** from the Manifest project block: Default branch (fallback `staging`), Staging URL (may be absent; omit it from the report), project type (Manifest website if `manifest.json` has a `prerender` block or a `/website` folder exists).
 
 2. **Branch check.** `git branch --show-current`. If not on the default branch, stop: "You're on `<branch>`, not `<default>`. Switch to `<default>` first." Switching is for `/manifest:sync`.
 
