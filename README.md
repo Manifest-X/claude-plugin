@@ -39,8 +39,9 @@ by name. Having the connector installed isn't enough to trigger them.
 
 - **Claude (web and desktop):** open **Customize > Plugins > Discover**, find
   **Manifest**, and add it. If Discover doesn't show it, open
-  **Customize > Plugins > Add > Add marketplace**, enter
-  `Manifest-X/claude-plugin`, then add the **Manifest** plugin.
+  **Customize > Plugins > Add > Add marketplace > Add from a repository**,
+  paste `https://github.com/Manifest-X/claude-plugin`, then add the
+  **Manifest** plugin.
 - **Claude Code (terminal):** run `/plugin` and find Manifest in the directory,
   or add this repository as a marketplace:
 
