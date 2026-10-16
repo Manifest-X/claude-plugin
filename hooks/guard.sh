@@ -1,5 +1,5 @@
 #!/bin/sh
-# Manifest hook launcher: runs a guard only inside Manifest projects, otherwise exits 0 silently.
+# Manifest hook launcher: runs a guard only in its scope, otherwise exits 0 silently.
 # Usage: guard.sh ui-guard|git-guard
 
 framework() {
@@ -9,8 +9,8 @@ framework() {
   grep -qE 'manifestx\.dev|"preloadedComponents"|"components"|"prerender"' "$1/manifest.json" 2>/dev/null
 }
 
-hosted() {
-  [ -f "$1/.mcp.json" ] && grep -qE 'mcp\.manifestx\.dev|manifest-mcp' "$1/.mcp.json" 2>/dev/null
+shared_branch() {
+  [ -f "$1/CLAUDE.md" ] && grep -qE '\*\*Hosting:\*\* *Own host via GitHub' "$1/CLAUDE.md" 2>/dev/null
 }
 
 in_scope() {
@@ -18,7 +18,7 @@ in_scope() {
     [ -n "$d" ] || continue
     case "$1" in
       ui-guard) framework "$d" && return 0 ;;
-      git-guard) { framework "$d" || hosted "$d"; } && return 0 ;;
+      git-guard) shared_branch "$d" && return 0 ;;
     esac
   done
   return 1

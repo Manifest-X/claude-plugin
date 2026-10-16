@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Manifest git guard: PreToolUse(Bash) nudge against unrequested branch changes. Never blocks; fails open.
+// Manifest git guard: PreToolUse(Bash) context against unrequested branch changes. Adds context only; fails open.
 
 let raw = '';
 process.stdin.setEncoding('utf8');
@@ -17,11 +17,11 @@ process.stdin.on('end', () => {
     const creates =
       /\bgit\s+checkout\s+-b\b/.test(cmd) ||
       /\bgit\s+switch\s+(-c|--create)\b/.test(cmd) ||
-      /\bgit\s+branch\s+[^\s-]\S*/.test(cmd);
+      /\bgit\s+branch\s+(?![-|&;<>()])[^\s|&;<>()]/.test(cmd);
 
     // Branch switch
     const switches =
-      /\bgit\s+switch\s+(?!-c\b)(?!--create\b)(?!-)[^\s]/.test(cmd);
+      /\bgit\s+switch\s+(?![-|&;<>()])[^\s|&;<>()]/.test(cmd);
 
     if (!creates && !switches) return;
 
@@ -29,16 +29,12 @@ process.stdin.on('end', () => {
     process.stdout.write(JSON.stringify({
       hookSpecificOutput: {
         hookEventName: 'PreToolUse',
-        permissionDecision: 'allow',
         additionalContext:
-          `[Manifest git guard] This command is ${action}. Manifest projects collaborate on a SINGLE ` +
-          'shared branch (usually `staging`) — teammates and other Claude sessions edit the same files ' +
-          'there, and the live preview serves the working tree. Working on your own branch diverges from ' +
-          "staging, causes merge conflicts, and makes the preview suddenly drop other sessions' work. " +
-          'Unless the user EXPLICITLY asked for a branch: stay on the current branch, pull/sync first to ' +
-          'absorb others\' changes (`/manifest:sync`), commit small, and push immediately so everyone and the ' +
-          'preview stay in sync. If a separate branch is genuinely needed, ask the user before creating it. ' +
-          'This is allowed to proceed, but reconsider before continuing.',
+          `[Manifest git guard] This command is ${action}. This project records Own host via GitHub, ` +
+          'which collaborates on one shared branch (usually `staging`) that teammates and other sessions ' +
+          'also edit. Unless the user explicitly asked for a branch, stay on the shared branch, sync first ' +
+          '(`/manifest:sync`), commit small, and push promptly. If a separate branch is genuinely needed, ' +
+          'ask the user first.',
       },
     }));
   } catch {

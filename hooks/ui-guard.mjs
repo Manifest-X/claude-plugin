@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Manifest design guard: UserPromptSubmit design-first nudge; PreToolUse(Write/Edit) inline-style flag. Fails open.
+// Manifest design guard: UserPromptSubmit design-first context; PreToolUse(Write/Edit) inline-style flag. Adds context only; fails open.
 
 let raw = '';
 process.stdin.setEncoding('utf8');
@@ -19,40 +19,29 @@ function handleUserPromptSubmit(data) {
   const prompt = String(data.prompt || '');
   if (!prompt.trim()) return;
 
-  // Visual nouns and styling verbs only
-  const UI = new RegExp(
+  // Unambiguous visual words
+  const VISUAL = new RegExp(
     '\\b(' +
-      'redesign|restyl\\w*|styl(e|es|ed|ing)|stylesheet|css|theme|colou?rs?|fonts?|' +
-      'typograph\\w*|spacing|padding|margins?|align|alignment|centre|center|' +
-      'responsive|breakpoints?|layout|lay ?out|grids?|columns?|rows?|flex(box)?|' +
-      'heros?|banners?|sidebars?|side ?rails?|nav(bar|igation)?|headers?|footers?|' +
-      'menus?|cards?|tiles?|buttons?|cta|badges?|chips?|modals?|dialogs?|popovers?|' +
-      'drawers?|tabs?|tables?|forms?|inputs?|sections?|panels?|dashboards?|shells?|' +
-      'components?|widgets?|icons?|logos?|avatars?|ui|ux|' +
-      'appearance|look (and feel|better|nicer|cleaner|modern|good|polished)|polish' +
+      'redesign|restyl\\w*|styl(e|es|ed|ing)|stylesheet|css|colou?rs?|fonts?|' +
+      'typograph\\w*|spacing|padding|margins?|centre|center|responsive|breakpoints?|' +
+      'layout|lay ?out|heros?|banners?|sidebars?|navbar|footers?|modals?|popovers?|' +
+      'drawers?|buttons?|icons?|logos?|avatars?|ui|ux|appearance|polish|' +
+      'look (and feel|better|nicer|cleaner|modern|good|polished)' +
     ')\\b',
     'i',
   );
-  if (!UI.test(prompt)) return;
+  // Ambiguous nouns (HTTP header, SQL table, form data): need page context
+  const NOUN = /\b(headers?|tables?|grids?|columns?|rows?|forms?|inputs?|sections?|panels?|cards?|tiles?|tabs?|menus?|nav(igation)?|dialogs?|badges?|chips?|cta|dashboards?|components?|widgets?|theme)\b/i;
+  const CONTEXT = /\b(page|screen|homepage|landing|site|website|mobile|desktop|look|visual|design|display|show|shows|showing)\b/i;
+  const nouns = prompt.match(new RegExp(NOUN.source, 'gi')) || [];
+  if (!VISUAL.test(prompt) && !(nouns.length && CONTEXT.test(prompt))) return;
 
-  process.stdout.write([
-    '[Manifest design guard] This request looks like UI / layout / styling / component work.',
-    'Before writing ANY markup or CSS:',
-    '  1. Load the manifest-layout and manifest-styling skills (and manifest-component if you',
-    '     are extracting something reusable). Do NOT improvise Manifest idioms from memory — the',
-    '     manifest-framework primer is a pointer, not a substitute for the skills.',
-    '  2. Design the structure FIRST, in Manifest terms (semantic layout: page / content / row /',
-    '     col / center; pre-styled HTML elements; theme tokens). Design precedes code.',
-    '  3. Hard rules, enforced NOW at authoring time (not deferrable to QA or publish):',
-    '       - No <style> blocks and no static inline style="..." attributes.',
-    '       - No hardcoded colors / fonts / sizes — use manifest.theme.css tokens or the',
-    '         theme-derived utilities (bg-brand-surface, text-content-stark, ...).',
-    '       - Prefer Manifest pre-styled elements + semantic classes (row / col / center /',
-    '         content, ghost / brand / outlined / hug) over bespoke .classes that duplicate them.',
-    '       - Minimal markup — no wrapper-div soup. Hoist a lone class onto its child and delete',
-    '         the wrapper; reach for a semantic class before nesting divs.',
-    'If this is only a copy / text / content edit with no layout or styling change, ignore this note.',
-  ].join('\n'));
+  process.stdout.write(
+    '[Manifest design guard] If this request changes UI, layout, or styling: load manifest-layout and ' +
+      'manifest-styling first and design the structure before writing markup. No <style> blocks or ' +
+      'static style="..."; use manifest.theme.css tokens, pre-styled elements, and semantic classes ' +
+      '(row / col / center / content); no wrapper-div soup. Ignore this for non-visual work.',
+  );
 }
 
 function handlePreToolUse(data) {
@@ -81,12 +70,11 @@ function handlePreToolUse(data) {
     hits.join(' and ') + ' — an outdated approach in Manifest. Move styling into manifest.theme.css ' +
     'tokens, Manifest semantic classes (row/col/center, ghost/brand/outlined), or theme-derived ' +
     'utilities; load manifest-styling if you have not. (Dynamic :style / x-bind:style bindings are ' +
-    'fine and are not flagged.) This is allowed to proceed, but prefer to revise it before the user reviews.';
+    'fine and are not flagged.) Prefer to revise it before the user reviews.';
 
   process.stdout.write(JSON.stringify({
     hookSpecificOutput: {
       hookEventName: 'PreToolUse',
-      permissionDecision: 'allow',
       additionalContext: msg,
     },
   }));
