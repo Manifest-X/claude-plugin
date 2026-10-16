@@ -99,7 +99,7 @@ Authoring (projects built on the Manifest framework):
 - `manifest-assets`: images, icons, favicons, and fonts.
 - `manifest-localize`: translations and language switching.
 - `manifest-seo`: page titles, share previews, and metadata.
-- `manifest-native`: package a project as an iOS, Android, or desktop store app.
+- `manifest-native`: package a project as an iOS or Android app, or a Microsoft Store app via PWABuilder.
 - `manifest-appwrite`: sign-in, cloud data, file storage, and presence with Appwrite.
 - `manifest-performance`: fix slow lists, menus, and re-renders.
 - `manifest-clone`: rebuild an existing site or section with Manifest.
@@ -146,6 +146,9 @@ Outside their scope they exit immediately with no output.
   email them a link to join.
 - **npm** serves the Manifest command-line packages below when Claude runs them
   with `npx`, and the Capacitor packages if you package a native app.
+- **CocoaPods or Swift Package Manager, GitHub, and Gradle repositories** serve
+  the iOS and Android dependencies that `cap add` and `cap sync` download when
+  you package a native app (`manifest-native`).
 - **GitHub** is used only if you choose a GitHub workflow (`git`, `gh`).
 - **A website you name** is fetched only when you ask Claude to rebuild or take
   inspiration from it (`manifest-clone`).
@@ -170,13 +173,17 @@ permission settings):
   running it, as with `mnfst-publish`, and never prints the key.
 - `npx mnfst-run`: local preview server.
 - `npx mnfst-render`: pre-renders a Manifest website.
-- `npm install`, `npx cap`, and `npx @capacitor/assets` when you package a
-  project as a native app (`manifest-native`). Claude lists the packages and
-  asks before installing them.
+- `npm install`, `npx --no-install cap`, and `npx --no-install
+  @capacitor/assets` when you package a project as a native app
+  (`manifest-native`). Claude lists the packages and asks before installing
+  them, and asks before the assets step replaces existing icons and splash
+  screens.
 - Your project's own build and dev commands (for example `npm run build`).
 - `git`, and `gh` (the GitHub CLI) for the GitHub workflow. Claude asks before
   installing `gh`.
-- `curl` to fetch a page you asked to rebuild.
+- `curl` to fetch a page you asked to rebuild, and `curl -sI
+  https://<domain>/.well-known/<file>` to check a native app's deep-link files
+  on your live domain (`manifest-native`).
 - `node`, to run the two hooks.
 
 **Files Claude may write in your project**:
@@ -186,9 +193,13 @@ permission settings):
   site URLs, last published versions) so later sessions pick up where you left
   off;
 - `.gitignore` entries that keep `.env` and other secrets out of git;
-- for a native app (`manifest-native`): `capacitor.config.json`, `package.json`
-  scripts, the `ios/` and `android/` projects, and `.manifestignore` lines that
-  keep them off the published site;
+- for a native app (`manifest-native`): `capacitor.config.json` (merged into an
+  existing one, never overwritten); `package.json` scripts (merged, keeping
+  yours), with `package-lock.json` and `node_modules/` from the installs; the
+  `ios/` and `android/` projects, including usage-string edits to `Info.plist`
+  and permission edits to `AndroidManifest.xml`; generated icons and splash
+  screens; `.gitignore` lines (`node_modules/`, `.app-www*`); and
+  `.manifestignore` lines that keep the native files off the published site;
 - `.claude/launch.json` preview settings in a folder holding several Manifest
   projects, and in each child project's own `.claude/launch.json`
   (`manifest-workspace`);

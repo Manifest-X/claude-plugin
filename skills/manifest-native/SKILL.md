@@ -15,7 +15,7 @@ Ask the user these in one message, then recommend a path:
 
 1. **What do they want?** An icon on phones and computers, or a listing in a store?
 2. **Which stores?** App Store (iOS/iPadOS, Mac), Google Play (Android, ChromeOS), Microsoft Store.
-3. **Do they have the accounts and the hardware?** Apple Developer Program (annual fee) and a Mac with Xcode for anything Apple. Google Play Console (one-time fee) and Android Studio. Microsoft Partner Center (one-time fee). Point them at each store's current pricing; don't quote it.
+3. **Do they have the accounts and the hardware?** An Apple Developer Program account and a Mac with Xcode for anything Apple. A Google Play Console account and Android Studio. A Microsoft Partner Center account. Each store may charge a developer fee; point them at its current terms and don't quote an amount.
 
 | Want | Path |
 |---|---|
@@ -34,7 +34,7 @@ PWABuilder can also produce an iOS package. Only offer it if the user insists, a
 | Claude | The user |
 |---|---|
 | Writes `capacitor.config.json`, the npm scripts, and the `.gitignore` and `.manifestignore` lines | Creates and pays for the developer accounts |
-| Runs `npm install`, `npx cap add`, and `npm run app:build`, once the user agrees | Opens Xcode or Android Studio, sets the signing team or keystore, runs on a device |
+| Runs `npm install`, `npx --no-install cap add`, and `npm run app:build`, once the user agrees | Opens Xcode or Android Studio, sets the signing team or keystore, runs on a device |
 | Adds device capabilities to the markup (`$share`, `$biometric`, `$push` …) | Turns on capabilities in Xcode: Push, Associated Domains, Background Modes |
 | Edits `Info.plist` usage strings and `AndroidManifest.xml` | Creates the APNs key, and the Firebase project (`google-services.json`) for Android push |
 | Drafts the privacy-manifest entries and the review notes | Adds `PrivacyInfo.xcprivacy` to the App target, archives, uploads to TestFlight or Play, writes the store listing |
@@ -46,12 +46,16 @@ For PWABuilder, all you do is make sure the PWA is install-ready and published (
 
 Run this from the project root. Node LTS is needed, and for iOS also macOS with Xcode.
 
-Before installing anything, list the packages for the user and ask. Installs and `npx` tools download software onto their machine.
+Before installing anything, list the packages for the user and ask. Installs download software onto their machine, and `cap add` / `cap sync` fetch CocoaPods or Swift packages and Gradle dependencies from the network.
 
-1. **Install the runtime, the platforms the user chose, and the renderer:**
+**Check what already exists first.** If the project has a `capacitor.config.*`, an `ios/` or an `android/` folder, it's already wrapped: merge your changes into the existing files and never overwrite or re-add them. Skip `cap add` for a platform whose folder exists.
+
+Run Capacitor's CLI as `npx --no-install cap …` and the assets tool as `npx --no-install @capacitor/assets …`. `--no-install` uses the project's own copy and never downloads a different package that happens to share the name.
+
+1. **Install the runtime, the platforms the user chose, and the build tools:**
    ```bash
    npm install @capacitor/core @capacitor/cli @capacitor/ios @capacitor/android @capacitor/splash-screen @capacitor/status-bar
-   npm install -D mnfst-render@^0.5.48
+   npm install -D mnfst-render@^0.5.48 @capacitor/assets
    ```
    Drop `@capacitor/ios` or `@capacitor/android` for a platform they don't ship. This creates `package.json` and `node_modules/` if the project had neither. That's expected.
 2. **Install the plugins for the capabilities you use.** Magics no-op when their plugin is missing:
@@ -64,8 +68,27 @@ Before installing anything, list the packages for the user and ask. Installs and
    | `$device.online` | `@capacitor/network` |
    | `$camera` | `@capacitor/camera` |
    | `$push` | `@capacitor/push-notifications` |
-   | `$secure` | a plugin registered as `SecureStorage` (e.g. `@aparajita/capacitor-secure-storage`). If its API differs, adapt it with `$secure.use(adapter)`. |
-   | `$biometric` | `@aparajita/capacitor-biometric-auth` or `capacitor-native-biometric` |
+   | `$secure` | `capacitor-secure-storage-plugin`, plus the adapter below. Not zero-config: without the adapter, `$secure` stays on unencrypted web storage. |
+   | `$biometric` | `capacitor-native-biometric` |
+
+   **`$secure` adapter.** `$secure` only finds a plugin registered as `SecureStorage`, and no plugin is verified to work with it as-is. Hand the plugin over with `$secure.use()`, for example in a small script loaded before Alpine starts plus an `x-init` on `<body>` (merge it into an existing `x-init` rather than adding a second):
+   ```html
+   <script>
+     window.appSecureStorage = () => {
+       const p = window.Capacitor?.Plugins?.SecureStoragePlugin;
+       if (!p) return null;
+       return {
+         get: async (key) => { try { return (await p.get({ key })).value ?? null; } catch (e) { return null; } },
+         set: (key, value) => p.set({ key, value: String(value) }),
+         remove: async (key) => { try { await p.remove({ key }); } catch (e) {} },
+         keys: async () => (await p.keys()).value || [],
+         clear: () => p.clear(),
+       };
+     };
+   </script>
+   <body x-data x-init="$secure.use(appSecureStorage())">
+   ```
+   Off-device the function returns `null` and `$secure` keeps its web fallback. Check the method names against the plugin's README for the installed version, and confirm on the first device run that a value survives an app restart.
 
 3. **Write `capacitor.config.json`.** Take `appName` from `manifest.json` `short_name`, and the splash colour from `background_color`. Ask the user for `appId`, a reverse-DNS bundle id they own (`com.acme.app`). It can't be changed after the first store upload. Add a `"PushNotifications": { "presentationOptions": ["badge", "sound", "alert"] }` entry under `plugins` only if the app uses `$push`.
    ```json
@@ -81,11 +104,11 @@ Before installing anything, list the packages for the user and ask. Installs and
      }
    }
    ```
-4. **Add the build scripts to `package.json`:**
+4. **Merge the build scripts into `package.json`.** Keep any scripts already there:
    ```json
    "scripts": {
      "app:web": "mnfst-render --out .app-www",
-     "app:build": "npm run app:web && npx cap sync"
+     "app:build": "npm run app:web && npx --no-install cap sync"
    }
    ```
    - The app ships a prerendered copy of the site, so the shell paints without a network.
@@ -104,21 +127,24 @@ Before installing anything, list the packages for the user and ask. Installs and
    /android/
    /capacitor.config.*
    /.app-www*
+   /.app-assets/
    /package.json
    /package-lock.json
    ```
+   `.manifestignore` only applies to Manifest hosting. With **Own host via GitHub** (or an external host), the host deploys what its build outputs: keep `ios/`, `android/`, `.app-www`, `.app-assets` and the Capacitor config out of that output (for example by publishing only the host's build output folder), and tell the user what you changed.
+
    Commit `ios/` and `android/`. Capacitor writes its own `.gitignore` inside each one for build output.
-6. **Build the web copy, then add the platforms:** `npm run app:web`, then `npx cap add ios` and/or `npx cap add android`. After that, `npm run app:build` on every change.
+6. **Build the web copy, then add the platforms:** `npm run app:web`, then `npx --no-install cap add ios` and/or `npx --no-install cap add android`, only for platforms without a folder yet. After that, `npm run app:build` on every change.
 7. **Usage strings and permissions.** The app crashes on first use without them.
    - `ios/App/App/Info.plist`:
      - `NSCameraUsageDescription` for `$camera`
      - `NSPhotoLibraryUsageDescription` for `$camera.pick()`
      - `NSFaceIDUsageDescription` for `$biometric`
    - Android: check `android/app/src/main/AndroidManifest.xml` for the permissions each installed plugin's README lists.
-8. **Icons and splash.** Put a 1024×1024 `icon-only.png`, plus `splash.png` and `splash-dark.png` at 2732×2732, in `.app-assets/`. Then run `npx @capacitor/assets generate --assetPath .app-assets`.
+8. **Icons and splash.** Put a 1024×1024 `icon-only.png`, plus `splash.png` and `splash-dark.png` at 2732×2732, in `.app-assets/`. Then run `npx --no-install @capacitor/assets generate --assetPath .app-assets`. It replaces the icons and splash screens already in `ios/` and `android/`, so if the project has custom ones, ask before running it.
 9. **Hand over** with the exact next step for each platform:
-   - iOS: `npx cap open ios`, set the signing team, then run on a simulator or device.
-   - Android: `npx cap open android`, then run.
+   - iOS: `npx --no-install cap open ios`, set the signing team, then run on a simulator or device.
+   - Android: `npx --no-install cap open android`, then run.
 
 **Deep links and push** need files on the live domain:
 - iOS: `/.well-known/apple-app-site-association`, plus the user enables the Associated Domains capability.
