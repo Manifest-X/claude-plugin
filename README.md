@@ -99,6 +99,7 @@ Authoring (projects built on the Manifest framework):
 - `manifest-assets`: images, icons, favicons, and fonts.
 - `manifest-localize`: translations and language switching.
 - `manifest-seo`: page titles, share previews, and metadata.
+- `manifest-native`: package a project as an iOS, Android, or desktop store app.
 - `manifest-appwrite`: sign-in, cloud data, file storage, and presence with Appwrite.
 - `manifest-performance`: fix slow lists, menus, and re-renders.
 - `manifest-clone`: rebuild an existing site or section with Manifest.
@@ -144,7 +145,7 @@ Outside their scope they exit immediately with no output.
   Manifest project (`manifest_invite`, part of Manifest Pro), so Manifest can
   email them a link to join.
 - **npm** serves the Manifest command-line packages below when Claude runs them
-  with `npx`.
+  with `npx`, and the Capacitor packages if you package a native app.
 - **GitHub** is used only if you choose a GitHub workflow (`git`, `gh`).
 - **A website you name** is fetched only when you ask Claude to rebuild or take
   inspiration from it (`manifest-clone`).
@@ -169,6 +170,9 @@ permission settings):
   running it, as with `mnfst-publish`, and never prints the key.
 - `npx mnfst-run`: local preview server.
 - `npx mnfst-render`: pre-renders a Manifest website.
+- `npm install`, `npx cap`, and `npx @capacitor/assets` when you package a
+  project as a native app (`manifest-native`). Claude lists the packages and
+  asks before installing them.
 - Your project's own build and dev commands (for example `npm run build`).
 - `git`, and `gh` (the GitHub CLI) for the GitHub workflow. Claude asks before
   installing `gh`.
@@ -182,6 +186,9 @@ permission settings):
   site URLs, last published versions) so later sessions pick up where you left
   off;
 - `.gitignore` entries that keep `.env` and other secrets out of git;
+- for a native app (`manifest-native`): `capacitor.config.json`, `package.json`
+  scripts, the `ios/` and `android/` projects, and `.manifestignore` lines that
+  keep them off the published site;
 - `.claude/launch.json` preview settings in a folder holding several Manifest
   projects, and in each child project's own `.claude/launch.json`
   (`manifest-workspace`);

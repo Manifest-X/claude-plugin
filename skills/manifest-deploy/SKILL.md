@@ -100,6 +100,8 @@ This is desirable for most projects. But for a marketing site or simple landing 
 
 Even for non-PWA projects, keep `name`, `description`, `start_url`, and `live_url` — they're often referenced by SEO tags, sitemap generation, and Manifest's own auto-detection logic.
 
+For an app-store listing (App Store, Google Play, Microsoft Store) or a packaged native app, use the **manifest-native** skill — installability here is the browser-install path only.
+
 ## What not to do
 
 - **Don't commit a dev key to git or paste one into the host's production env vars.** Production should use real production credentials — typically a server-scoped key with the actual permissions the production environment needs, not a rate-limit-bypass key.
