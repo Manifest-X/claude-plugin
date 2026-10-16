@@ -63,17 +63,22 @@ continue." A signed-in user with no projects is the normal start.
 ## 3. First build from scratch
 
 - **"With Manifest", or no framework named**: build on the Manifest framework.
-  In Claude Code (or any session with a shell), ask where the project should
-  live (an empty folder, or ask before adding files to a non-empty one). Then:
+  In Claude Code (or any session with a shell), the project needs an **empty
+  folder**: the starter overwrites same-named files (`index.html`, `README.md`,
+  `LICENSE.md`, `privacy.md`, `components/`, `assets/`). If the chosen folder
+  isn't empty, list the files that would be replaced and ask, or offer a new
+  subfolder instead. Then:
   - **With the Manifest plugin installed**: create the project with
     `manifest_init` `mode: 'attach'`, record its **Project id** in the block,
     and write no `.mcp.json` or `.env` (as in section 2). Scaffold the starter
-    template with `npx mnfst-starter --here --name "<project name>"`, using the name you
-    passed to `manifest_init` (letters, digits, spaces, `.`, `_`, `-` only) (the
-    `mnfst-starter` package from npm; without a project id or key it writes
-    only the template).
+    template with `MANIFEST_API_KEY= npx mnfst-starter --here --name "<project name>"`,
+    using the name you passed to `manifest_init` (letters, digits, spaces, `.`,
+    `_`, `-` only). This runs the `mnfst-starter` package from npm; clearing
+    `MANIFEST_API_KEY` stops it from picking up a key from the environment and
+    writing `.env`, `.mcp.json`, and `.claude/settings.json`.
   - **Without the plugin**: `manifest_init` `mode: 'new'` returns a
-    `mnfst-starter` command that also wires `.mcp.json` and `.env`. Check it
+    `mnfst-starter` command that also writes `.mcp.json`, `.env`, and
+    `.claude/settings.json` (replacing existing ones). Check it
     against **manifest-workflow** → "Check server-returned commands" before
     running it; it carries the project's API key, so never print it.
   Then build the first pass with **manifest-framework**, **manifest-layout**,

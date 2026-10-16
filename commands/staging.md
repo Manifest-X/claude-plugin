@@ -3,7 +3,7 @@ description: "Manifest: put the current work on a reviewable staging URL for a p
 argument-hint: "[commit message]"
 ---
 
-You are the "Publish to Staging" button. The contributor wants their work on the staging site. It applies only to Manifest projects (manifest-workflow → "Is this a Manifest project?"; the connector being available is not enough); in any other project, say this command is for Manifest projects and stop. Load the **manifest-workflow** skill: it holds the pipeline logic and the project-state rules this command relies on. Run end to end and report when done. The user's request is the confirmation: don't ask between steps. Staging never changes the live site; if the user actually asked to go live, use `/manifest:publish`. Stop only on errors or the guardrails below.
+You are the "Publish to Staging" button. The contributor wants their work on the staging site. It applies only to Manifest projects (manifest-workflow → "Is this a Manifest project?"; the connector being available is not enough); in any other project, say this command is for Manifest projects and stop. Load the **manifest-workflow** skill: it holds the pipeline logic and the project-state rules this command relies on. Run end to end and report when done. The user's request is the confirmation: don't ask between steps. Staging never changes the live site; if the user actually asked to go live, follow the publish flow in manifest-workflow instead (the user can also run `/manifest:publish`). Stop only on errors or the guardrails below.
 
 Optional commit message from the user: $ARGUMENTS (if present, use it verbatim instead of generating one).
 
@@ -24,7 +24,7 @@ Optional commit message from the user: $ARGUMENTS (if present, use it verbatim i
 
 2. **Branch check.** `git branch --show-current`. If not on the default branch, stop: "You're on `<branch>`, not `<default>`. Switch to `<default>` first." Switching is for `/manifest:sync`.
 
-3. **Sync if behind.** `git fetch origin <default>`, then `git rev-list --count <default>..origin/<default>`. If > 0: set uncommitted work aside safely (manifest-workflow → "Setting work aside to pull"; never a bare `git stash`), `git pull --rebase origin <default>`, restore it by SHA, and report briefly ("Synced N new commits first."). On any conflict, stop and hand off to `/manifest:sync`.
+3. **Sync if behind.** `git fetch origin <default>`, then `git rev-list --count <default>..origin/<default>`. If > 0: set uncommitted work aside safely, following every step of manifest-workflow → "Setting work aside to pull" (never a bare `git stash`; skip the restore if nothing was stashed), `git pull --rebase origin <default>`, restore it by SHA and drop the entry, and report briefly ("Synced N new commits first."). On any conflict, stop and hand off to `/manifest:sync`.
 
 4. **Pre-render (Manifest website projects only).** Collect changed files (`git diff --name-only HEAD` plus `git ls-files --others --exclude-standard`). Render only if a changed file outside `/website/` is `.html`, `.css`, `.json`, `.yaml`, `.yml`, `.csv`, or `.md`; otherwise skip and say why. To render, run `npx mnfst-render` in the background and stream short progress updates. On error, stop and explain; don't commit.
 

@@ -172,8 +172,9 @@ MNFST_PUBLISH_UPLOAD_URL="https://mcp.manifestx.dev/publish/put_<hex>" npx mnfst
 npx mnfst-starter --here --name "<project name>" --project-id=proj_<letters and digits> --key=mfst_<env>_<letters and digits>
 ```
 
-- `manifest_publish` → the first. `--output-dir`, if present, is a folder
-  inside the project. The only change you may make is appending `--no-render`
+- `manifest_publish` → the first. `--env` and `--source` must equal the values
+  you passed; `--output-dir` must equal the `output_dir` you passed (or
+  `website` for `render`), and is absent if you passed none. The only change you may make is appending `--no-render`
   (see the managed flow).
 - `manifest_init` (`mode: 'new'`) → the second. The name is the one you passed.
   The key is the project's API key: the starter writes it to `.env`; never
@@ -220,8 +221,11 @@ or build your own upload.
 - **History**: `manifest_deployments`.
 - **Custom domains**: `manifest_add_domain` returns the DNS record to add;
   `manifest_domain_status` checks it.
-- **Rollback** (`manifest_rollback`) and **export** (`manifest_export`) of
-  earlier versions are part of Manifest Pro. If the user asks to undo a publish
+- **Rollback** ("roll it back"): `manifest_rollback` changes the live site, so
+  first confirm with the user, naming the site and the version it will return
+  to. **Export**: `manifest_export` returns a one-time download link; give it
+  to the user to open in their browser and don't fetch it yourself.
+- Rollback and export of earlier versions are part of Manifest Pro. If the user asks to undo a publish
   and the tool says the plan doesn't include it, say so plainly, once, and
   offer the free route: publish the previous version again from source.
 
@@ -244,10 +248,16 @@ branch (`production`) only moves by promotion.
   explain plainly, ask before recovering.
 
 **Setting work aside to pull.** Never use a bare `git stash` / `git stash pop`:
-the stash stack is shared with other sessions. Use `git stash push -u -m
-"manifest-<command>-<timestamp>"`, read its SHA from `git stash list
---format='%H %gs'`, restore with `git stash apply <sha>`, and then drop that
-entry (find its current `stash@{n}` by the message first).
+the stash stack is shared with other sessions.
+
+1. `git stash push -u -m "manifest-<command>-<timestamp>"`. If it reports "No
+   local changes to save", nothing was stashed: skip the restore and drop.
+2. Read the entry's SHA from `git stash list --format='%H %gs'` (match your
+   message).
+3. After pulling, restore with `git stash apply <sha>`.
+4. Once it applied cleanly, look up the entry's current index by SHA
+   immediately before dropping (`git stash list --format='%gd %H'`), then
+   `git stash drop stash@{n}`. Keep it if the apply conflicted.
 
 A project that isn't built on Manifest and has its own git conventions (feature
 branches, pull requests) keeps them; follow the repository's practice.

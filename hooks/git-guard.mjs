@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 // Manifest git guard: PreToolUse(Bash) context against unrequested branch changes. Adds context only; fails open.
 
-import { existsSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { existsSync, readFileSync } from 'node:fs';
+import { basename, resolve } from 'node:path';
 
 const SHARED = new Set(['staging', 'production']);
 const GIT_OPTS_WITH_VALUE = new Set(['-C', '-c', '--git-dir', '--work-tree', '--namespace', '--exec-path']);
@@ -24,9 +24,10 @@ process.stdin.on('end', () => {
     const cmd = String((data.tool_input || {}).command || '');
     if (!cmd) return;
     const cwd = String(data.cwd || process.env.CLAUDE_PROJECT_DIR || process.cwd());
+    addBlockBranches([cwd, process.env.CLAUDE_PROJECT_DIR]);
 
     let action = null;
-    for (const segment of cmd.split(/&&|\|\||[;|\n]/)) {
+    for (const segment of splitSegments(cmd)) {
       const found = classify(tokenize(segment), cwd);
       if (found === 'create') { action = found; break; }
       if (found) action = found;
@@ -50,14 +51,50 @@ process.stdin.on('end', () => {
   }
 });
 
+// Default and Live branch from the CLAUDE.md project block
+function addBlockBranches(dirs) {
+  for (const dir of dirs) {
+    if (!dir) continue;
+    try {
+      const md = readFileSync(resolve(dir, 'CLAUDE.md'), 'utf8');
+      for (const m of md.matchAll(/\*\*(?:Default|Live) branch:\*\*\s*`?([\w./-]+)`?/g)) SHARED.add(m[1]);
+    } catch {}
+  }
+}
+
+// Split on unquoted && || ; | and newlines
+function splitSegments(cmd) {
+  const out = [];
+  let cur = '';
+  let q = null;
+  for (let i = 0; i < cmd.length; i++) {
+    const c = cmd[i];
+    if (q) {
+      if (c === '\\' && q === '"') { cur += c + (cmd[++i] ?? ''); continue; }
+      if (c === q) q = null;
+      cur += c;
+    } else if (c === '"' || c === "'") {
+      q = c;
+      cur += c;
+    } else if (c === ';' || c === '|' || c === '&' || c === '\n') {
+      out.push(cur);
+      cur = '';
+      if ((c === '|' || c === '&') && cmd[i + 1] === c) i++;
+    } else cur += c;
+  }
+  out.push(cur);
+  return out;
+}
+
 function tokenize(s) {
   return (s.match(/"[^"]*"|'[^']*'|\S+/g) || []).map((t) => t.replace(/^(["'])(.*)\1$/, '$2'));
 }
 
 // 'create' | 'switch' | null
 function classify(tokens, cwd) {
-  const g = tokens.indexOf('git');
-  if (g < 0) return null;
+  let g = 0;
+  while (g < tokens.length && /^[A-Za-z_][A-Za-z0-9_]*=/.test(tokens[g])) g++;
+  if (!tokens[g] || basename(tokens[g].replace(/^[({]+/, '')) !== 'git') return null;
   let i = g + 1;
   let dir = cwd;
   while (i < tokens.length && tokens[i].startsWith('-')) {
@@ -93,5 +130,6 @@ function classify(tokens, cwd) {
     return 'create';
   }
   if (sub === 'worktree' && plain[0] === 'add' && has('-b', '-B')) return 'create';
+  if (sub === 'stash' && plain[0] === 'branch') return 'create';
   return null;
 }

@@ -16,7 +16,7 @@ The build settings below are for Manifest framework projects. A project built wi
 ### Manifest managed (the zero-setup default)
 
 For anyone who "just wants it online" — especially solo, non-technical users. No GitHub, no host account, no build config. Publishing is the `manifest_publish` tool (it's what `/manifest:staging` and `/manifest:publish` call in this mode), the site is served at `*.manifestx.ai`, and custom domains are handled in chat via `manifest_add_domain`.
-- **To select it:** just publish — say "put it online" or run `/manifest:publish`. After the first publish, record `Hosting: Manifest managed` and the live URL in the Manifest project block (see **manifest-workflow**).
+- **To select it:** just publish — follow the publish flow in **manifest-workflow** (the user can say "put it online" or run `/manifest:publish`). After the first publish, record `Hosting: Manifest managed` and the live URL in the Manifest project block (see **manifest-workflow**).
 - **Best for:** solo creators, quick launches, demos, anyone without a GitHub/CI workflow.
 
 The own-host options below connect a Git repo so a team can collaborate through branches and the host rebuilds on push. Use them when the project has outgrown solo managed hosting.
@@ -71,7 +71,7 @@ A solo project on `*.manifestx.ai` matured into a team and wants Git-based colla
 
 ### Own host via GitHub → Manifest managed
 A team wants the simpler managed flow (or to retire their host account).
-1. Just publish: run `/manifest:publish` (or "put it online"). `manifest_publish` uploads the current build and serves it at `*.manifestx.ai`; then record `Hosting: Manifest managed` in the Manifest project block.
+1. Just publish: follow the publish flow in **manifest-workflow** (the user can say "put it online" or run `/manifest:publish`). `manifest_publish` uploads the current build and serves it at `*.manifestx.ai`; then record `Hosting: Manifest managed` in the Manifest project block.
 2. Re-point any custom domain at Manifest (`manifest_add_domain` returns the exact DNS record) and remove it from the old host.
 3. The GitHub repo stays as-is — it's still the source of truth and teammates keep using `/manifest:sync`. Only the *hosting backend* changed.
 
@@ -104,7 +104,7 @@ Even for non-PWA projects, keep `name`, `description`, `start_url`, and `live_ur
 
 - **Don't commit a dev key to git or paste one into the host's production env vars.** Production should use real production credentials — typically a server-scoped key with the actual permissions the production environment needs, not a rate-limit-bypass key.
 - **Don't try to make `npx mnfst-render` run on Appwrite Sites.** Render locally, commit `/website/`, deploy.
-- **Don't push directly to the live branch to deploy.** Use `/manifest:publish`. Direct pushes bypass the eyeball-staging step and any branch protection.
+- **Don't push directly to the live branch to deploy.** Promote through the publish flow in **manifest-workflow**. Direct pushes bypass the eyeball-staging step and any branch protection.
 - **Don't strip PWA fields without grepping for `$x.manifest.` first.** Hidden breakage waiting to happen — the page renders fine in dev, then OG previews go blank in production.
 - **Don't manually maintain `sitemap.xml` or `robots.txt`** — `mnfst-render` generates them from routes and `prerender.liveUrl`. Manual edits are overwritten on next render.
 
