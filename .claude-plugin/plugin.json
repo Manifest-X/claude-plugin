@@ -2,7 +2,7 @@
   "name": "manifest",
   "displayName": "Manifest",
   "version": "0.1.0",
-  "description": "Build, publish, and run websites and apps from Claude: managed hosting with staging, promotion, and custom domains, plus authoring skills for the open-source Manifest framework. Rollback and teams are part of Manifest Pro.",
+  "description": "Put what you build with Claude online, just by asking. Free hosting with your own domain, preview links to share before going live, and visitor analytics, all included. Works with React, plain HTML, or the open-source Manifest framework.",
   "author": {
     "name": "Manifest",
     "email": "team@manifestx.dev",
@@ -14,11 +14,12 @@
   "keywords": [
     "hosting",
     "publishing",
-    "static-sites",
     "websites",
-    "html",
-    "alpinejs",
-    "manifest"
+    "web-apps",
+    "custom-domains",
+    "analytics",
+    "react",
+    "html"
   ],
   "icon": "./icon.png",
   "documentationUrl": "https://manifestx.dev/docs/ai",

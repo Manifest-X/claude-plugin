@@ -1,21 +1,20 @@
 # Manifest for Claude
 
-Build, publish, and run websites and apps from a conversation with Claude. This
-plugin connects Claude to [Manifest](https://manifestx.dev) and adds skills and
-commands for the whole loop: build, publish to a staging link, take it live,
-and connect your own domain. Rolling back to earlier versions, exporting them,
-and working as a team are part of Manifest Pro.
+Put what you build with Claude online, just by asking. Manifest hosts your
+website or app for free, with your own domain, preview links to share before
+you go live, and visitor analytics included. Upgrade a project to Manifest Pro
+for rollbacks, teams, all-time analytics, and no Manifest badge.
 
 It works with any project that builds to files a browser can run, such as
-React, Vite, Astro, Hugo, or plain HTML. Starting fresh, Claude can build on
-the open-source Manifest framework, which is HTML-first with no build step.
+React, Vite, Astro, Hugo, or plain HTML. Starting fresh? Claude can build on
+the open-source Manifest framework: HTML-first, with no build step.
 
 ## Try it
 
-- "Make me a one-page website for a neighborhood bakery and put it online with Manifest."
-- "Build this Vite app and publish it to staging with Manifest." Then `/manifest:publish` to take it live.
-- "Connect www.example-bakery.com to my Manifest site."
-- `/manifest:status` for a plain-English summary of what's live and what's staged.
+- "Build a landing page for my product and put it online with Manifest."
+- "Build this Vite app and give me a Manifest preview link to share." Then `/manifest:publish` to take it live.
+- "Connect www.example.com to my Manifest site."
+- `/manifest:status` for a plain-English summary of what's live and what's in preview.
 
 ## What it installs
 
