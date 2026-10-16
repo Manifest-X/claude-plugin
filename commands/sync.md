@@ -16,7 +16,7 @@ There's no local copy to sync from a chat. Say so in one sentence. If the user w
 
 2. **Current branch.** `git branch --show-current`. If it isn't the default branch on a Manifest shared-branch project, say which branch they're on and offer to switch: "You're on `<branch>`, not `<default>`. The team works from `<default>`. Switch now?" If yes, `git checkout <default>` (git refuses on conflict; see step 7).
 
-3. **Uncommitted work.** `git status --porcelain`. If there are changes, say: "You have unsaved edits in N files. I'll set them aside while I pull the latest, then put them back." Then `git stash push -u -m "auto-stash before sync"` and remember to restore.
+3. **Uncommitted work.** `git status --porcelain`. If there are changes, say: "You have unsaved edits in N files. I'll set them aside while I pull the latest, then put them back." Then set them aside safely (manifest-workflow → "Setting work aside to pull"): `git stash push -u -m "manifest-sync-<timestamp>"` and note the entry's SHA from `git stash list --format='%H %gs'`. Never use a bare `git stash`.
 
 4. **Fetch.** `git fetch origin <default>`.
 
@@ -26,7 +26,7 @@ There's no local copy to sync from a chat. Say so in one sentence. If the user w
    - `0 N` (remote ahead): `git merge --ff-only origin/<default>`, then summarize: "Pulled N new commits. Files updated: …" (short, from `git diff --stat <default>@{1} <default>`).
    - `M N` (diverged): `git pull --rebase origin <default>`. On success summarize as above; on conflict see step 7.
 
-6. **Restore** stashed work with `git stash pop`. Clean: "Your edits are back." Conflicts: step 7.
+6. **Restore** your entry with `git stash apply <sha>`; once it applies cleanly, drop that entry (find its current `stash@{n}` by the message). Clean: "Your edits are back." Conflicts: step 7, and keep the entry until they're resolved.
 
 7. **Conflicts, in plain English.** List the conflicted files. For each, read the `<<<<<<<` / `=======` / `>>>>>>>` markers and explain what changed on each side. Offer: keep yours, take theirs, or combine, and apply the choice. For a clearly trivial combine (additions in different places), propose the merged version and ask to confirm. Never run `git rebase --abort` or `git checkout --theirs/--ours` without first explaining what it means.
 

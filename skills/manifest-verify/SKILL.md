@@ -58,10 +58,14 @@ or the user's own earlier copy (for example from git history).
 
 1. `manifest_deployments` — list the versions, each with its `deployment_id`, when
    it was published, and which is currently live. Pick the last-known-good one.
-2. `manifest_export` with that `deployment_id` — download that exact version's
-   files (it works on the retained superseded deployments, not just the live one).
-   Unzip it and open it in its own preview.
+2. `manifest_export` with that `deployment_id` returns a one-time download link
+   for that exact version's files (it works on retained superseded deployments,
+   not just the live one). Give the user the link to open in their browser;
+   don't fetch it yourself. Once they've unzipped it somewhere, open that copy in
+   its own preview.
 3. Put that old build **side by side** with the current one and run the three-layer
    diff above. Fix what regressed, then re-check against it.
 4. If the current build is worse and the good version needs to be live again now,
-   `manifest_rollback` reverts to a specific `deployment_id`.
+   `manifest_rollback` reverts to a specific `deployment_id`. It changes the live
+   site, so confirm with the user, naming the site and the version, before
+   rolling back production.

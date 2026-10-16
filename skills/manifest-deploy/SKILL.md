@@ -66,12 +66,12 @@ Hosting isn't permanent — a project can move as it grows. The two common migra
 A solo project on `*.manifestx.ai` matured into a team and wants Git-based collaboration.
 1. If not on GitHub yet, run the **manifest-github** skill (private repo + `staging`/`production` branches).
 2. Connect a host above (Cloudflare Pages / Netlify / Appwrite Sites) to that repo.
-3. **Set `Hosting: Own host via GitHub`** in CLAUDE.md and fill in the new Staging/Production URLs. From now on `/manifest:staging` and `/manifest:publish` use the Git flow.
+3. **Set `Hosting: Own host via GitHub`** in the Manifest project block and fill in the new Staging/Production URLs. From now on `/manifest:staging` and `/manifest:publish` use the Git flow.
 4. **Move the domain, no downtime.** If a custom domain was attached via `manifest_add_domain` (Manifest managed), it points at Manifest's infrastructure. Leave the managed site live, point the domain's DNS at the new host, confirm the new host serves it, then run `manifest_remove_domain` to release it from Manifest. The `*.manifestx.ai` address keeps working until you stop using it — no rush.
 
 ### Own host via GitHub → Manifest managed
 A team wants the simpler managed flow (or to retire their host account).
-1. Just publish: run `/manifest:publish` (or "put it online"). `manifest_publish` uploads the current build, serves it at `*.manifestx.ai`, and sets `Hosting: Manifest managed`.
+1. Just publish: run `/manifest:publish` (or "put it online"). `manifest_publish` uploads the current build and serves it at `*.manifestx.ai`; then record `Hosting: Manifest managed` in the Manifest project block.
 2. Re-point any custom domain at Manifest (`manifest_add_domain` returns the exact DNS record) and remove it from the old host.
 3. The GitHub repo stays as-is — it's still the source of truth and teammates keep using `/manifest:sync`. Only the *hosting backend* changed.
 

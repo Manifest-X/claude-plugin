@@ -35,18 +35,25 @@ continue." A signed-in user with no projects is the normal start.
    project is it?"): a Manifest framework project, another framework with a
    build step, or something that needs a server (explain the limit before going
    further).
-2. **Tie the folder to a Manifest project.** If the folder's `.mcp.json`
-   already names one, use it. Otherwise, with the user's go-ahead, create one
-   with `manifest_init` `mode: 'attach'` and the project's name. It returns two
-   whole files; in Claude Code or Cowork, merge them rather than overwrite:
-   - `.mcp.json` (committed; holds only the project id): if the file exists,
-     add or replace only `mcpServers.manifest` and keep every other server.
-   - `.env` (a headless publishing key): if the file exists, append the
-     `MANIFEST_API_KEY=` line (or replace an existing `MANIFEST_API_KEY` line)
-     and leave every other line alone. Make sure `.env` is in `.gitignore`,
-     never commit it, and never print the key.
-   Claude must be reopened in the folder for a new `.mcp.json` to load, so for
-   this first publish pass the returned `project_id` explicitly.
+2. **Tie the folder to a Manifest project.** If the Manifest project block in
+   `CLAUDE.md` has a **Project id**, or the folder's `.mcp.json` pins one
+   (`X-Manifest-Project`), use it. Otherwise, with the user's go-ahead, create
+   one with `manifest_init` `mode: 'attach'` and the project's name, and record
+   the returned `project_id` as **Project id** in the block (see
+   **manifest-workflow**). Then target it explicitly: pass `project_id` to the
+   publish tools and call `manifest_select_project` before other project tools.
+   The result also contains files to write; with the Manifest plugin installed,
+   write neither:
+   - `.mcp.json`: the plugin already provides the Manifest server; a
+     project-level `manifest` server would load the same tools twice. (Without
+     the plugin, merge it: add or replace only `mcpServers.manifest`, keep every
+     other server.)
+   - `.env`: holds an API key needed only for headless or CI publishing;
+     interactive publishing through the connector needs no key. Write it only
+     if the user asks for headless publishing, and then append or replace just
+     the `MANIFEST_API_KEY=` line, keep `.env` in `.gitignore`, never commit it,
+     and never print the key. A key can be replaced later with
+     `manifest_rotate_key`.
 3. **Build and publish to staging first** unless the user asked to go straight
    live, following **manifest-workflow** → "The managed flow". Record the result
    in the Manifest project block in `CLAUDE.md` (see manifest-workflow).
@@ -56,14 +63,22 @@ continue." A signed-in user with no projects is the normal start.
 ## 3. First build from scratch
 
 - **"With Manifest", or no framework named**: build on the Manifest framework.
-  In Claude Code (or any session with a shell), create the project with
-  `manifest_init` `mode: 'new'` and run the returned command in the folder the
-  user wants (it runs the `mnfst-starter` package from npm). It scaffolds the
-  starter template, `.mcp.json`, and `.env` into that folder, so use an empty
-  folder or ask first. The command carries a secret key: don't print it, never
-  commit `.env`. Then build
-  the first pass with **manifest-framework**, **manifest-layout**, and
-  **manifest-styling**, preview it (`/manifest:preview`), and publish to staging.
+  In Claude Code (or any session with a shell), ask where the project should
+  live (an empty folder, or ask before adding files to a non-empty one). Then:
+  - **With the Manifest plugin installed**: create the project with
+    `manifest_init` `mode: 'attach'`, record its **Project id** in the block,
+    and write no `.mcp.json` or `.env` (as in section 2). Scaffold the starter
+    template with `npx mnfst-starter --here --name "<project name>"`, using the name you
+    passed to `manifest_init` (letters, digits, spaces, `.`, `_`, `-` only) (the
+    `mnfst-starter` package from npm; without a project id or key it writes
+    only the template).
+  - **Without the plugin**: `manifest_init` `mode: 'new'` returns a
+    `mnfst-starter` command that also wires `.mcp.json` and `.env`. Check it
+    against **manifest-workflow** → "Check server-returned commands" before
+    running it; it carries the project's API key, so never print it.
+  Then build the first pass with **manifest-framework**, **manifest-layout**,
+  and **manifest-styling**, preview it (`/manifest:preview`), and publish to
+  staging.
 - **Another framework named** ("a React app", "with Astro"): use it. Manifest
   doesn't change how it's authored. Scaffold it with that framework's own tools,
   build, and publish its build output (`source='spa'`, `output_dir` = the build

@@ -28,7 +28,7 @@ Use when `git remote -v` shows no `origin`.
    - `git branch -M staging`
    - `gh repo create <project-name> --private --source=. --remote=origin --push` (creates the repo, pushes `staging`, sets it as default)
    - `git push origin staging:production` (create the `production` branch from the same commit)
-3. **Record it in CLAUDE.md.** In the Manifest project block (see **manifest-workflow**), set: the repo URL, `Default branch: staging`, `Live branch: production`. This is what `/manifest:sync`, `/manifest:staging`, and `/manifest:publish` read.
+3. **Record it in CLAUDE.md.** In the Manifest project block (see **manifest-workflow**), set **Repo** to the repo URL, `Default branch: staging`, `Live branch: production`. This is what `/manifest:sync`, `/manifest:staging`, and `/manifest:publish` read.
 4. **Report plainly:** "Your project is now backed up on GitHub (private). You're working on the `staging` branch; `production` is what goes live when you publish."
 
 ## Path B — add a teammate to this project (owner side)
@@ -46,7 +46,7 @@ Use when someone was added to a repo and wants to start working.
 
 1. Make sure `gh` is signed in (Prerequisites above).
 2. Accept the GitHub invite if not already (`gh api user/repository_invitations` lists pending ones; `gh api -X PATCH user/repository_invitations/<id>` accepts — or just accept it from the GitHub email).
-3. **Clone into a fresh folder and open it:** `gh repo clone <owner>/<repo> <folder>`. The committed `.mcp.json` connects the Manifest project automatically; signing in to the Manifest connector (a one-time browser prompt) gives access via team membership — no key needed.
+3. **Clone into a fresh folder and open it:** `gh repo clone <owner>/<repo> <folder>`. The Manifest project block in the committed `CLAUDE.md` (its **Project id**), or a committed `.mcp.json`, identifies the Manifest project; signing in to the Manifest connector (a one-time browser prompt) gives access via team membership — no key needed.
 4. **Make sure the workflow commands are available.** With the Manifest plugin installed they already are (`/manifest:sync`, `/manifest:staging`, `/manifest:publish`, `/manifest:status`, `/manifest:preview`). Without the plugin, a fresh clone may lack them, since per-project commands live under `.claude/`, which often isn't committed: run `manifest_install_skills` (or say "install the Manifest commands"); per-project commands have no prefix (`/sync`, `/publish`). Plain-language requests ("take it live") work either way.
 5. From then on, `/manifest:sync` pulls teammates' latest and `/manifest:staging` shares your work.
 

@@ -150,7 +150,7 @@ When you build a layout, **don't try to fit these into the page's flex/grid cont
 3. **Apply Manifest layout classes** (`row`/`col`/`center`/`content`) before reaching for raw Tailwind flex/grid utilities.
 4. **Make it flex naturally** — `row-wrap` + `grow` + `min-w-[Npx]` gets you most responsive grids without a single breakpoint.
 5. **Use `md:`/`lg:` only when the layout genuinely changes shape**, not for "the desktop version is wider".
-6. **Verify in the preview panel at multiple widths** — use `preview_resize` to check 375px (phone), 768px (tablet), and 1280px (desktop). If the layout breaks badly at one width, fix it; don't paper over it with a breakpoint that hides content.
+6. **Verify in the preview panel at multiple widths** — resize the preview to check 375px (phone), 768px (tablet), and 1280px (desktop). If the layout breaks badly at one width, fix it; don't paper over it with a breakpoint that hides content.
 
 ## What not to do
 

@@ -123,8 +123,9 @@ Outside their scope they exit immediately with no output.
   UI or styling, reminds Claude to load the design skills first, and notes
   inline `<style>` blocks or `style="..."` attributes written into HTML.
 - `git-guard`, in projects whose `CLAUDE.md` records Manifest's shared-branch
-  GitHub workflow: when a command creates or switches a git branch, reminds
-  Claude to stay on the shared branch unless you asked for one.
+  GitHub workflow: when a command creates a git branch or switches to one other
+  than `staging` or `production`, reminds Claude to stay on the shared branch
+  unless you asked for one.
 
 ## What it runs and sends
 
@@ -136,8 +137,11 @@ Outside their scope they exit immediately with no output.
   your own domain.
 - **The Manifest team** receives a request only when you ask for a person to
   build or finish your project (`manifest-help`): the project summary, what you
-  want done, budget and timeline if you give them, and your contact email.
-  Claude tells you what will be sent first.
+  want done, budget and timeline if you give them, and your name and contact
+  email. Claude shows you what will be sent and waits for your go-ahead.
+- **A teammate's email address** goes to Manifest when you invite them to a
+  Manifest project (`manifest_invite`, part of Manifest Pro), so Manifest can
+  email them a link to join.
 - **npm** serves the Manifest command-line packages below when Claude runs them
   with `npx`.
 - **GitHub** is used only if you choose a GitHub workflow (`git`, `gh`).
@@ -153,7 +157,12 @@ permission settings):
   `mcp.manifestx.dev`, then `npx mnfst-publish` with `--env`, `--source`, and
   optionally `--output-dir`). It zips the project's files, leaving out
   git-ignored files and any `.env` file, and uploads them.
-- `npx mnfst-starter`: creates a new Manifest project from the starter template.
+- `npx mnfst-starter`: creates a new Manifest project from the starter
+  template. With the plugin, Claude runs it as
+  `npx mnfst-starter --here --name "<name>"`, which writes only the template.
+  Without the plugin, `manifest_init` returns the command, which also carries
+  the project's API key (written to `.env`, never printed); Claude checks it
+  has the expected form before running it, as with `mnfst-publish`.
 - `npx mnfst-run`: local preview server.
 - `npx mnfst-render`: pre-renders a Manifest website.
 - Your project's own build and dev commands (for example `npm run build`).
@@ -162,12 +171,19 @@ permission settings):
 - `curl` to fetch a page you asked to rebuild.
 - `node`, to run the two hooks.
 
-**Files Claude may write in your project**: the site's own files; `.mcp.json`
-and `.env` when tying a folder to a Manifest project (merged with what's
-there, never overwritten; `.env` holds a key for headless publishing and stays
-out of git); and a short Manifest project block in `CLAUDE.md` (hosting
-choice, site URLs, last published versions) so later sessions pick up where you
-left off.
+**Files Claude may write in your project**:
+
+- the site's own files, including the Manifest starter template for a new project;
+- a short Manifest project block in `CLAUDE.md` (project id, hosting choice,
+  site URLs, last published versions) so later sessions pick up where you left
+  off;
+- `.gitignore` entries that keep `.env` and other secrets out of git;
+- `.claude/launch.json` preview settings, only in a folder holding several
+  Manifest projects (`manifest-workspace`);
+- `.env` with a Manifest API key, only if you ask for headless or CI
+  publishing (interactive publishing needs no key);
+- `.mcp.json` only when the plugin isn't installed (the plugin already provides
+  the connector); it's merged with what's there, never overwritten.
 
 The plugin itself stores nothing elsewhere.
 

@@ -98,7 +98,7 @@ Use native HTML validation (`required`, `type="email"`, `pattern`, `minlength`, 
 - Tab through fields — focus styles should be visible.
 - Submit empty — required fields should block.
 - Submit valid — feedback should appear.
-- Test on mobile width via `preview_resize` if it's a public form.
+- Test at a phone width (resize the preview) if it's a public form.
 
 ## What not to do
 

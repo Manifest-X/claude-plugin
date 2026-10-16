@@ -27,10 +27,10 @@ Gather just enough to make the request useful, conversationally:
 2. **What they want done** — the scope: a full build, finishing touches, a fix, ongoing help.
 3. **Budget** — ask lightly ("any budget in mind?"). Fine if "not sure". Record it in their words; it helps the team triage.
 4. **Timeline** — if they have one.
-5. **Contact email** — where the team should reach them.
+5. **Name and contact email** — who the team should reach, and where.
 
-Before sending, tell the user what goes to the Manifest team (the project summary, what they want, budget, timeline, and their email). Then call **`manifest_request_help`** with those fields. If they decline to
-share budget/timeline, send it without — name + email + what they want is enough.
+Before sending, show the user what goes to the Manifest team (their name, email, the project summary, what they want, budget, timeline) and ask for an explicit go-ahead. Only after a yes, call **`manifest_request_help`** with those fields. If they decline to
+share budget/timeline, send it without — email + what they want is enough.
 
 ## After sending
 

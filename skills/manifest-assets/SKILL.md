@@ -43,7 +43,7 @@ Match whatever the project actually uses. If it has its own structure (e.g. `/pu
      <img src="/assets/hero.webp" alt="..." class="w-full">
    </picture>
    ```
-7. **Verify in the preview panel** at multiple widths via `preview_resize`. Check the image renders, isn't pixelated, and the alt text is present (inspect element).
+7. **Verify in the preview panel** at multiple widths (resize the preview to phone, tablet, and desktop widths). Check the image renders, isn't pixelated, and the alt text is present (inspect element).
 
 ## Recipe — favicon
 

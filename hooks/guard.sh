@@ -6,7 +6,7 @@ framework() {
   [ -f "$1/manifest.theme.css" ] && return 0
   [ -f "$1/manifest.json" ] || return 1
   grep -q '"manifest_version"' "$1/manifest.json" 2>/dev/null && return 1
-  grep -qE 'manifestx\.dev|"preloadedComponents"|"components"|"prerender"' "$1/manifest.json" 2>/dev/null
+  grep -qE 'manifestx\.dev|"preloadedComponents"|"components"|"prerender"|"data"' "$1/manifest.json" 2>/dev/null
 }
 
 shared_branch() {
