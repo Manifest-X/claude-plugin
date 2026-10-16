@@ -20,7 +20,9 @@
     "alpinejs",
     "manifest"
   ],
+  "icon": "./icon.png",
   "documentationUrl": "https://manifestx.dev/docs/ai",
+  "supportUrl": "https://manifestx.dev/support",
   "privacyPolicyUrl": "https://manifestx.dev/legal/privacy",
   "termsOfServiceUrl": "https://manifestx.dev/legal/terms"
 }
