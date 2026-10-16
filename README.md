@@ -3,11 +3,19 @@
 Build, publish, and run websites and apps from a conversation with Claude. This
 plugin connects Claude to [Manifest](https://manifestx.dev) and adds skills and
 commands for the whole loop: build, publish to a staging link, take it live,
-roll back, and connect your own domain.
+and connect your own domain. Rolling back to earlier versions, exporting them,
+and working as a team are part of Manifest Pro.
 
 It works with any project that builds to files a browser can run, such as
 React, Vite, Astro, Hugo, or plain HTML. Starting fresh, Claude can build on
 the open-source Manifest framework, which is HTML-first with no build step.
+
+## Try it
+
+- "Make me a one-page website for a neighborhood bakery and put it online with Manifest."
+- "Build this Vite app and publish it to staging with Manifest." Then `/manifest:publish` to take it live.
+- "Connect www.example-bakery.com to my Manifest site."
+- `/manifest:status` for a plain-English summary of what's live and what's staged.
 
 ## What it installs
 
@@ -20,15 +28,20 @@ the open-source Manifest framework, which is HTML-first with no build step.
   `/manifest:publish`, `/manifest:status`. In Claude chat they load as skills,
   so plain language works the same ("put it on the web to review", "take it
   live").
-- **Two hooks** (Claude Code and Cowork only), active only inside Manifest
+- **Two hooks** (Claude Code and Cowork only) that add guidance in Manifest
   projects. See [Hooks](#hooks).
+
+The skills and commands act only in Manifest projects: a project with a
+Manifest `.mcp.json`, Manifest hosting recorded in its `CLAUDE.md`, a Manifest
+framework `manifest.json` or `manifest.theme.css`, or when you ask for Manifest
+by name. Having the connector installed isn't enough to trigger them.
 
 ## Install
 
-- **Claude (web and desktop), Pro, Max, Team, and Enterprise plans:** open
-  **Customize > Plugins > Discover**, find **Manifest**, and add it.
-- **Claude's Free plan:** open **Customize > Plugins > Add > Add marketplace**,
-  enter `Manifest-X/claude-plugin`, then add the **Manifest** plugin.
+- **Claude (web and desktop):** open **Customize > Plugins > Discover**, find
+  **Manifest**, and add it. If Discover doesn't show it, open
+  **Customize > Plugins > Add > Add marketplace**, enter
+  `Manifest-X/claude-plugin`, then add the **Manifest** plugin.
 - **Claude Code (terminal):** run `/plugin` and find Manifest in the directory,
   or add this repository as a marketplace:
 
@@ -40,9 +53,10 @@ the open-source Manifest framework, which is HTML-first with no build step.
 ## Connect and sign in
 
 - **Claude chat and Cowork:** in **Customize > Plugins > Manifest**, open the
-  **Connectors** tab and connect Manifest. A browser sign-in follows, and it
-  creates a Manifest account if you don't have one. On Team and Enterprise
-  plans, an Owner may need to add the connector for the organization first.
+  **Connectors** tab and connect Manifest. A browser sign-in follows; if you
+  don't have a Manifest account yet, you can create one there. On Team and
+  Enterprise plans, an Owner may need to add the connector for the
+  organization first.
 - **Claude Code:** run `/mcp`, choose the Manifest server, and authenticate.
 
 Interactive use needs no API key. Ask Claude to "get started with Manifest" and
@@ -62,10 +76,10 @@ Claude desktop app, or Claude Code.
 
 ## Skills
 
-Setup and publishing (any project published with Manifest):
+Setup and publishing (projects published with Manifest):
 
 - `manifest-setup`: connect, sign in, and make a first publish or first build.
-- `manifest-workflow`: how staging, publishing, promotion, rollback, and hosting detection work.
+- `manifest-workflow`: how staging, publishing, promotion, and hosting detection work.
 - `manifest-deploy`: choose or change hosting, custom domains, and build settings.
 - `manifest-github`: put a project on GitHub and bring teammates in.
 - `manifest-qa`: drive the site like a user and check it before publishing.
@@ -90,9 +104,6 @@ Authoring (projects built on the Manifest framework):
 - `manifest-clone`: rebuild an existing site or section with Manifest.
 - `manifest-verify`: compare a build with a reference design and close the gaps.
 
-Each skill's description says when it applies, so the authoring skills stay out
-of projects that don't use the Manifest framework.
-
 ## Commands
 
 - `/manifest:preview`: start a local preview (in chat, offers a staging link instead).
@@ -103,23 +114,62 @@ of projects that don't use the Manifest framework.
 
 ## Hooks
 
-Claude Code and Cowork run two small hooks from `hooks/`. Both run locally,
-send nothing anywhere, never block an action, and exit silently unless the
-current project is a Manifest project:
+Claude Code and Cowork run two small hooks from `hooks/`. They run locally and
+send nothing anywhere. They only add guidance to Claude's context; they never
+approve or block anything, so your normal permission prompts still apply.
+Outside their scope they exit immediately with no output.
 
-- `ui-guard`: in Manifest framework projects, reminds Claude to load the design
-  skills before UI work and flags inline `<style>` blocks in markup.
-- `git-guard`: in Manifest projects, reminds Claude not to create or switch git
-  branches unless you asked.
+- `ui-guard`, in Manifest framework projects: when a request is clearly about
+  UI or styling, reminds Claude to load the design skills first, and notes
+  inline `<style>` blocks or `style="..."` attributes written into HTML.
+- `git-guard`, in projects whose `CLAUDE.md` records Manifest's shared-branch
+  GitHub workflow: when a command creates or switches a git branch, reminds
+  Claude to stay on the shared branch unless you asked for one.
 
-## Data
+## What it runs and sends
 
-The plugin itself stores nothing and contacts no service other than the Manifest
-connector. When you use Manifest tools, the connector receives what each action
-needs: your Manifest account sign-in, project details, and, when you publish,
-the site files being published. Claude may also save a short `## Project` block
-in your project's `CLAUDE.md` (hosting choice, site URLs, last published
-version) so later sessions pick up where you left off.
+**Destinations.**
+
+- **The Manifest connector** (`mcp.manifestx.dev`) receives what each Manifest
+  action needs: your Manifest account sign-in, project details, and, when you
+  publish, the site files. Published sites are served from `*.manifestx.ai` or
+  your own domain.
+- **The Manifest team** receives a request only when you ask for a person to
+  build or finish your project (`manifest-help`): the project summary, what you
+  want done, budget and timeline if you give them, and your contact email.
+  Claude tells you what will be sent first.
+- **npm** serves the Manifest command-line packages below when Claude runs them
+  with `npx`.
+- **GitHub** is used only if you choose a GitHub workflow (`git`, `gh`).
+- **A website you name** is fetched only when you ask Claude to rebuild or take
+  inspiration from it (`manifest-clone`).
+- **Your own host or Appwrite project**, only if you set one up.
+
+**Commands Claude may run** (in Claude Code or Cowork, subject to your
+permission settings):
+
+- `npx mnfst-publish`: the publish command returned by `manifest_publish`.
+  Claude runs it only if it has the expected form (an upload address on
+  `mcp.manifestx.dev`, then `npx mnfst-publish` with `--env`, `--source`, and
+  optionally `--output-dir`). It zips the project's files, leaving out
+  git-ignored files and any `.env` file, and uploads them.
+- `npx mnfst-starter`: creates a new Manifest project from the starter template.
+- `npx mnfst-run`: local preview server.
+- `npx mnfst-render`: pre-renders a Manifest website.
+- Your project's own build and dev commands (for example `npm run build`).
+- `git`, and `gh` (the GitHub CLI) for the GitHub workflow. Claude asks before
+  installing `gh`.
+- `curl` to fetch a page you asked to rebuild.
+- `node`, to run the two hooks.
+
+**Files Claude may write in your project**: the site's own files; `.mcp.json`
+and `.env` when tying a folder to a Manifest project (merged with what's
+there, never overwritten; `.env` holds a key for headless publishing and stays
+out of git); and a short Manifest project block in `CLAUDE.md` (hosting
+choice, site URLs, last published versions) so later sessions pick up where you
+left off.
+
+The plugin itself stores nothing elsewhere.
 
 - Privacy policy: https://manifestx.dev/legal/privacy
 - Terms: https://manifestx.dev/legal/terms

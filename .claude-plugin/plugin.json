@@ -2,7 +2,7 @@
   "name": "manifest",
   "displayName": "Manifest",
   "version": "0.1.0",
-  "description": "Build, publish, and run websites and apps from Claude: managed hosting with staging, promotion, rollback, custom domains, and keyless teams, plus authoring skills for the open-source Manifest framework.",
+  "description": "Build, publish, and run websites and apps from Claude: managed hosting with staging, promotion, and custom domains, plus authoring skills for the open-source Manifest framework. Rollback and teams are part of Manifest Pro.",
   "author": {
     "name": "Manifest",
     "email": "team@manifestx.dev",
@@ -11,7 +11,15 @@
   "homepage": "https://manifestx.dev/docs/ai",
   "repository": "https://github.com/Manifest-X/claude-plugin",
   "license": "MIT",
-  "keywords": ["hosting", "publishing", "static-sites", "websites", "html", "alpinejs", "manifest"],
+  "keywords": [
+    "hosting",
+    "publishing",
+    "static-sites",
+    "websites",
+    "html",
+    "alpinejs",
+    "manifest"
+  ],
   "documentationUrl": "https://manifestx.dev/docs/ai",
   "privacyPolicyUrl": "https://manifestx.dev/legal/privacy",
   "termsOfServiceUrl": "https://manifestx.dev/legal/terms"
