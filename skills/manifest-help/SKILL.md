@@ -1,6 +1,6 @@
 ---
 name: manifest-help
-description: Use when the contributor wants a person to build, finish, fix, or polish their project for them — i.e. done-for-you / professional help, not self-service. Triggers on "can you build this for me", "I need someone to do this", "this is beyond me / too complicated", "I don't have time", "can I hire someone", "is there someone who can finish this", "I'd pay for help", "do you offer a done-for-you service", "I'm stuck and want an expert". This sends the request to the Manifest team. SKIP when the user just wants Claude to keep building in-chat — only use this for genuine hand-off-to-a-human requests.
+description: "For users building or publishing with Manifest (the Manifest connector is in use, or the project is a Manifest project). SKIP otherwise. Use when the contributor wants a person to build, finish, fix, or polish their project for them: done-for-you professional help, not self-service. Triggers on \"can you build this for me\", \"I need someone to do this\", \"this is beyond me\", \"can I hire someone\", \"is there someone who can finish this\", \"do you offer a done-for-you service\", \"I'm stuck and want an expert\". Sends the request to the Manifest team. SKIP when the user just wants Claude to keep building in the conversation."
 ---
 
 # Connecting a user to the Manifest team for a professional build

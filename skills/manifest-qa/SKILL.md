@@ -1,6 +1,6 @@
 ---
 name: manifest-qa
-description: Use to verify a Manifest project actually works before calling a feature done or publishing — drive the app like a user and check it end-to-end. Triggers on "test this", "QA it", "does it work", "verify it", "check it before publishing", "is it done", "review the whole thing", "make sure nothing's broken", or proactively after building a feature and before /staging or /publish. Covers functionality, console/network health, responsive layout, accessibility, and content — and hands SEO off to manifest-seo. SKIP for a quick one-line copy/color tweak where there's nothing to drive.
+description: "For projects published or hosted with Manifest (the Manifest connector, a Manifest manifest.json, a .mcp.json for mcp.manifestx.dev, or Manifest hosting recorded in CLAUDE.md), or when the user asks for Manifest. SKIP in other projects. Use to verify the project actually works before calling a feature done or publishing it with Manifest: drive the app like a user and check it end to end. Triggers on \"test this\", \"QA it\", \"does it work\", \"verify it\", \"check it before publishing\", \"is it done\", \"make sure nothing's broken\", or proactively after building a feature and before publishing to staging or production. Covers functionality, console/network health, responsive layout, accessibility, and content; hands SEO off to manifest-seo. SKIP for a one-line copy or color tweak with nothing to drive."
 ---
 
 # Verifying a Manifest project works (QA)
@@ -11,6 +11,10 @@ automation (open the preview, click, fill, screenshot, read console + network)
 to exercise the project like a real user, catch problems, fix them, and re-test
 — surfacing only working builds, with evidence.
 
+In a project not built on Manifest, run the same pass with that framework's own
+routes and dev server, and skip the Manifest-specific checks (`x-route`,
+`x-cloak`, `$x` bindings, `/website` output).
+
 This is the **functional/quality** gate. It pairs with two others (don't
 duplicate them): **manifest-seo** owns crawlability/metadata, and rendering
 (`npx mnfst-render`) owns the prerendered output. Run QA on the running app
@@ -19,8 +23,8 @@ duplicate them): **manifest-seo** owns crawlability/metadata, and rendering
 **Manifest-idiom adherence is NOT enforced here — it's enforced at authoring.**
 Whether the markup is idiomatic (no `<style>` blocks, semantic classes over
 bespoke CSS, theme tokens, minimal markup) is decided when the UI is written —
-`manifest-layout`/`manifest-styling` loaded up front, per CLAUDE.md's authoring
-precondition and the `ui-guard` hook. By QA time the user has likely already
+`manifest-layout`/`manifest-styling` loaded up front, per the authoring
+precondition in **manifest-framework** and the `ui-guard` hook. By QA time the user has likely already
 reviewed and approved the look, so treating QA as the place to catch non-idiomatic
 code is backwards: you'd be unwinding approved work. If you *do* spot a flagrant
 idiom violation here (e.g. a hand-rolled `<style>` block), flag it as a backstop —
@@ -30,12 +34,13 @@ but the fix belongs at the start of the funnel, not this end of it.
 
 - **During a feature:** build → self-drive → catch → fix → re-test, before you
   report it done. Loop until it's clean.
-- **Before publishing:** as part of `/staging` and `/publish` (alongside the
+- **Before publishing:** as part of `/manifest:staging` and `/manifest:publish` (alongside the
   manifest-seo pre-publish check), do a verify pass so nothing broken ships.
 
 ## The pass (drive it, don't just read it)
 
-Open the preview (start it with `/preview` if it isn't running), then check:
+Open the preview (start it with `/manifest:preview` if it isn't running; in a
+chat with no shell, publish to staging and check the staging URL instead), then check:
 
 1. **Routes load.** Visit every `x-route` (the main pages). Each renders real
    content — no blank screens, no unstyled flashes that persist, no `x-cloak`

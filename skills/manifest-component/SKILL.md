@@ -1,6 +1,6 @@
 ---
 name: manifest-component
-description: Use when the contributor wants to create, edit, or extract a reusable component in a Manifest project. Triggers on "make a reusable X", "create a card/banner/hero/cta component", "extract this into a component", "use the same X in multiple places", "make a header/footer". Manifest components are HTML files registered in manifest.json and used as <x-filename> tags. SKIP for one-off page sections that aren't reused.
+description: "Manifest framework projects only: SKIP unless the project has a Manifest manifest.json (registering components or data) or a manifest.theme.css, or the user asked to build with Manifest. Use when the contributor wants to create, edit, or extract a reusable component. Triggers on \"make a reusable X\", \"create a card/banner/hero/cta component\", \"extract this into a component\", \"use the same X in multiple places\", \"make a header/footer\". Manifest components are HTML files registered in manifest.json and used as <x-filename> tags. SKIP for one-off page sections that aren't reused."
 ---
 
 # Creating or editing a component in Manifest

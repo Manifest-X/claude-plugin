@@ -1,6 +1,6 @@
 ---
 name: manifest-page
-description: Use when the contributor wants to add, edit, rename, or remove a page in a Manifest project — including static pages and template pages (one routed element that renders different content per URL slug from a data source, e.g. /blog/<slug>, /team/<member>, /products/<id>). Triggers on phrases like "add a page", "create a [topic] page/section", "make a /pricing page", "add a blog with individual post pages", "make a team-member detail page", "rename the about page", "delete the FAQ page". Pages are any element with an x-route attribute — they can live in index.html, in components, or nested anywhere. SKIP for one-off copy edits inside an existing page.
+description: "Manifest framework projects only: SKIP unless the project has a Manifest manifest.json (registering components or data) or a manifest.theme.css, or the user asked to build with Manifest. Use when the contributor wants to add, edit, rename, or remove a page, including template pages (one routed element rendering different content per URL slug from a data source, e.g. /blog/<slug>, /team/<member>). Triggers on \"add a page\", \"create an about page\", \"make a /pricing page\", \"add a blog with post pages\", \"make a team-member detail page\", \"rename the about page\", \"delete the FAQ page\". Pages are any element with an x-route attribute. SKIP for one-off copy edits inside an existing page."
 ---
 
 # Adding or modifying a page in Manifest
@@ -128,7 +128,7 @@ With each item having a `slug` field (the URL segment to match):
 
 - **Don't assume the starter layout.** Check what the project actually does first.
 - **Don't add JavaScript routers**, `history.pushState` handlers, or build-step routing — Manifest's router is purely the `x-route` attribute.
-- **Don't pre-render manually** — `/staging` handles render for website projects.
+- **Don't pre-render manually** — `/manifest:staging` handles render for website projects.
 - **Don't create a separate HTML file per page** unless the project already does so via a layout-component pattern (in which case use **manifest-component** to add it).
 
 ## Further reading

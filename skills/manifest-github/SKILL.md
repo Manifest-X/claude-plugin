@@ -1,6 +1,6 @@
 ---
 name: manifest-github
-description: Use for the one-time GitHub bootstrap of a Manifest project, or to bring a teammate onto one — when there is no git remote yet, or the contributor wants to back up, collaborate, or hand the project to someone else. Triggers on "set up GitHub", "back this up", "put this on GitHub", "create a repo", "add a teammate/collaborator", "let X work on this with me", "join/clone the project", "I don't have GitHub / don't know git". This is the source-control bootstrap; once a remote exists, use /sync, /staging, /publish for the everyday flow. SKIP if a GitHub remote already exists and the user only wants to commit or sync.
+description: "For projects published or hosted with Manifest (the Manifest connector, a Manifest manifest.json, a .mcp.json for mcp.manifestx.dev, or Manifest hosting recorded in CLAUDE.md), or when the user asks for Manifest. SKIP in other projects. Use for the one-time GitHub bootstrap of a project published with Manifest, or to bring a teammate onto one: no git remote yet, or the contributor wants to back up, collaborate, or hand the project to someone. Triggers on \"set up GitHub\", \"back this up\", \"put this on GitHub\", \"create a repo\", \"add a teammate/collaborator\", \"let X work on this with me\", \"join the project\", \"I don't have GitHub / don't know git\". Once a remote exists, use the Manifest sync/staging/publish commands. SKIP if a GitHub remote already exists and the user only wants to commit or sync."
 ---
 
 # Setting up GitHub for a Manifest project
@@ -28,7 +28,7 @@ Use when `git remote -v` shows no `origin`.
    - `git branch -M staging`
    - `gh repo create <project-name> --private --source=. --remote=origin --push` (creates the repo, pushes `staging`, sets it as default)
    - `git push origin staging:production` (create the `production` branch from the same commit)
-3. **Record it in CLAUDE.md.** In the `## Project` block, set: the repo URL, `Default branch: staging`, `Live branch: production`. This is what `/sync`, `/staging`, and `/publish` read.
+3. **Record it in CLAUDE.md.** In the `## Project` block, set: the repo URL, `Default branch: staging`, `Live branch: production`. This is what `/manifest:sync`, `/manifest:staging`, and `/manifest:publish` read.
 4. **Report plainly:** "Your project is now backed up on GitHub (private). You're working on the `staging` branch; `production` is what goes live when you publish."
 
 ## Path B — add a teammate to this project (owner side)
@@ -47,8 +47,8 @@ Use when someone was added to a repo and wants to start working.
 1. Make sure `gh` is signed in (Prerequisites above).
 2. Accept the GitHub invite if not already (`gh api user/repository_invitations` lists pending ones; `gh api -X PATCH user/repository_invitations/<id>` accepts — or just accept it from the GitHub email).
 3. **Clone into a fresh folder and open it:** `gh repo clone <owner>/<repo> <folder>`. The committed `.mcp.json` connects the Manifest project automatically; signing in to the Manifest connector (a one-time browser prompt) gives access via team membership — no key needed.
-4. **Install the workflow commands.** A fresh clone may not include the slash commands (`/sync`, `/staging`, `/publish`, `/status`, `/preview`) — they live under `.claude/` which often isn't committed. Run `manifest_install_skills` (or just say "install the Manifest commands") so they're available in this folder. Without this, `/publish` & co. report "unknown command."
-5. From then on, `/sync` pulls teammates' latest and `/staging` shares your work.
+4. **Make sure the workflow commands are available.** With the Manifest plugin installed they already are (`/manifest:sync`, `/manifest:staging`, `/manifest:publish`, `/manifest:status`, `/manifest:preview`). Without the plugin, a fresh clone may lack them, since per-project commands live under `.claude/`, which often isn't committed: run `manifest_install_skills` (or say "install the Manifest commands"); per-project commands have no prefix (`/sync`, `/publish`). Plain-language requests ("take it live") work either way.
+5. From then on, `/manifest:sync` pulls teammates' latest and `/manifest:staging` shares your work.
 
 ## Guardrails
 
@@ -60,5 +60,5 @@ Use when someone was added to a repo and wants to start working.
 
 ## After this
 
-- Everyday flow: `/sync` (pull latest), `/staging` (share your work), `/publish` (go live).
+- Everyday flow: `/manifest:sync` (pull latest), `/manifest:staging` (share your work), `/manifest:publish` (go live).
 - To connect a hosting provider for the live site, use the `manifest-deploy` skill.

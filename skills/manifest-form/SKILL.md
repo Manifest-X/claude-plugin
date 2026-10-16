@@ -1,6 +1,6 @@
 ---
 name: manifest-form
-description: Use when the contributor wants to add or edit a form in a Manifest project — contact form, signup, login, settings panel, search box, anything with inputs the user fills out. Triggers on "add a contact form", "build a signup", "make a search box", "let users submit X", "add a comment field". Manifest auto-styles raw form HTML; the skill covers structure, validation, submission, and feedback patterns. For sign-in/auth flows specifically, use manifest-appwrite if available.
+description: "Manifest framework projects only: SKIP unless the project has a Manifest manifest.json (registering components or data) or a manifest.theme.css, or the user asked to build with Manifest. Use when the contributor wants to add or edit a form: contact form, signup, login, settings panel, search box, anything with inputs the user fills out. Triggers on \"add a contact form\", \"build a signup\", \"make a search box\", \"let users submit X\", \"add a comment field\". Manifest auto-styles raw form HTML; the skill covers structure, validation, submission, and feedback. For sign-in/auth flows, use manifest-appwrite."
 ---
 
 # Building a form in Manifest

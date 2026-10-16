@@ -1,6 +1,6 @@
 ---
 name: manifest-layout
-description: Use when the contributor wants to build or restructure the arrangement of elements on a page — a hero section, a feature grid, a sidebar layout, a pricing table, a card row, a header/footer structure, a dashboard shell, anything responsive. Triggers on "build a [hero/grid/sidebar/dashboard]", "lay these out", "make this responsive", "add a sidebar", "two columns on desktop, one on mobile", "the mobile version should…". Manifest's CSS rewards minimal markup on semantic HTML — this skill enforces that. SKIP for styling a single existing element (use manifest-styling).
+description: "Manifest framework projects only: SKIP unless the project has a Manifest manifest.json (registering components or data) or a manifest.theme.css, or the user asked to build with Manifest. Use when the contributor wants to build or restructure the arrangement of elements on a page: a hero section, feature grid, sidebar layout, card row, header/footer structure, dashboard shell, anything responsive. Triggers on \"build a hero/grid/sidebar/dashboard\", \"lay these out\", \"make this responsive\", \"add a sidebar\", \"two columns on desktop, one on mobile\". Manifest's CSS rewards minimal markup on semantic HTML; this skill enforces that. SKIP for styling a single existing element (use manifest-styling)."
 ---
 
 # Building layouts in Manifest

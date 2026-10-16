@@ -1,6 +1,6 @@
 ---
 name: manifest-assets
-description: Use when the contributor wants to add, replace, or organise images, icons, the favicon, fonts, or other static media. Triggers on "add this image", "replace the favicon", "use the Inter font", "make this image responsive", "add a hero image", "swap the logo", "use Google Fonts", "change the app icon". Manifest doesn't have a special asset pipeline — files are served as-is from the project, referenced by `<img>`, `<link>`, etc. SKIP for SVG icons that are part of an icon set (use `x-icon="lucide:name"` directly — no file needed).
+description: "Manifest framework projects only: SKIP unless the project has a Manifest manifest.json (registering components or data) or a manifest.theme.css, or the user asked to build with Manifest. Use when the contributor wants to add, replace, or organise images, icons, the favicon, fonts, or other static media. Triggers on \"add this image\", \"replace the favicon\", \"use the Inter font\", \"make this image responsive\", \"add a hero image\", \"swap the logo\", \"use Google Fonts\", \"change the app icon\". Manifest has no special asset pipeline: files are served as-is and referenced by `<img>`, `<link>`, etc. SKIP for icons from an icon set (use `x-icon=\"lucide:name\"` directly)."
 ---
 
 # Working with assets in Manifest

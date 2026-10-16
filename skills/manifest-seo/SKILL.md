@@ -1,6 +1,6 @@
 ---
 name: manifest-seo
-description: Use when the contributor wants to improve search-engine visibility, control how a page looks when shared on social media, set page titles, add Open Graph tags, configure the favicon, or audit per-page metadata. Triggers on "improve SEO", "set the page title", "fix the share preview", "add Open Graph", "add a meta description", "set up the favicon", "make this look right when posted on Twitter/Slack/iMessage". Manifest's pattern: per-page `<head>` injection via `<template data-head>` inside each routed element. SKIP for runtime UI feedback like toasts (use manifest-form).
+description: "Manifest framework projects only: SKIP unless the project has a Manifest manifest.json (registering components or data) or a manifest.theme.css, or the user asked to build with Manifest. Use when the contributor wants to improve search visibility, control how a page looks when shared, set page titles, add Open Graph tags, configure the favicon, or audit per-page metadata. Triggers on \"improve SEO\", \"set the page title\", \"fix the share preview\", \"add Open Graph\", \"add a meta description\", \"make this look right when posted on Slack/iMessage\". Manifest's pattern: per-page `<head>` injection via `<template data-head>` inside each routed element. SKIP for runtime UI feedback like toasts (use manifest-form)."
 ---
 
 # Managing SEO and per-page metadata in Manifest
@@ -99,7 +99,7 @@ For **SPAs** (no render step), there's no auto-sitemap — search engines crawl 
 
 ## Pre-publish SEO check (run before a website goes live)
 
-When `/staging` or `/publish` renders a **website** project (`npx mnfst-render`),
+When `/manifest:staging` or `/manifest:publish` renders a **website** project (`npx mnfst-render`),
 do a quick SEO pass on the rendered `/website` output **before pushing** —
 catching problems while they're still cheap to fix and before crawlers see
 them. SPAs skip this (no prerender step). You (Claude) do this analysis directly

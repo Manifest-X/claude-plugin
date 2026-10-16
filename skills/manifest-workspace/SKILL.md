@@ -1,6 +1,6 @@
 ---
 name: manifest-workspace
-description: Use when a Claude session is opened at a PARENT folder that contains multiple Manifest project subfolders (e.g. a "Repos" folder holding several sites/apps), and the preview targets the wrong project, refuses to start, or sits on "Awaiting server". Sets up per-project preview so any child can be previewed without port collisions. Triggers on "previewing the wrong project", "it's serving the sibling site", "Awaiting server", "I opened a folder with several Manifest projects", "set up previews for my repos folder", "let me pick which project to preview". SKIP for a single-project session (the project's own .claude/launch.json already works).
+description: "Claude Code only, for a session opened at a PARENT folder containing several Manifest framework project subfolders (each with a Manifest manifest.json). SKIP in any other setup. Use when the preview targets the wrong project, refuses to start, or sits on \"Awaiting server\". Sets up per-project previews so any child can be previewed without port collisions. Triggers on \"previewing the wrong project\", \"it's serving the sibling site\", \"Awaiting server\", \"I opened a folder with several Manifest projects\", \"set up previews for my repos folder\". SKIP for a single-project session."
 ---
 
 # Parent-workspace previews (multiple Manifest projects in one folder)

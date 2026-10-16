@@ -1,6 +1,6 @@
 ---
 name: manifest-theme
-description: Use when the contributor wants to change the visual style of a Manifest project — colors, fonts, spacing, border radius, dark mode behavior. Triggers on "change the brand color", "use a warmer palette", "make buttons rounder", "use a different font", "more spacing", "darker text". Edits go in manifest.theme.css. SKIP for one-off styling on a single element (just add a utility class).
+description: "Manifest framework projects only: SKIP unless the project has a Manifest manifest.json (registering components or data) or a manifest.theme.css, or the user asked to build with Manifest. Use when the contributor wants to change the project's overall visual style: colors, fonts, spacing, border radius, dark mode behavior. Triggers on \"change the brand color\", \"use a warmer palette\", \"make buttons rounder\", \"use a different font\", \"more spacing\", \"darker text\". Edits go in manifest.theme.css. SKIP for one-off styling on a single element (use manifest-styling)."
 ---
 
 # Adjusting the theme in Manifest

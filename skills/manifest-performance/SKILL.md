@@ -1,6 +1,6 @@
 ---
 name: manifest-performance
-description: Use when a project feels slow, laggy, or janky — a menu that takes a second to open, a list that stutters while scrolling, too many re-renders. Triggers on "it's slow", "laggy", "janky", "the menu takes a second to open", "the list stutters", "performance", "optimize", "too many re-renders", "make it faster", "big list", "hundreds of rows". Also use proactively, before writing an x-for over data of unknown size, or a getter that filters/sorts/maps on every render — reach for x-virtual or x-computed up front rather than retrofitting later. SKIP for server/CDN/hosting speed questions (deploy latency, edge caching, cold starts, TTFB) — that's infrastructure, not rendering.
+description: "Manifest framework projects only: SKIP unless the project has a Manifest manifest.json (registering components or data) or a manifest.theme.css, or the user asked to build with Manifest. Use when a Manifest project feels slow, laggy, or janky: a menu that takes a second to open, a list that stutters while scrolling, too many re-renders. Triggers on \"it's slow\", \"laggy\", \"janky\", \"the list stutters\", \"optimize\", \"make it faster\", \"big list\", \"hundreds of rows\". Also use proactively before writing an x-for over data of unknown size, or a getter that filters/sorts/maps on every render: reach for x-virtual or x-computed up front. SKIP for server/CDN/hosting speed questions (deploy latency, edge caching, TTFB)."
 ---
 
 # Performance in Manifest

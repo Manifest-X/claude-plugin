@@ -1,6 +1,6 @@
 ---
 name: manifest-appwrite
-description: Use when the contributor's project uses Appwrite — or wants to start using it — for authentication (sign-in, magic links, OAuth), cloud databases (CRUD with realtime sync), file storage, or presence (who's online). Triggers on "let users sign in", "add login/signup", "save this to the cloud", "let users upload files", "show who's online", "make this multiplayer/multi-user". First check whether manifest.json has an `appwrite` block — if not, treat this as first-time setup and walk through it. If yes, proceed to the operation. SKIP for projects without Appwrite if the contributor hasn't asked to add it.
+description: "Manifest framework projects only: SKIP unless the project has a Manifest manifest.json (registering components or data) or a manifest.theme.css, or the user asked to build with Manifest. Use when the project uses Appwrite, or wants to, for authentication (sign-in, magic links, OAuth), cloud databases (CRUD with realtime sync), file storage, or presence (who's online). Triggers on \"let users sign in\", \"add login/signup\", \"save this to the cloud\", \"let users upload files\", \"show who's online\", \"make this multi-user\". First check whether manifest.json has an `appwrite` block: if not, treat it as first-time setup; if yes, go to the operation. SKIP for projects without Appwrite unless the user asked to add it."
 ---
 
 # Working with Appwrite in Manifest

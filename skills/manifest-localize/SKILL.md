@@ -1,6 +1,6 @@
 ---
 name: manifest-localize
-description: Use when the contributor is working on translations or multilingual content in a Manifest project — adding a new language, translating existing copy, adding a new translatable string, or building a language switcher. Triggers on "translate this to French/Spanish/etc", "add Spanish support", "add a language", "make this multilingual", "add a translation for X", "the German copy is wrong". Manifest's docs explicitly note Claude/AI is the translation engine, so this skill leans into that. SKIP if the project has no localization set up and the contributor isn't asking to add it.
+description: "Manifest framework projects only: SKIP unless the project has a Manifest manifest.json (registering components or data) or a manifest.theme.css, or the user asked to build with Manifest. Use when the contributor is working on translations or multilingual content: adding a language, translating copy, adding a translatable string, or building a language switcher. Triggers on \"translate this to French\", \"add Spanish support\", \"add a language\", \"make this multilingual\", \"add a translation for X\", \"the German copy is wrong\". SKIP if the project has no localization set up and the contributor isn't asking to add it."
 ---
 
 # Localizing content in a Manifest project

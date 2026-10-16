@@ -1,6 +1,6 @@
 ---
 name: manifest-data
-description: Use when the contributor wants to load, display, or edit content stored as data in a Manifest project — CSV, JSON, YAML, or an API endpoint. Triggers on "load data from this file", "show a list of products/team members/etc", "pull from this API", "use this spreadsheet", and on edits to existing data like "add Sarah to the team", "update the pricing", "change the FAQ". Data sources are registered in manifest.json and accessed via $x.sourceName in templates. For Appwrite-backed data (full CRUD, real-time, auth-scoped), prefer the manifest-appwrite skill if available. SKIP for hardcoded one-off content that isn't really data.
+description: "Manifest framework projects only: SKIP unless the project has a Manifest manifest.json (registering components or data) or a manifest.theme.css, or the user asked to build with Manifest. Use when the contributor wants to load, display, or edit content stored as data: CSV, JSON, YAML, or an API endpoint. Triggers on \"load data from this file\", \"show a list of products/team members\", \"pull from this API\", \"use this spreadsheet\", and edits to existing data like \"add Sarah to the team\", \"update the FAQ\". Data sources are registered in manifest.json and read via $x.sourceName in templates. For Appwrite-backed data (CRUD, realtime, auth-scoped), prefer manifest-appwrite. SKIP for hardcoded one-off content that isn't really data."
 ---
 
 # Working with data sources in Manifest

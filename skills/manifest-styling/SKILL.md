@@ -1,6 +1,6 @@
 ---
 name: manifest-styling
-description: Use when the contributor wants to style a specific element or section in a Manifest project — change a color, adjust spacing, lay things out in a row or column, center something, add a card look, make something into a button, etc. Triggers on "make this red/green/branded", "lay these in a grid/row/column", "center this", "add a border", "make it look like a card", "add some space between these". Reach for Manifest's pre-styled HTML, semantic classes, and theme-derived utilities — not inline styles or hardcoded colors. SKIP for project-wide brand/theme changes (use manifest-theme instead).
+description: "Manifest framework projects only: SKIP unless the project has a Manifest manifest.json (registering components or data) or a manifest.theme.css, or the user asked to build with Manifest. Use when the contributor wants to style a specific element or section: change a color, adjust spacing, lay things out in a row or column, center something, add a card look, make something a button. Triggers on \"make this red/branded\", \"lay these in a grid/row/column\", \"center this\", \"add a border\", \"make it look like a card\", \"add some space between these\". Reach for Manifest's pre-styled HTML, semantic classes, and theme-derived utilities, not inline styles or hardcoded colors. SKIP for project-wide brand/theme changes (use manifest-theme)."
 ---
 
 # Styling specific elements in Manifest
@@ -58,7 +58,7 @@ If the user wants a button-styled link, use `<a>` with the `button` class — bu
 
 - `class="avatar"` — avatar/profile chip: initials, a nested `<img>` as the profile picture, an `x-icon`, and a nested `<figure>` status dot. Sized from the field-height token. **Use this for any avatar — never a styled `<button>` or `<div>`.** e.g. `<span class="avatar"><img src="…" alt="Ada"></span>`.
 - `class="presence"` — online/away status indicator.
-- `x-tooltip`, `x-dropdown`, `x-colorpicker` — directive-driven UI (see the directive quick-reference in CLAUDE.md).
+- `x-tooltip`, `x-dropdown`, `x-colorpicker` — directive-driven UI (see the directive quick-reference in **manifest-framework**).
 - `class="badge"` — small inline label/pill (e.g. a status or count chip).
 - Plus accordion (`<details>`/`<summary>`), divider (`<hr>`), sidebar/drawer (`<aside popover>`), range, switch, slides, code block, table, toast — all have shipped element styles.
 
