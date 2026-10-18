@@ -1,13 +1,25 @@
 # Manifest for Claude
 
-Publish websites and apps that you build with Claude, just by asking. Manifest
-hosts them for free, with your own domains, preview links to share before you
-go live, and visitor analytics included. Upgrade a project to Manifest Pro
-for rollbacks, teams, all-time analytics, and no Manifest badge.
+Build and publish websites and apps live with Claude, just by asking.
 
-It works with any project that builds to files a browser can run, such as
-React, Vite, Astro, Hugo, or plain HTML. Starting fresh? Claude can build on
-the open-source Manifest framework: HTML-first, with no build step.
+Includes free hosting with your custom domains, preview links to share before
+going live, and visitor analytics. Works with frameworks like React, plain
+HTML, or the open-source Manifest framework that's optimized for SEO/AEO,
+localization, and performance.
+
+What you can ask Claude to do:
+
+- Build a new site or app and share a preview link
+- Publish live to the web or prepare it for app stores
+- Connect your own domain, with HTTPS set up automatically
+- See how many people visited, which pages they read, and where they came from
+- Roll back to an earlier version and invite teammates (Manifest Pro)
+- Publish any project that builds to static files: Manifest, React, Vite,
+  Astro, plain HTML, and more
+- Works in both Claude Code and Chat/Cowork. Your free Manifest account is
+  created the first time you connect.
+
+Manifest Pro also adds all-time analytics and removes the Manifest badge.
 
 ## Try it
 

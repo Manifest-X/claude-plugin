@@ -1,6 +1,6 @@
 {
   "name": "manifest",
-  "description": "Publish websites and apps that you build with Claude, just by asking.",
+  "description": "Publish websites and apps you build with Claude. Includes free hosting, custom domains, preview links, and analytics.",
   "owner": {
     "name": "Manifest",
     "email": "team@manifestx.dev",
@@ -10,7 +10,7 @@
     {
       "name": "manifest",
       "source": "./",
-      "description": "Publish websites and apps that you build with Claude, just by asking. Free hosting with your own domains, preview links to share before going live, and visitor analytics, all included. Works with frameworks like React, plain HTML, or the open-source Manifest framework."
+      "description": "Publish websites and apps you build with Claude. Includes free hosting, custom domains, preview links, and analytics."
     }
   ]
 }
