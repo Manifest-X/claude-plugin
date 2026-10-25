@@ -55,10 +55,10 @@ Run Capacitor's CLI as `npx --no-install cap …` and the assets tool as `npx --
 1. **Install the runtime, the platforms the user chose, and the build tools:**
    ```bash
    npm install @capacitor/core @capacitor/cli @capacitor/ios @capacitor/android @capacitor/splash-screen @capacitor/status-bar
-   npm install -D mnfst-render@^0.5.56 @capacitor/assets
+   npm install -D mnfst-render@^0.5.56 @capacitor/assets puppeteer
    ```
-   Drop `@capacitor/ios` or `@capacitor/android` for a platform they don't ship. This creates `package.json` and `node_modules/` if the project had neither. That's expected.
-2. **Install the plugins for the capabilities you use.** Magics no-op when their plugin is missing:
+   Drop `@capacitor/ios` or `@capacitor/android` for a platform they don't ship. This creates `package.json` and `node_modules/` if the project had neither. That's expected. `mnfst-render` needs `puppeteer` in the project to prerender.
+2. **Install the plugins for the capabilities you use.** Without its plugin, a magic falls back to web behaviour (Web Share, a file input, `navigator.vibrate`, the Notification API), and `$biometric` reports unsupported:
 
    | Magic | Install |
    |---|---|
@@ -124,7 +124,7 @@ Run Capacitor's CLI as `npx --no-install cap …` and the assets tool as `npx --
      - `NSPhotoLibraryUsageDescription` for `$camera.pick()`
      - `NSFaceIDUsageDescription` for `$biometric`
    - Android: check `android/app/src/main/AndroidManifest.xml` for the permissions each installed plugin's README lists.
-8. **Icons and splash.** Put a 1024×1024 `icon-only.png`, plus `splash.png` and `splash-dark.png` at 2732×2732, in `.app-assets/`. Then run `npx --no-install @capacitor/assets generate --assetPath .app-assets`. It replaces the icons and splash screens already in `ios/` and `android/`, so if the project has custom ones, ask before running it.
+8. **Icons and splash.** Put a 1024×1024 `icon-only.png`, plus `splash.png` and `splash-dark.png` at 2732×2732, in `.app-assets/`. Then run `npx --no-install @capacitor/assets generate --ios --android --assetPath .app-assets`. Keep the platform flags, dropping the one for a platform they don't ship. Without them, the tool also runs its PWA target, which looks for `www/manifest.json`, prints ENOENT and exits 0 without generating anything. It replaces the icons and splash screens already in `ios/` and `android/`, so if the project has custom ones, ask before running it.
 9. **Hand over** with the exact next step for each platform:
    - iOS: `npx --no-install cap open ios`, set the signing team, then run on a simulator or device.
    - Android: `npx --no-install cap open android`, then run.
