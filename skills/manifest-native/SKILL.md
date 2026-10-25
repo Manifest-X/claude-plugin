@@ -44,7 +44,7 @@ For PWABuilder, all you do is make sure the PWA is install-ready and published (
 
 ## 3. Scaffold Capacitor (iOS and Android)
 
-Run this from the project root. Node LTS is needed, and for iOS also macOS with Xcode.
+Run this from the project root. Node 22+ is needed (the Capacitor 8 CLI requires it), and for iOS also macOS with the latest Xcode. iOS uses Swift Package Manager by default, so CocoaPods isn't needed.
 
 Before installing anything, list the packages for the user and ask. Installs download software onto their machine, and `cap add` / `cap sync` fetch CocoaPods or Swift packages and Gradle dependencies from the network.
 
@@ -55,7 +55,7 @@ Run Capacitor's CLI as `npx --no-install cap …` and the assets tool as `npx --
 1. **Install the runtime, the platforms the user chose, and the build tools:**
    ```bash
    npm install @capacitor/core @capacitor/cli @capacitor/ios @capacitor/android @capacitor/splash-screen @capacitor/status-bar
-   npm install -D mnfst-render@^0.5.48 @capacitor/assets
+   npm install -D mnfst-render@^0.5.56 @capacitor/assets
    ```
    Drop `@capacitor/ios` or `@capacitor/android` for a platform they don't ship. This creates `package.json` and `node_modules/` if the project had neither. That's expected.
 2. **Install the plugins for the capabilities you use.** Magics no-op when their plugin is missing:
@@ -68,27 +68,10 @@ Run Capacitor's CLI as `npx --no-install cap …` and the assets tool as `npx --
    | `$device.online` | `@capacitor/network` |
    | `$camera` | `@capacitor/camera` |
    | `$push` | `@capacitor/push-notifications` |
-   | `$secure` | `capacitor-secure-storage-plugin`, plus the adapter below. Not zero-config: without the adapter, `$secure` stays on unencrypted web storage. |
-   | `$biometric` | `capacitor-native-biometric` |
+   | `$secure` | `@aparajita/capacitor-secure-storage` |
+   | `$biometric` | `@aparajita/capacitor-biometric-auth` or `@capgo/capacitor-native-biometric` |
 
-   **`$secure` adapter.** `$secure` only finds a plugin registered as `SecureStorage`, and no plugin is verified to work with it as-is. Hand the plugin over with `$secure.use()`, for example in a small script loaded before Alpine starts plus an `x-init` on `<body>` (merge it into an existing `x-init` rather than adding a second):
-   ```html
-   <script>
-     window.appSecureStorage = () => {
-       const p = window.Capacitor?.Plugins?.SecureStoragePlugin;
-       if (!p) return null;
-       return {
-         get: async (key) => { try { return (await p.get({ key })).value ?? null; } catch (e) { return null; } },
-         set: (key, value) => p.set({ key, value: String(value) }),
-         remove: async (key) => { try { await p.remove({ key }); } catch (e) {} },
-         keys: async () => (await p.keys()).value || [],
-         clear: () => p.clear(),
-       };
-     };
-   </script>
-   <body x-data x-init="$secure.use(appSecureStorage())">
-   ```
-   Off-device the function returns `null` and `$secure` keeps its web fallback. Check the method names against the plugin's README for the installed version, and confirm on the first device run that a value survives an app restart.
+   These are the plugins the magics speak to directly. No adapter or setup script is needed. They're used only inside the native app: in a browser, `$secure` stays on unencrypted `localStorage` and `$biometric.available()` is `false`, so test them on a simulator or device. `$secure` stores values under the plugin's default `capacitor-storage_` prefix. For a different secure-storage plugin, hand an object with async `get`, `set`, `remove`, `keys` and `clear` to `$secure.use(adapter)`.
 
 3. **Write `capacitor.config.json`.** Take `appName` from `manifest.json` `short_name`, and the splash colour from `background_color`. Ask the user for `appId`, a reverse-DNS bundle id they own (`com.acme.app`). It can't be changed after the first store upload. Add a `"PushNotifications": { "presentationOptions": ["badge", "sound", "alert"] }` entry under `plugins` only if the app uses `$push`.
    ```json
@@ -113,7 +96,7 @@ Run Capacitor's CLI as `npx --no-install cap …` and the assets tool as `npx --
    ```
    - The app ships a prerendered copy of the site, so the shell paints without a network.
    - Render into the dot-folder `.app-www`, never `website/`. A `website/` folder switches an SPA project's publish into render mode. Non-dot folders also get copied into later renders.
-   - With a `capacitor.config.*` at the root, `mnfst-render` 0.5.48+ leaves `ios/`, `android/` and the Capacitor config out of its output, and an `--out` render leaves out the regular `website/` output. Older versions nest the native projects inside the app on every sync, so keep the version pin.
+   - With a `capacitor.config.*` at the root, `mnfst-render` leaves `ios/`, `android/` and the Capacitor config out of its output, and an `--out` render leaves out the regular `website/` output. Older versions nest the native projects inside the app on every sync. 0.5.56+ also copies a root `.well-known/`. Keep the version pin.
 5. **Keep native files out of git noise and out of the website.** Append these lines.
 
    `.gitignore`:
@@ -150,7 +133,7 @@ Run Capacitor's CLI as `npx --no-install cap …` and the assets tool as `npx --
 - iOS: `/.well-known/apple-app-site-association`, plus the user enables the Associated Domains capability.
 - Android: `/.well-known/assetlinks.json` and an intent filter. The same file is needed for TWA packages.
 
-Publish, then check each file with `curl -sI https://<domain>/.well-known/<file>`. Render projects skip dot-folders when copying. If a file returns 404, tell the user. Don't hand-place it in `/website/`.
+Put both files in a `.well-known/` folder at the project root. It publishes in SPA and render projects alike: `mnfst-render` 0.5.56+ copies `.well-known/`, and no other dot-folder. Publish, then check each file with `curl -s https://<domain>/.well-known/<file>`. It must print the file's JSON. An SPA project answers a missing file with its HTML page and a 200, so a status check alone proves nothing. If the file is missing from a render project, check the installed `mnfst-render` version. Don't hand-place it in `/website/`.
 
 ## 4. Verify the wrap (first run)
 
