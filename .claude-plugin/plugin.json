@@ -1,7 +1,7 @@
 {
   "name": "manifest",
   "displayName": "Manifest",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Publish websites and apps you build with Claude. Includes free hosting, custom domains, preview links, and analytics.",
   "author": {
     "name": "Manifest",
