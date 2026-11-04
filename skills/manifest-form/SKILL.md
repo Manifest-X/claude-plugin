@@ -97,7 +97,7 @@ What it does, and nothing more:
 - Runs only after native validation passes. `novalidate` / `formnovalidate` skip that as usual.
 - Sends the form's fields to its own `action`/`method` (the submit button's `formaction`/`formmethod` and `name`/`value` count) with `Accept: application/json`.
 - Sets `data-state="sending" | "sent" | "error"` on the form, plus `aria-busy="true"` while sending, and ignores double submits.
-- Fires `submit-sent` or `submit-error` on the form; `$event.detail` is `{ ok, status, data, response, error, message }`.
+- Fires `submit:sent` or `submit:error` on the form; `$event.detail` is `{ ok, status, data, response, error, message }`.
 - Puts server field errors (`{ fields: { name: msg } }` or `{ errors: [{ field, message }] }`, as some services return) onto the matching inputs with the browser's validity API.
 - Resets a Turnstile widget inside the form after each answer.
 - Renders nothing. Feedback is yours: CSS on `data-state`, or Alpine on the events.
@@ -111,8 +111,8 @@ What it does, and nothing more:
 ```html
 <form x-submit action="/_forms/contact" method="post"
       x-data="{ problem: '' }"
-      @submit-sent="$el.reset(); $toast.positive('Thanks, we\'ll be in touch.')"
-      @submit-error="problem = $event.detail.error === 'rate_limited' ? 'Too many tries. Wait a minute.' : 'Something went wrong. Please try again.'">
+      @submit:sent="$el.reset(); $toast.positive('Thanks, we\'ll be in touch.')"
+      @submit:error="problem = $event.detail.error === 'rate_limited' ? 'Too many tries. Wait a minute.' : 'Something went wrong. Please try again.'">
 ```
 
 Write the messages in the project's own voice. Don't surface raw error codes to visitors.
