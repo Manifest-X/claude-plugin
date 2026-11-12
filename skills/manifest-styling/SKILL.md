@@ -123,6 +123,6 @@ Last resort — only when no element primitive, semantic class, or utility fits.
 ## Further reading
 
 If the recipe above doesn't cover the situation, consult:
-- Utilities (full semantic class list, `page` layout, form modifiers, typography helpers): https://manifestx.dev/docs/styles/utilities
-- Theme (variables and how utilities derive from them): https://manifestx.dev/docs/styles/theme
-- Reset (Manifest's base styles applied to raw HTML): https://manifestx.dev/docs/styles/reset
+- Utilities (full semantic class list, `page` layout, form modifiers, typography helpers): https://manifestx.dev/docs/framework/styles/utilities
+- Theme (variables and how utilities derive from them): https://manifestx.dev/docs/framework/styles/theme
+- Reset (Manifest's base styles applied to raw HTML): https://manifestx.dev/docs/framework/styles/reset

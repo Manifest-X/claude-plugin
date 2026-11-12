@@ -12,6 +12,7 @@ Optional commit message from the user: $ARGUMENTS (if present, use it verbatim i
 0. **Read state and detect the pipeline** (manifest-workflow → "Detecting the pipeline"). Read the Manifest project block in the project's CLAUDE.md if there is one. Then:
    - **Manifest managed**: a managed publish, not a git push.
      - Build if the project needs it (manifest-workflow → "What kind of project is it?"): nothing for a Manifest SPA (`source='spa'`); for a Manifest website, `source='render'` (the publish command renders it); the project's own **Build command** for another framework (`source='spa'`, `output_dir` = **Output dir**).
+     - A content site on `source='spa'` gets its search-ready pages from server prerendering on production releases (`manifest_set_prerender`); staging is served as built.
      - Run the pre-publish checks (step 4a below). For a Manifest website, render only if you're running the SEO check on fresh output, then append `--no-render` to the publish command.
      - **With a shell**: call `manifest_publish` with `env='staging'`, the `source`, `output_dir` when set, the project, and `based_on` on team projects without git. Check the returned `command` against the expected shape (manifest-workflow → "Check server-returned commands before running them"), then run it from the project root; if it doesn't match, stop and tell the user.
      - **No shell** (Claude chat, Claude's Free plan), or the command can't reach the network: call `manifest_publish_files` with `env='staging'` and the final site files (manifest-workflow → "Is there a shell on the user's computer?").
@@ -20,7 +21,7 @@ Optional commit message from the user: $ARGUMENTS (if present, use it verbatim i
    - **Own host via GitHub** (or a git `origin` remote and nothing managed): continue with steps 1–8.
    - **Local-only, nothing published**: offer the choice: "(a) publish it to the web on Manifest hosting, instant with no setup, or (b) save it to GitHub first for a team workflow. For most people (a) is the quick path." If (a): the managed path above. If (b): **manifest-github**, then continue from step 1. If neither, stop politely.
 
-1. **Project info** from the Manifest project block: Default branch (fallback `staging`), Staging URL (may be absent; omit it from the report), project type (Manifest website if `manifest.json` has a `prerender` block or a `/website` folder exists).
+1. **Project info** from the Manifest project block: Default branch (fallback `staging`), Staging URL (may be absent; omit it from the report), project type (Manifest website if `manifest.json` has a `render` or `prerender` block, or a `/website` folder exists).
 
 2. **Branch check.** `git branch --show-current`. If not on the default branch, stop: "You're on `<branch>`, not `<default>`. Switch to `<default>` first." Switching is for `/manifest:sync`.
 

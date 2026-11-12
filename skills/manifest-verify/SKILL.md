@@ -52,9 +52,7 @@ why). "I made a pass" is not the deliverable — matching the reference is.
 
 Manifest managed hosting keeps **superseded deployments** — a previous version is
 retained and stays available as a reference even after newer publishes. Use it to
-answer "did this change break something". Exporting and rolling back earlier
-versions are part of Manifest Pro; without them, compare against the live site
-or the user's own earlier copy (for example from git history).
+answer "did this change break something".
 
 1. `manifest_deployments` — list the versions, each with its `deployment_id`, when
    it was published, and which is currently live. Pick the last-known-good one.
@@ -68,4 +66,5 @@ or the user's own earlier copy (for example from git history).
 4. If the current build is worse and the good version needs to be live again now,
    `manifest_rollback` reverts to a specific `deployment_id`. It changes the live
    site, so confirm with the user, naming the site and the version, before
-   rolling back production.
+   rolling back production. If the project's plan doesn't include rollback, the tool says so: publish
+   the good version again from source instead.

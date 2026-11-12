@@ -114,5 +114,5 @@ For URL-based switching (`/fr/about`), use plain `<a href="/fr/about">` links �
 ## Further reading
 
 If the recipe above doesn't cover the situation, consult:
-- Localization (URL paths, `$locale` magic, full RTL language list, language detection priority): https://manifestx.dev/docs/core-plugins/localization
-- Local Data (CSV format, registration, `$x` access — same as translation files): https://manifestx.dev/docs/core-plugins/local-data
+- Localization (URL paths, `$locale` magic, full RTL language list, language detection priority): https://manifestx.dev/docs/framework/core-plugins/localization
+- Local Data (CSV format, registration, `$x` access — same as translation files): https://manifestx.dev/docs/framework/core-plugins/local-data

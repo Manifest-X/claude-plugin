@@ -118,7 +118,7 @@ For mono fonts (code blocks), set `--font-mono` similarly.
 ## Further reading
 
 If the recipe above doesn't cover the situation, consult:
-- Reset (default `<img>`, `<picture>`, `<svg>` styling): https://manifestx.dev/docs/styles/reset
-- Theme (`--font-sans`, `--font-mono` variables): https://manifestx.dev/docs/styles/theme
-- Icons (Iconify usage, icon sets): https://manifestx.dev/docs/elements/icons
-- SVGs: https://manifestx.dev/docs/elements/svgs
+- Reset (default `<img>`, `<picture>`, `<svg>` styling): https://manifestx.dev/docs/framework/styles/reset
+- Theme (`--font-sans`, `--font-mono` variables): https://manifestx.dev/docs/framework/styles/theme
+- Icons (Iconify usage, icon sets): https://manifestx.dev/docs/framework/elements/icons
+- SVGs: https://manifestx.dev/docs/framework/elements/svgs

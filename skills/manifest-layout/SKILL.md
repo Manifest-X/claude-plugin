@@ -164,7 +164,7 @@ When you build a layout, **don't try to fit these into the page's flex/grid cont
 ## Further reading
 
 If the recipe above doesn't cover the situation, consult:
-- Utilities (`page`, `content`, `row`, `col`, `center`, full layout class list): https://manifestx.dev/docs/styles/utilities
-- Sidebars (popover-style drawers, `appear-start`, custom transitions): https://manifestx.dev/docs/elements/sidebars
-- Dialogs (modal layout with `<header>/<main>/<footer>`, nesting, light dismiss): https://manifestx.dev/docs/elements/dialogs
-- Dropdowns (full positioning class list, hover/context modifiers, content patterns): https://manifestx.dev/docs/elements/dropdowns
+- Utilities (`page`, `content`, `row`, `col`, `center`, full layout class list): https://manifestx.dev/docs/framework/styles/utilities
+- Sidebars (popover-style drawers, `appear-start`, custom transitions): https://manifestx.dev/docs/framework/elements/sidebars
+- Dialogs (modal layout with `<header>/<main>/<footer>`, nesting, light dismiss): https://manifestx.dev/docs/framework/elements/dialogs
+- Dropdowns (full positioning class list, hover/context modifiers, content patterns): https://manifestx.dev/docs/framework/elements/dropdowns

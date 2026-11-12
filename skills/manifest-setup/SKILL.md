@@ -6,8 +6,7 @@ description: "Getting started with Manifest. Use when the user wants to connect 
 # Getting started with Manifest
 
 Manifest publishes and hosts sites and apps that run in the browser, from the
-conversation: staging and production URLs, promotion, and custom domains
-(rollback, export, and teams are part of Manifest Pro). It doesn't run server code (SSR, API routes, backends). Native
+conversation: staging and production URLs, promotion, and custom domains. It doesn't run server code (SSR, API routes, backends). Native
 apps are packaged from the same project. New projects can be built on the
 open-source Manifest framework (HTML-first, no build step).
 

@@ -9,7 +9,7 @@ Most contributors here are not engineers. GitHub is just where the project's fil
 
 Two things are separate and BOTH are needed for a teammate:
 - **GitHub** = the project *files* (this skill).
-- **Manifest** = the project's *tools and team* (the `manifest_invite` tool / the dashboard). Teams on a Manifest project are part of Manifest Pro.
+- **Manifest** = the project's *tools and team* (the `manifest_invite` tool / the dashboard).
 When adding someone to a project, do both: add them on GitHub here, and add them to the Manifest project so the build tools work for them.
 
 ## Prerequisites (check once)
@@ -28,7 +28,7 @@ Use when `git remote -v` shows no `origin`.
    - `git branch -M staging`
    - `gh repo create <project-name> --private --source=. --remote=origin --push` (creates the repo, pushes `staging`, sets it as default)
    - `git push origin staging:production` (create the `production` branch from the same commit)
-3. **Record it in CLAUDE.md.** In the Manifest project block (see **manifest-workflow**), set **Repo** to the repo URL, `Default branch: staging`, `Live branch: production`. This is what `/manifest:sync`, `/manifest:staging`, and `/manifest:publish` read.
+3. **Record it in CLAUDE.md.** In the Manifest project block, set: the repo URL, `Default branch: staging`, `Live branch: production`. This is what `/manifest:sync`, `/manifest:staging`, and `/manifest:publish` read.
 4. **Report plainly:** "Your project is now backed up on GitHub (private). You're working on the `staging` branch; `production` is what goes live when you publish."
 
 ## Path B — add a teammate to this project (owner side)
@@ -37,7 +37,7 @@ Use when `git remote -v` shows no `origin`.
 2. **Add them as a collaborator** (push access):
    - `gh api -X PUT "repos/<owner>/<repo>/collaborators/<username>" -f permission=push`
    - This sends them a GitHub invite to accept.
-3. **Also add them to the Manifest project** so their build tools work (part of Manifest Pro) — use the `manifest_invite` tool with their email (that's the Manifest side; the GitHub step above is the files side). Mention both are done.
+3. **Also add them to the Manifest project** so their build tools work — use the `manifest_invite` tool with their email (that's the Manifest side; the GitHub step above is the files side). Mention both are done.
 4. **Tell the teammate what to do next:** accept the GitHub invite, then open Claude in a new folder and say "join my Manifest project" (Path C).
 
 ## Path C — join an existing project (teammate side, their machine)

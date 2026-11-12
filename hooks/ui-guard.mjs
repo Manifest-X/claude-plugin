@@ -25,20 +25,22 @@ function handleUserPromptSubmit(data) {
       'redesign|restyl\\w*|styl(e|es|ed|ing)|stylesheet|css|colou?rs?|fonts?|' +
       'typograph\\w*|spacing|padding|margins?|centre|center|responsive|breakpoints?|' +
       'layout|lay ?out|heros?|banners?|sidebars?|navbar|footers?|modals?|popovers?|' +
-      'drawers?|buttons?|icons?|logos?|avatars?|ui|ux|appearance|polish|' +
+      'drawers?|buttons?|icons?|logos?|avatars?|theme|sticky|ui|ux|appearance|polish|' +
       'look (and feel|better|nicer|cleaner|modern|good|polished)' +
     ')\\b',
     'i',
   );
   // Ambiguous nouns (HTTP header, SQL table, form data): need page context
-  const NOUN = /\b(headers?|tables?|grids?|columns?|rows?|forms?|inputs?|sections?|panels?|cards?|tiles?|tabs?|menus?|nav(igation)?|dialogs?|badges?|chips?|cta|dashboards?|components?|widgets?|theme)\b/i;
-  const CONTEXT = /\b(page|screen|homepage|landing|site|website|mobile|desktop|look|visual|design|display|show|shows|showing)\b/i;
+  const NOUN = /\b(headers?|tables?|grids?|columns?|rows?|forms?|inputs?|sections?|panels?|cards?|tiles?|tabs?|menus?|nav(igation)?|dialogs?|badges?|chips?|cta|dashboards?|components?|widgets?)\b/i;
+  // In a Manifest project, building or changing one of these is page work too
+  const CONTEXT = /\b(page|screen|homepage|landing|site|website|mobile|desktop|look|visual|design|display|show|shows|showing|add|build|make|create|change|move|put)\b/i;
   const nouns = prompt.match(new RegExp(NOUN.source, 'gi')) || [];
   if (!VISUAL.test(prompt) && !(nouns.length && CONTEXT.test(prompt))) return;
 
   process.stdout.write(
     '[Manifest design guard] If this request changes UI, layout, or styling: load manifest-layout and ' +
-      'manifest-styling first and design the structure before writing markup. No <style> blocks or ' +
+      'manifest-styling first (manifest-component for anything reusable) and design the structure before ' +
+      'writing markup. Don\'t improvise Manifest idioms from memory. No <style> blocks or ' +
       'static style="..."; use manifest.theme.css tokens, pre-styled elements, and semantic classes ' +
       '(row / col / center / content); no wrapper-div soup. Ignore this for non-visual work.',
   );

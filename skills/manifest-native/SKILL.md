@@ -57,7 +57,7 @@ Run Capacitor's CLI as `npx --no-install cap …` and the assets tool as `npx --
    npm install @capacitor/core @capacitor/cli @capacitor/ios @capacitor/android @capacitor/splash-screen @capacitor/status-bar
    npm install -D mnfst-render@^0.5.56 @capacitor/assets puppeteer
    ```
-   Drop `@capacitor/ios` or `@capacitor/android` for a platform they don't ship. This creates `package.json` and `node_modules/` if the project had neither. That's expected. `mnfst-render` needs `puppeteer` in the project to prerender.
+   Drop `@capacitor/ios` or `@capacitor/android` for a platform they don't ship. This creates `package.json` and `node_modules/` if the project had neither. That's expected. `mnfst-render` needs Puppeteer to prerender: in the project, or (from mnfst-render 0.5.66) one global install that serves every project on the device. If `npm ls -g puppeteer` shows it, drop `puppeteer` from the line above.
 2. **Install the plugins for the capabilities you use.** Without its plugin, a magic falls back to web behaviour (Web Share, a file input, `navigator.vibrate`, the Notification API), and `$biometric` reports unsupported:
 
    | Magic | Install |
@@ -133,7 +133,7 @@ Run Capacitor's CLI as `npx --no-install cap …` and the assets tool as `npx --
 - iOS: `/.well-known/apple-app-site-association`, plus the user enables the Associated Domains capability.
 - Android: `/.well-known/assetlinks.json` and an intent filter. The same file is needed for TWA packages.
 
-Put both files in a `.well-known/` folder at the project root. It publishes in SPA and render projects alike: `mnfst-render` 0.5.56+ copies `.well-known/`, and no other dot-folder. Publish, then check each file with `curl -s https://<domain>/.well-known/<file>`. It must print the file's JSON. An SPA project answers a missing file with its HTML page and a 200, so a status check alone proves nothing. If the file is missing from a render project, check the installed `mnfst-render` version. Don't hand-place it in `/website/`.
+Put both files in a `.well-known/` folder at the project root. It publishes in SPA and render projects alike: `mnfst-render` 0.5.56+ copies `.well-known/`, and no other dot-folder. Publish, then check each file with `curl -s https://<domain>/.well-known/<file>`. It must print the file's JSON. Manifest hosting answers a missing `.well-known` file with a 404. If the file is missing from a render project, check the installed `mnfst-render` version. Don't hand-place it in `/website/`.
 
 ## 4. Verify the wrap (first run)
 

@@ -225,8 +225,7 @@ or build your own upload.
   first confirm with the user, naming the site and the version it will return
   to. **Export**: `manifest_export` returns a one-time download link; give it
   to the user to open in their browser and don't fetch it yourself.
-- Rollback and export of earlier versions are part of Manifest Pro. If the user asks to undo a publish
-  and the tool says the plan doesn't include it, say so plainly, once, and
+- If the user asks to undo a publish and the tool says the plan doesn't include it, say so plainly, once, and
   offer the free route: publish the previous version again from source.
 
 ## The git flow (Own host via GitHub)

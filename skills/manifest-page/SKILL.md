@@ -73,34 +73,36 @@ When the contributor says "add a blog where each post has its own page", "make i
 
 ```html
 <!-- One element, matches /blog/anything -->
-<article x-route="blog/*" x-show="$x.posts.$route('slug')">
-  <h1 x-text="$x.posts.$route('slug').title"></h1>
-  <small x-text="$x.posts.$route('slug').date"></small>
-  <div x-markdown="$x.posts.$route('slug')?.body"></div>
+<article x-route="blog/*" x-show="$x.blog.$route('slug')">
+  <h1 x-text="$x.blog.$route('slug').title"></h1>
+  <small x-text="$x.blog.$route('slug').date"></small>
+  <div x-markdown="$x.blog.$route('slug')?.body"></div>
 </article>
 
 <!-- 404 fallback when slug doesn't match -->
-<section x-route="blog/*" x-show="!$x.posts.$route('slug')">
+<section x-route="blog/*" x-show="!$x.blog.$route('slug')">
   <h1>Post not found</h1>
 </section>
 ```
 
 The data source registered in `manifest.json`:
 ```json
-"data": { "posts": "/data/posts.json" }
+"data": { "blog": "/data/blog.json" }
 ```
+
+Name the data source after the route's base (`blog` for `blog/*`; a nested route like `docs/framework/*` takes a `framework` source): prerendering finds each post's page from the source whose key matches the base, so a source named `posts` would leave the post pages unrendered.
 
 With each item having a `slug` field (the URL segment to match):
 ```json
 [
-  { "slug": "first-post", "title": "First Post", "date": "2026-01-01", "body": "/data/posts/first-post.md" },
-  { "slug": "second-post", "title": "Second Post", "date": "2026-02-01", "body": "/data/posts/second-post.md" }
+  { "slug": "first-post", "title": "First Post", "date": "2026-01-01", "body": "/data/blog/first-post.md" },
+  { "slug": "second-post", "title": "Second Post", "date": "2026-02-01", "body": "/data/blog/second-post.md" }
 ]
 ```
 
 **How it works:**
 - `x-route="blog/*"` matches `/blog/anything`
-- `$x.posts.$route('slug')` searches `posts` for an item whose `slug` field matches a URL segment — returns the matching item, or empty if none
+- `$x.blog.$route('slug')` searches `blog` for an item whose `slug` field matches a URL segment — returns the matching item, or empty if none
 - The `body` field can be inline markdown OR a path to a `.md` file (the markdown plugin handles both)
 
 **Recipe:**
@@ -134,6 +136,6 @@ With each item having a `slug` field (the URL segment to match):
 ## Further reading
 
 If the recipe above doesn't cover the situation, consult:
-- Router (full route grammar, `$route` magic): https://manifestx.dev/docs/core-plugins/router
-- Components (used as page-level layouts): https://manifestx.dev/docs/core-plugins/components
-- Markdown (for markdown-driven pages): https://manifestx.dev/docs/core-plugins/markdown
+- Router (full route grammar, `$route` magic): https://manifestx.dev/docs/framework/core-plugins/router
+- Components (used as page-level layouts): https://manifestx.dev/docs/framework/core-plugins/components
+- Markdown (for markdown-driven pages): https://manifestx.dev/docs/framework/core-plugins/markdown

@@ -1,91 +1,96 @@
 ---
 name: manifest-form
-description: "Manifest framework projects only: SKIP unless the project has a Manifest manifest.json (registering components or data) or a manifest.theme.css, or the user asked to build with Manifest. Use when the contributor wants to add or edit a form: contact form, enquiry or quote request, signup, newsletter, settings panel, search box, anything with inputs the user fills out. Triggers on \"add a contact form\", \"build a signup\", \"make a search box\", \"let users submit X\", \"send form entries to my email/Slack\". Covers structure, native validation, sending (plain HTML, x-submit, Manifest-hosted form endpoints) and feedback. For sign-in/auth flows, use manifest-appwrite."
+description: "Manifest framework projects only: SKIP unless the project has a Manifest manifest.json (registering components or data) or a manifest.theme.css, or the user asked to build with Manifest. Use when the contributor wants to add or edit a form or form control: contact form, signup, settings panel, search box, filter bar, any inputs, selects, checkboxes, switches or buttons the user fills out. Triggers on \"add a contact form\", \"build a signup\", \"make a search box\", \"add a settings panel\", \"let users submit X\". Manifest CSS styles native form HTML; covers markup, layout, utilities, validation styling and, only for forms that send entries somewhere, where they send (x-submit, Manifest-hosted forms). For sign-in/auth flows, use manifest-appwrite. SKIP for a lone button that isn't part of a form."
 ---
 
 # Building a form in Manifest
 
-Manifest auto-styles `<form>`, `<input>`, `<textarea>`, `<select>`, `<button>`, checkboxes, radios, and switches, including valid/invalid states. Write semantic HTML and it looks right.
-
-**The rule: native HTML first.** A form with `action` and `method="post"` works with no script. Add one attribute, `x-submit`, only when the page should stay put after sending. The frontend owns how the form looks, what counts as valid, and how "sent" and "failed" are shown. Nothing on the server renders UI for it.
+Manifest CSS styles native form elements: `<form>`, `<label>`, `<fieldset>`, `<legend>`, `<input>`, `<textarea>`, `<select>`, `<button>`, checkboxes, radios and switches. Write semantic HTML with the right nesting and utility classes. No component library, no wrapper `<div>`s, no custom CSS for the basics.
 
 ## Recipe
 
-### 1. Structure with semantic HTML
+### 1. Structure with labels
 
-Wrap each control in a `<label>`. Give every field a `name` (that is what gets sent). Use native validation and autofill attributes instead of script:
+`<form>` lays its children out as a column with gaps. Put each control inside its `<label>`; label text can be bare or in a `<span>`:
 
 ```html
-<form action="/_forms/contact" method="post">
+<form>
   <label>
-    Your name
+    Name
     <input name="name" required autocomplete="name">
   </label>
   <label>
-    Email
-    <input name="email" type="email" required autocomplete="email">
+    Message
+    <textarea name="message" rows="4"></textarea>
   </label>
   <label>
-    Message
-    <textarea name="message" rows="4" required minlength="10"></textarea>
+    Plan
+    <select name="plan">
+      <option>Free</option>
+      <option>Pro</option>
+    </select>
   </label>
-  <button class="brand">Send</button>
+  <button class="brand">Save</button>
 </form>
 ```
 
-- Validation: `required`, `type` (`email`, `tel`, `url`, `number`), `pattern`, `minlength`/`maxlength`, `min`/`max`. The browser blocks the send until they pass.
-- Keyboards and autofill: `autocomplete` (`name`, `email`, `tel`, `organization`, `postal-code`) and `inputmode` (`numeric`, `tel`, `email`).
-- Manifest marks fields with `:user-invalid` / `:user-valid` once the visitor has touched them. Restyle with theme variables `--color-field-invalid` and `--color-field-valid` in `manifest.theme.css`, never inline.
-- `<form>` already lays children out as a column with gaps. Don't wrap fields in extra `<div>`s.
+- **Inline label:** put the label text in `<data>` to sit it beside the control instead of above: `<label><data>Email</data><input type="email"></label>`.
+- **Switch:** `<label><input type="checkbox" role="switch"> Notifications</label>`.
+- **Checkbox and radio sets:** group them in a `<fieldset>`; add a `<legend>` for a bordered box with a title. Radios sharing a `name` are one choice.
+- **Search and file inputs** work bare. To add an icon, wrap the field and icon in an inner label, and keep any text label outside it, both in a `<fieldset>`: `<fieldset><label for="q">Search</label><label><i x-icon="lucide:search"></i><input id="q" type="search"></label></fieldset>`. Inside an inline (`<data>`) label, use `<div class="label">` as the inner wrapper instead of nesting labels.
+- **Copy field:** `<label><input value="…" aria-label="Code"><button command="--copy" aria-label="Copy"></button></label>` copies the value with no wiring.
+- **Textarea height:** `class="field-sizing-content"` grows with the text; `class="resize"` adds a drag handle.
 
-### 2. Pick where it sends
+### 2. Utilities
 
-Ask if it isn't obvious: "Where should entries go: your email, a Slack/Discord/Teams channel, or your own system?"
+Buttons, inputs, selects, textareas, checkboxes, radios and switches take the same stackable classes:
 
-- **Manifest-hosted project** (published on Manifest; see `## Project` → Hosting in CLAUDE.md): use the hosted endpoint. Run the connector tool `manifest_setup_forms` for the project. It enables forms, sets destinations (a verified email address, a webhook, Slack, Discord, Teams), and returns the endpoint path and the reserved field names. It does not return markup: you write the form in the project's own style. Email destinations stay inactive until the owner clicks the confirmation link sent to that address; tell the user to check their inbox.
-- **Appwrite configured**: store entries with the Appwrite SDK. Use **manifest-appwrite**.
-- **A form service** (Formspree, Web3Forms, Basin) or the user's own API: put its URL in `action`. Everything below works the same.
+- Color: `brand`, `accent`, `positive`, `negative`
+- Size: `sm`, `lg`
+- Appearance: `ghost`, `outlined`, `transparent`; `hug` on buttons and selects. Checkboxes, radios and switches take `outlined` only.
 
-### 3. The hosted endpoint
+### 3. Rows and toolbars
 
-Same origin as the site, on every host the project has (staging, production, custom domains):
+- `role="group"` on a wrapper joins buttons, inputs and selects into one flush row with shared borders: `<div role="group"><input placeholder="Email"><button class="brand">Sign up</button></div>`. Add `even` for equal widths. Button utilities (`sm`, `outlined`, ...) on the wrapper style the whole row.
+- `role="tablist"` on a wrapper makes a segmented tab bar; mark the active button with `selected` or `aria-selected="true"`.
 
-- `POST /_forms` (form name `default`) or `POST /_forms/<name>` with `<name>` matching `[a-z0-9][a-z0-9_-]{0,39}`. Give each form its own name (`/_forms/contact`, `/_forms/estimate`) so entries stay distinguishable.
-- Text fields only. No file uploads.
-- Reserved fields (not stored as entry data):
-  - `_redirect`: a path or URL on the project's own hosts. A no-JS post that succeeds is sent there with a 303.
-  - `_gotcha`: honeypot. Include it hidden and empty; bots that fill it are dropped silently.
-  - `cf-turnstile-response`: Cloudflare Turnstile's token, added by its widget.
-- A field named `email` becomes the Reply-To of notification emails.
-- Answers are JSON: `{ ok: true, id }`, or `{ ok: false, error, message }` with codes such as `rate_limited`, `cap_reached`, `turnstile_failed`, `forms_not_enabled`, `body_too_large`. It never returns field-level errors and never renders a page.
+### 4. Bind state with Alpine
 
-Honeypot markup (keep it out of sight and out of the tab order):
+For forms that drive the page (filters, settings, search), bind values with `x-model`:
 
 ```html
-<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" hidden>
-```
-
-### 4. Confirm without script
-
-Point `_redirect` back at the page with a flag, and show the message with `$url`:
-
-```html
-<form action="/_forms/contact" method="post" x-show="!$url.sent.value">
-  <input type="hidden" name="_redirect" value="/contact?sent=1">
-  <!-- fields -->
-  <button class="brand">Send</button>
+<form x-data="{ q: '', sort: 'new' }" @submit.prevent>
+  <div role="group">
+    <input type="search" x-model="q" placeholder="Filter" aria-label="Filter">
+    <select x-model="sort" aria-label="Sort">
+      <option value="new">Newest</option>
+      <option value="old">Oldest</option>
+    </select>
+  </div>
 </form>
-<p x-show="$url.sent.value">Thanks, we'll be in touch.</p>
 ```
 
-Or redirect to a separate `/thanks` route.
+For searching a data source, see https://manifestx.dev/docs/framework/core-plugins/local-data#search-query (and the **manifest-data** skill).
 
-### 5. Send in place with `x-submit`
+### 5. Validate natively
 
-Add `x-submit` to the same form. Nothing else changes; the plugin loads on its own when the attribute appears.
+Use `required`, `type` (`email`, `tel`, `url`, `number`), `pattern`, `minlength`/`maxlength`, `min`/`max`, plus `autocomplete` and `inputmode` for autofill and keyboards. The browser blocks submission until they pass.
+
+Manifest rings a field in the negative color once the visitor has touched it or tried to submit (`:user-invalid`). Valid fields stay unmarked unless the theme sets `--color-field-valid`. Change colors in `manifest.theme.css` with `--color-field-invalid` / `--color-field-valid`, never inline; `unstyle` on a field opts out. For more, use variants such as `user-invalid:negative` on a field. Don't disable the submit button while the form is invalid: the visitor then never gets the browser's messages or the ring.
+
+### 6. Only if the form sends entries somewhere
+
+A contact, signup or quote form sends; a search, filter or settings form usually doesn't. Every field that should be sent needs a `name`. Pick the backend by what the form is for, asking if it isn't clear. Manifest has first-party options for each:
+
+- **Sign-in or account forms** → the **Auth** plugin (Appwrite). `$auth` handles magic links, email or phone codes, OAuth and guest sessions; there is no separate sign-up form, since a new visitor gets an account on first sign-in. Use **manifest-appwrite**. Docs: https://manifestx.dev/docs/framework/appwrite-plugins/users
+- **Entries the app reads back** (comments, orders, profiles, a list users add to) → the **Cloud Data** plugin (Appwrite). A registered table's `$x.<table>.$create({ ... })` writes a row, scoped to the user or team when configured; file inputs upload to a storage bucket with `$x.<bucket>.$create(file)`. Bind the fields with `x-model` and call it on submit. The table needs Create permission in Appwrite, or `$create()` fails. Use **manifest-appwrite**. Docs: https://manifestx.dev/docs/framework/appwrite-plugins/databases and https://manifestx.dev/docs/framework/appwrite-plugins/storage
+- **Messages someone should receive** (contact, enquiry, quote) on a Manifest-hosted project (published or to be published on Manifest; see Hosting in the Manifest project block in `CLAUDE.md`) → Manifest's hosted forms. Use the connector tool `manifest_setup_forms` to set them up (the project owner or an admin can). Follow its message: it gives the endpoint, the reserved fields and the next step. The endpoint accepts text fields only, no file uploads. Docs: https://manifestx.dev/docs/framework/core-plugins/submissions
+- **A form service or the user's own API** → put its URL in the form's `action`.
+
+The last two post to an endpoint URL. For those, keep `action` and `method="post"` on the form so it works without script. To stay on the page after sending, add `x-submit` (Submissions plugin, loads on first use). It sends only once native validation passes, sets `data-state="sending" | "sent" | "error"` on the form and fires `submit:sent` / `submit:error`. It renders nothing and doesn't clear the fields, so write the messages yourself and reset in the handler:
 
 ```html
-<form x-submit action="/_forms/contact" method="post" class="contact">
+<form x-submit action="…" method="post" class="contact" x-data @submit:sent="$el.reset()">
   <!-- fields -->
   <button class="brand">Send</button>
   <p class="sent">Thanks, we'll be in touch.</p>
@@ -93,50 +98,44 @@ Add `x-submit` to the same form. Nothing else changes; the plugin loads on its o
 </form>
 ```
 
-What it does, and nothing more:
-- Runs only after native validation passes. `novalidate` / `formnovalidate` skip that as usual.
-- Sends the form's fields to its own `action`/`method` (the submit button's `formaction`/`formmethod` and `name`/`value` count) with `Accept: application/json`.
-- Sets `data-state="sending" | "sent" | "error"` on the form, plus `aria-busy="true"` while sending, and ignores double submits.
-- Fires `submit:sent` or `submit:error` on the form; `$event.detail` is `{ ok, status, data, response, error, message }`.
-- Puts server field errors (`{ fields: { name: msg } }` or `{ errors: [{ field, message }] }`, as some services return) onto the matching inputs with the browser's validity API.
-- Resets a Turnstile widget inside the form after each answer.
-- Renders nothing. Feedback is yours: CSS on `data-state`, or Alpine on the events.
-
 ```css
 .contact :is(.sent, .failed) { display: none }
 .contact[data-state=sent] .sent,
 .contact[data-state=error] .failed { display: block }
 ```
 
-```html
-<form x-submit action="/_forms/contact" method="post"
-      x-data="{ problem: '' }"
-      @submit:sent="$el.reset(); $toast.positive('Thanks, we\'ll be in touch.')"
-      @submit:error="problem = $event.detail.error === 'rate_limited' ? 'Too many tries. Wait a minute.' : 'Something went wrong. Please try again.'">
-```
+Write messages in the project's voice; never show raw error codes to visitors.
 
-Write the messages in the project's own voice. Don't surface raw error codes to visitors.
+### 7. Verify in the preview panel
 
-### 6. Verify in the preview panel
-
-- Submit empty: required fields block the send and show the invalid ring.
-- Fix a field: the ring clears.
-- With JavaScript off (or before `x-submit`), a valid post still lands and `_redirect` brings the visitor back.
-- With `x-submit`: the page stays, `data-state` ends `sent`, and your confirmation shows. The hosted endpoint only answers on a published host; on localhost expect a 404 or network error, and test the error state there.
-- Check at phone width.
+- Tab through fields: focus rings visible, order sensible.
+- Submit empty: required fields block and show the invalid ring.
+- Check light and dark themes and phone width.
+- A form that sends: test the error path locally; the hosted endpoint only answers on a published host.
 
 ## What not to do
 
-- **Don't build forms with `@submit.prevent` + hand-written `fetch()`** when `x-submit` covers it. Keep `action`/`method` on the form so it works without script.
-- **Don't add script validation that duplicates native attributes.** Reach for `pattern`, `type`, `minlength` first.
-- **Don't expect the hosted endpoint to validate or render anything.** It accepts, protects, stores and delivers. Validation and confirmation live in the page.
-- **Don't send files** to the hosted endpoint; it accepts text fields only.
-- **Don't put secrets, passwords or payment details in a form.** Payments use the Payments plugin; sign-in uses manifest-appwrite.
-- **Don't wrap inputs in extra `<div>`s** or rebuild controls from `<div role=...>`. Manifest styles the native elements.
+- **Don't wrap controls in extra `<div>`s** for spacing or styling. `<label>` nesting, `<fieldset>` and `role="group"` are what Manifest's CSS targets.
+- **Don't rebuild controls** from `<div role="checkbox">` or custom dropdowns. Use the native element and its utilities.
+- **Don't write custom CSS** for colors, sizes or borders that a utility class or theme variable covers.
+- **Don't duplicate native validation in script.** Reach for `type`, `pattern` and `minlength` first.
+- **Don't hand-write `fetch()`** with `@submit.prevent` to send a form when `x-submit` or a Cloud Data `$create` covers it.
+- **Don't put passwords or payment details in a form you build.** Sign-in uses manifest-appwrite; payments use the Payments plugin.
 
 ## Further reading
 
-- Forms (structure, validation styling): https://manifestx.dev/docs/framework/elements/forms
-- Submissions (`x-submit`): https://manifestx.dev/docs/framework/core-plugins/submissions
-- URL parameters (`$url`): https://manifestx.dev/docs/framework/core-plugins/url-parameters
-- Toasts: https://manifestx.dev/docs/framework/elements/toasts
+- Forms (layout, inline labels, groups, validation): https://manifestx.dev/docs/framework/elements/forms
+- Inputs: https://manifestx.dev/docs/framework/elements/inputs
+- Buttons: https://manifestx.dev/docs/framework/elements/buttons
+- Selects: https://manifestx.dev/docs/framework/elements/selects
+- Textareas: https://manifestx.dev/docs/framework/elements/textareas
+- Checkboxes: https://manifestx.dev/docs/framework/elements/checkboxes
+- Radios: https://manifestx.dev/docs/framework/elements/radios
+- Switches: https://manifestx.dev/docs/framework/elements/switches
+- Comboboxes: https://manifestx.dev/docs/framework/elements/comboboxes
+- Date pickers: https://manifestx.dev/docs/framework/elements/date-pickers
+- Color pickers: https://manifestx.dev/docs/framework/elements/color-pickers
+- Ranges: https://manifestx.dev/docs/framework/elements/ranges
+- Submissions (`x-submit`, no-JS confirmation, hosted forms): https://manifestx.dev/docs/framework/core-plugins/submissions
+- Auth: https://manifestx.dev/docs/framework/appwrite-plugins/auth
+- Cloud Data: https://manifestx.dev/docs/framework/appwrite-plugins/cloud-data

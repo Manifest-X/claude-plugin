@@ -7,16 +7,16 @@ description: "Only for projects published with Manifest: a .mcp.json pointing at
 
 A project's **Hosting** (recorded in the Manifest project block in `CLAUDE.md`) decides where `/manifest:staging` and `/manifest:publish` send things. This skill covers picking it, *changing* it later, and the one-time host setup — plus related project-shape decisions (PWA install behaviour, custom domains).
 
-**Always set the Hosting field when you finish.** The workflow commands trust it as the source of truth (see the **manifest-workflow** skill → "Detecting the pipeline"). If the project's CLAUDE.md has no Manifest project block yet, create the minimal one that skill describes. The values are `Manifest managed`, `Own host via GitHub`, and `External (self-managed)` (the user deploys by their own means — Manifest builds but doesn't publish; set this when someone explicitly brings their own host/CI that we don't drive).
-
-## Pick a host
+**Always set the Hosting field when you finish.** The workflow commands trust it as the source of truth (see the **manifest-workflow** skill → "Detecting the pipeline"). The values are `Manifest managed`, `Own host via GitHub`, and `External (self-managed)` (the user deploys by their own means — Manifest builds but doesn't publish; set this when someone explicitly brings their own host/CI that we don't drive).
 
 The build settings below are for Manifest framework projects. A project built with another framework keeps its own build command and output folder (for example `npm run build` → `dist`); use those wherever a step mentions `mnfst-render` or `website`.
+
+## Pick a host
 
 ### Manifest managed (the zero-setup default)
 
 For anyone who "just wants it online" — especially solo, non-technical users. No GitHub, no host account, no build config. Publishing is the `manifest_publish` tool (it's what `/manifest:staging` and `/manifest:publish` call in this mode), the site is served at `*.manifestx.ai`, and custom domains are handled in chat via `manifest_add_domain`.
-- **To select it:** just publish — follow the publish flow in **manifest-workflow** (the user can say "put it online" or run `/manifest:publish`). After the first publish, record `Hosting: Manifest managed` and the live URL in the Manifest project block (see **manifest-workflow**).
+- **To select it:** just publish — follow the publish flow in **manifest-workflow** (the user can say "put it online" or run `/manifest:publish`). After the first publish, record `Hosting: Manifest managed` and the live URL in the Manifest project block in `CLAUDE.md` (the publish result asks for this).
 - **Best for:** solo creators, quick launches, demos, anyone without a GitHub/CI workflow.
 
 The own-host options below connect a Git repo so a team can collaborate through branches and the host rebuilds on push. Use them when the project has outgrown solo managed hosting.
@@ -71,7 +71,7 @@ A solo project on `*.manifestx.ai` matured into a team and wants Git-based colla
 
 ### Own host via GitHub → Manifest managed
 A team wants the simpler managed flow (or to retire their host account).
-1. Just publish: follow the publish flow in **manifest-workflow** (the user can say "put it online" or run `/manifest:publish`). `manifest_publish` uploads the current build and serves it at `*.manifestx.ai`; then record `Hosting: Manifest managed` in the Manifest project block.
+1. Just publish: follow the publish flow in **manifest-workflow** (the user can say "put it online" or run `/manifest:publish`). `manifest_publish` uploads the current build and serves it at `*.manifestx.ai`; then record `Hosting: Manifest managed` in the Manifest project block in `CLAUDE.md`.
 2. Re-point any custom domain at Manifest (`manifest_add_domain` returns the exact DNS record) and remove it from the old host.
 3. The GitHub repo stays as-is — it's still the source of truth and teammates keep using `/manifest:sync`. Only the *hosting backend* changed.
 
@@ -108,10 +108,10 @@ For an app-store listing (App Store, Google Play, Microsoft Store) or a packaged
 - **Don't try to make `npx mnfst-render` run on Appwrite Sites.** Render locally, commit `/website/`, deploy.
 - **Don't push directly to the live branch to deploy.** Promote through the publish flow in **manifest-workflow**. Direct pushes bypass the eyeball-staging step and any branch protection.
 - **Don't strip PWA fields without grepping for `$x.manifest.` first.** Hidden breakage waiting to happen — the page renders fine in dev, then OG previews go blank in production.
-- **Don't manually maintain `sitemap.xml` or `robots.txt`** — `mnfst-render` generates them from routes and `prerender.liveUrl`. Manual edits are overwritten on next render.
+- **Don't manually maintain `sitemap.xml` or `robots.txt`** — `mnfst-render` generates them from routes and the top-level `live_url` in `manifest.json`. Manual edits are overwritten on next render.
 
 ## Further reading
 
 If the recipe above doesn't cover the situation, consult:
-- Websites publishing (full prerender, sitemap, robots, deployment): https://manifestx.dev/docs/publishing/websites
+- Websites publishing (full prerender, sitemap, robots, deployment): https://manifestx.dev/docs/framework/publishing/websites
 - Web App Manifest spec (PWA fields): https://developer.mozilla.org/en-US/docs/Web/Manifest

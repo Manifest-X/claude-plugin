@@ -29,6 +29,7 @@ The contributor must do the Appwrite-side parts in the Appwrite console themselv
    - Create a project; pick any name and region.
    - Copy the **Project ID** and **API Endpoint** from Settings → API credentials.
    - (Optional, dev only) Create a **Dev Key** under Overview → Dev keys to bypass rate limits.
+   - Under Overview → Platforms, add a **Web** platform for every address the site runs on: `localhost` for previews, the project's `*.manifestx.ai` staging and live addresses, and any custom domain. Without this, sign-in and data calls from the published site fail with an origin (CORS) error.
 
 2. **Wait for them to share Project ID + Endpoint** (and optionally Dev Key). Don't proceed with placeholders — broken setup is worse than no setup.
 
@@ -199,8 +200,8 @@ When the contributor wants real-time "who's online" or activity tracking. Less c
 ## Further reading
 
 If the recipe above doesn't cover the situation, consult:
-- Appwrite Setup (credentials, dev key, plugin loading): https://manifestx.dev/docs/appwrite-plugins/appwrite-setup
-- Users (sign-in methods, OAuth, magic links, guest sessions): https://manifestx.dev/docs/appwrite-plugins/users
-- Teams (multi-tenant scoping, team management): https://manifestx.dev/docs/appwrite-plugins/teams
-- Databases (CRUD methods, scope, queries, realtime): https://manifestx.dev/docs/appwrite-plugins/databases
-- Storage (file upload/download/preview): https://manifestx.dev/docs/appwrite-plugins/storage
+- Appwrite Setup (credentials, dev key, plugin loading): https://manifestx.dev/docs/framework/appwrite-plugins/appwrite-setup
+- Users (sign-in methods, OAuth, magic links, guest sessions): https://manifestx.dev/docs/framework/appwrite-plugins/users
+- Teams (multi-tenant scoping, team management): https://manifestx.dev/docs/framework/appwrite-plugins/teams
+- Databases (CRUD methods, scope, queries, realtime): https://manifestx.dev/docs/framework/appwrite-plugins/databases
+- Storage (file upload/download/preview): https://manifestx.dev/docs/framework/appwrite-plugins/storage

@@ -31,7 +31,7 @@ The starter pattern lives in `<body>` as a `<template data-head>` with bindings 
   <meta property="og:description" :content="$x.content.description">
   <meta property="og:url" :content="$x.manifest.live_url">
   <meta property="og:site_name" :content="$x.manifest.name">
-  <meta property="og:image" content="/icons/opengraph.png">
+  <meta property="og:image" content="/assets/icons/opengraph.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" :content="$x.manifest.name">
@@ -40,7 +40,7 @@ The starter pattern lives in `<body>` as a `<template data-head>` with bindings 
 </template>
 ```
 
-When the contributor asks about site-wide SEO ("set the description", "fix the OG image"), edit `manifest.json` (for `name`, `author`, `description`, `live_url`) — those flow through automatically. For the OG image itself, replace `/icons/opengraph.png` (1200×630 is the recommended size).
+When the contributor asks about site-wide SEO ("set the description", "fix the OG image"), edit `manifest.json` (for `name`, `author`, `description`, `live_url`) — those flow through automatically. For the OG image itself, add or replace `/assets/icons/opengraph.png` (1200×630 is the recommended size). Keep `live_url` set to the real address (the starter ships `https://example.com`): canonical links, `og:url` and the sitemap all come from it.
 
 ### Adding per-page metadata
 
@@ -66,20 +66,20 @@ Per-page templates **merge** with the global template — only set the tags that
 When the page content comes from a data source (blog posts, products, team members), bind the meta tags to the matched item:
 
 ```html
-<article x-route="blog/*">
+<article x-route="/blog, /blog/*">
   <template data-head>
-    <title :content="$x.posts.$route('slug').title + ' — Blog'"></title>
-    <meta name="description" :content="$x.posts.$route('slug').excerpt">
-    <meta property="og:title" :content="$x.posts.$route('slug').title">
-    <meta property="og:description" :content="$x.posts.$route('slug').excerpt">
-    <meta property="og:image" :content="$x.posts.$route('slug').coverImage">
+    <title :content="$x.blog.$route('slug').title + ' — Blog'"></title>
+    <meta name="description" :content="$x.blog.$route('slug').excerpt">
+    <meta property="og:title" :content="$x.blog.$route('slug').title">
+    <meta property="og:description" :content="$x.blog.$route('slug').excerpt">
+    <meta property="og:image" :content="$x.blog.$route('slug').coverImage">
   </template>
-  <h1 x-text="$x.posts.$route('slug').title"></h1>
+  <h1 x-text="$x.blog.$route('slug').title"></h1>
   <!-- ... -->
 </article>
 ```
 
-For website projects, the prerender bakes a unique `<head>` per URL — so each blog post gets its own crawlable, share-previewable HTML.
+The render finds each post's page from the data source whose key matches the route's base: here `"blog": "/data/blog.yaml"` in `manifest.json`, with a `slug` (or `path`) per entry. A source named `posts` would not fill a `/blog/*` route (nested routes match their last segment: `docs/framework/*` takes a `framework` source). `/blog, /blog/*` covers the index and the posts. For a page discovery still misses, add it to `render.paths` in `manifest.json`. Prerendering (server or local) then bakes a unique `<head>` per URL, so each post gets its own crawlable, share-previewable HTML.
 
 ### `<title>` specifically
 
@@ -87,9 +87,11 @@ The browser tab uses `<title>` from the document head. Setting it per-page via `
 
 ### Sitemap and robots.txt
 
-For **website projects** (those that run `mnfst-render`), `sitemap.xml` and `robots.txt` are **generated automatically** based on routes and `prerender.liveUrl` in `manifest.json`. Don't try to write or maintain them by hand.
+Prerendered projects get `sitemap.xml` and `robots.txt` **generated automatically** from the routes and the top-level `live_url` in `manifest.json`. Don't write or maintain them by hand.
 
-For **SPAs** (no render step), there's no auto-sitemap — search engines crawl the rendered DOM. If SEO is critical for an SPA, recommend converting it to a website project.
+Without prerendering, search engines and AI crawlers see little more than the empty page shell: most run little or no JavaScript. Any site that should be found needs prerendering:
+- **On Manifest hosting (simplest):** call `manifest_set_prerender` with `enabled: true`. Every production release (a promote, or a publish straight to production) is rendered on Manifest's servers, with nothing installed locally. Staging is served as built.
+- **Locally:** `npx mnfst-render` writes `/website/`; publish it with `source: 'render'`. It needs Puppeteer and, with `data-tailwind`, Tailwind. If other projects on this device already use them, one global install serves all of them (`npm i -g puppeteer tailwindcss @tailwindcss/cli`) instead of installing into each project.
 
 ### Verify
 
@@ -102,7 +104,9 @@ For **SPAs** (no render step), there's no auto-sitemap — search engines crawl 
 When `/manifest:staging` or `/manifest:publish` renders a **website** project (`npx mnfst-render`),
 do a quick SEO pass on the rendered `/website` output **before pushing** —
 catching problems while they're still cheap to fix and before crawlers see
-them. SPAs skip this (no prerender step). You (Claude) do this analysis directly
+them. With server prerendering instead, run the same checks on the live URL a few
+minutes after the production release (fetch each page's HTML; it should hold the
+full content, not an empty shell). You (Claude) do this analysis directly
 from the rendered files — you know the conventions above and it's far more
 accurate than any canned analyzer.
 
@@ -128,13 +132,14 @@ ship anyway — but make the issues visible.
 - **Don't put per-page meta tags directly in the static `<head>`** in `index.html` — they'll apply to every route. Use `<template data-head>` inside the routed element.
 - **Don't hardcode the live URL** in OG tags — bind to `$x.manifest.live_url` so the value comes from one place.
 - **Don't forget `og:image:width` and `og:image:height`** — Facebook in particular needs them for the share card to render correctly. 1200×630 is the canonical size.
-- **Don't try to manage `sitemap.xml` manually** for website projects — `mnfst-render` generates it from routes. Manual edits get overwritten on the next render.
+- **Don't try to manage `sitemap.xml` manually** for prerendered projects — the render generates it from routes. Manual edits get overwritten on the next render.
 - **Don't add SEO content that contradicts the page content** — search engines penalise meta-vs-content mismatch and users feel deceived.
 - **Don't skip `alt` text on images.** Both an SEO and accessibility concern.
 
 ## Further reading
 
 If the recipe above doesn't cover the situation, consult:
-- Components & `<template data-head>` (full head-injection mechanics): https://manifestx.dev/docs/core-plugins/components
-- Router (route matching, including `*` wildcards for template pages): https://manifestx.dev/docs/core-plugins/router
-- Websites publishing (prerender, sitemap, robots): https://manifestx.dev/docs/publishing/websites
+- Components & `<template data-head>` (full head-injection mechanics): https://manifestx.dev/docs/framework/core-plugins/components
+- Router (route matching, including `*` wildcards for template pages): https://manifestx.dev/docs/framework/core-plugins/router
+- Websites publishing (prerender, sitemap, robots): https://manifestx.dev/docs/framework/publishing/websites
+- SEO & AEO: https://manifestx.dev/docs/framework/publishing/seo-aeo

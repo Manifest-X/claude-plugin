@@ -46,6 +46,6 @@ All theme values live in `manifest.theme.css` as CSS custom properties. **Always
 ## Further reading
 
 If the recipe above doesn't cover the situation, consult:
-- Theme (full variable list, dark mode overrides, customization): https://manifestx.dev/docs/styles/theme
-- Color Modes (light/dark switching, `prefers-color-scheme`): https://manifestx.dev/docs/styles/color-modes
-- Utilities (auto-generated utility class names from theme variables): https://manifestx.dev/docs/styles/utilities
+- Theme (full variable list, dark mode overrides, customization): https://manifestx.dev/docs/framework/styles/theme
+- Color Modes (light/dark switching, `prefers-color-scheme`): https://manifestx.dev/docs/framework/styles/color-modes
+- Utilities (auto-generated utility class names from theme variables): https://manifestx.dev/docs/framework/styles/utilities

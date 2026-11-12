@@ -6,6 +6,8 @@ import { basename, resolve } from 'node:path';
 
 const SHARED = new Set(['staging', 'production']);
 const GIT_OPTS_WITH_VALUE = new Set(['-C', '-c', '--git-dir', '--work-tree', '--namespace', '--exec-path']);
+const BRANCH_OPTS_WITH_VALUE = new Set(['--format', '--sort', '--column', '--points-at', '--contains', '--no-contains', '--merged', '--no-merged']);
+const REVISION = /[~^@]|^HEAD$|^[0-9a-f]{7,40}$/;
 const BRANCH_NO_CREATE = new Set([
   '-d', '-D', '--delete', '-m', '-M', '--move', '-l', '--list', '-a', '--all', '-r', '--remotes',
   '--show-current', '--contains', '--no-contains', '--merged', '--no-merged', '--points-at',
@@ -39,9 +41,8 @@ process.stdin.on('end', () => {
       hookSpecificOutput: {
         hookEventName: 'PreToolUse',
         additionalContext:
-          `[Manifest git guard] This command is ${what}. This project records Own host via GitHub, ` +
-          'which collaborates on one shared branch (usually `staging`) that teammates and other sessions ' +
-          'also edit. Unless the user explicitly asked for a branch, stay on the shared branch, sync first ' +
+          `[Manifest git guard] This command is ${what}. This project collaborates on one shared ` +
+          'branch (usually `staging`) that teammates and other sessions also edit. Unless the user explicitly asked for a branch, stay on the shared branch, sync first ' +
           '(`/manifest:sync`), commit small, and push promptly. If a separate branch is genuinely needed, ' +
           'ask the user first.',
       },
@@ -87,7 +88,7 @@ function splitSegments(cmd) {
 }
 
 function tokenize(s) {
-  return (s.match(/"[^"]*"|'[^']*'|\S+/g) || []).map((t) => t.replace(/^(["'])(.*)\1$/, '$2'));
+  return (s.match(/"[^"]*"|'[^']*'|\S+/g) || []).map((t) => ((t.length > 1 && (t[0] === '"' || t[0] === "'") && t.at(-1) === t[0]) ? t.slice(1, -1) : t));
 }
 
 // 'create' | 'switch' | null
@@ -116,7 +117,7 @@ function classify(tokens, cwd) {
     if (args[0] === '-') return 'switch';
     if (plain.length !== 1) return null;
     const target = plain[0];
-    if (SHARED.has(target) || existsSync(resolve(dir, target))) return null;
+    if (SHARED.has(target) || REVISION.test(target) || existsSync(resolve(dir, target))) return null;
     return 'switch';
   }
   if (sub === 'switch') {
@@ -126,7 +127,9 @@ function classify(tokens, cwd) {
     return 'switch';
   }
   if (sub === 'branch') {
-    if (!plain.length || has(...BRANCH_NO_CREATE)) return null;
+    if (has(...BRANCH_NO_CREATE)) return null;
+    const names = args.filter((a, k) => !a.startsWith('-') && !(BRANCH_OPTS_WITH_VALUE.has(args[k - 1]) && !args[k - 1].includes('=')));
+    if (!names.length) return null;
     return 'create';
   }
   if (sub === 'worktree' && plain[0] === 'add' && has('-b', '-B')) return 'create';
