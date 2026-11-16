@@ -42,12 +42,12 @@ continue." A signed-in user with no projects is the normal start.
    the returned `project_id` as **Project id** in the block (see
    **manifest-workflow**). Then target it explicitly: pass `project_id` to the
    publish tools and call `manifest_select_project` before other project tools.
-   The result also lists files for projects without the plugin; write none of
-   them. The plugin already provides the Manifest server (a project-level one
-   would load the same tools twice), and publishing through it needs nothing
-   else. If the user asks for headless or CI publishing (no Claude in the loop),
-   point them to https://manifestx.dev/docs/api/reference/authentication and let them set it up
-   themselves.
+   Ignore the result's `files` and `instructions`; write no file from it. The
+   plugin already provides the Manifest server (a project-level one would load
+   the same tools twice), and publishing through it needs nothing else. Headless
+   or CI publishing (no Claude in the loop) is set up by the user outside the
+   plugin, with a project key kept in their CI's secret settings; point them to
+   https://manifestx.dev/docs/api/reference/authentication.
 3. **Build and publish to staging first** unless the user asked to go straight
    live, following **manifest-workflow** → "The managed flow". Record the result
    in the Manifest project block in `CLAUDE.md` (see manifest-workflow).
@@ -58,10 +58,11 @@ continue." A signed-in user with no projects is the normal start.
 
 - **"With Manifest", or no framework named**: build on the Manifest framework.
   In Claude Code (or any session with a shell), the project needs an **empty
-  folder**: the starter overwrites same-named files (`index.html`, `README.md`,
-  `LICENSE.md`, `privacy.md`, `components/`, `assets/`). If the chosen folder
-  isn't empty, list the files that would be replaced and ask, or offer a new
-  subfolder instead. Then:
+  folder**: the starter stops if same-named files exist (`index.html`,
+  `README.md`, `LICENSE.md`, `privacy.md`, `components/`, `assets/`). If the
+  chosen folder isn't empty, list the files that would be replaced and ask, or
+  offer a new subfolder instead; if the user agrees to replace them, add
+  `--force`. Then:
   - Create the project with `manifest_init` `mode: 'attach'`, record its
     **Project id** in the block, and write none of the returned files (as in
     section 2). Scaffold the starter template with
@@ -89,8 +90,8 @@ sandbox and publishes with `manifest_publish_files`, which takes the files in
 the call.
 
 1. **Create the project** with `manifest_init` `mode: 'attach'`. Use only the
-   returned `project_id`; there's no folder to write files into. Don't show
-   the returned key.
+   returned `project_id` and ignore the rest of the result; there's no folder
+   to write files into.
 2. **Build in the sandbox.** For a Manifest framework site, write the files
    directly: `index.html` loading Manifest from the CDN, `manifest.json`,
    `manifest.theme.css`, and `components/` as needed (see

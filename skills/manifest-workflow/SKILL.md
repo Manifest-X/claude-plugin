@@ -192,7 +192,7 @@ or build your own upload.
    `.mcp.json` pins (`X-Manifest-Project`), or the project the user names.
    Pass it as `project_id` to the tools that take one (`manifest_publish`,
    `manifest_publish_files`, `manifest_promote`, `manifest_rollback`,
-   `manifest_set_subdomain`, `manifest_remove_domain`, `manifest_rotate_key`).
+   `manifest_set_subdomain`, `manifest_remove_domain`).
    Other project tools (deployments, domains, members, analytics) act on the
    chat's focused project: call `manifest_select_project` with the id once per
    chat before using them. If a tool answers `needs_project`, follow its

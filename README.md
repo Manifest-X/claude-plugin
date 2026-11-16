@@ -175,8 +175,8 @@ permission settings):
   optionally `--output-dir`). It zips the project's files, leaving out
   git-ignored files, and uploads them.
 - `npx mnfst-starter`: creates a new Manifest project from the starter
-  template, in an empty folder (it overwrites same-named files, so Claude asks
-  first if the folder isn't empty). Claude runs it as
+  template, in an empty folder (it stops if same-named files exist; Claude asks
+  before adding `--force` to replace them). Claude runs it as
   `npx mnfst-starter --here --name "<name>"`, which writes only the template
   files and `.gitignore`.
 - `npx mnfst-run`: local preview server.
@@ -213,7 +213,8 @@ permission settings):
   (`manifest-workspace`);
 - never `.env` or `.mcp.json`: the plugin provides the connector, and
   publishing through it needs no key. Headless or CI publishing is set up by
-  you, outside the plugin: https://manifestx.dev/docs/api/reference/authentication.
+  you, outside the plugin, with a project key kept in your CI's secret settings:
+  https://manifestx.dev/docs/api/reference/authentication.
 
 The plugin itself stores nothing elsewhere.
 

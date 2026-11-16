@@ -27,7 +27,7 @@ The contributor must do the Appwrite-side parts in the Appwrite console themselv
 1. **Tell the contributor what they need to do in Appwrite:**
    - Sign up at https://appwrite.io (free) or self-host.
    - Create a project; pick any name and region.
-   - Copy the **Project ID** and **API Endpoint** from Settings → API credentials.
+   - Copy the **Project ID** and **API Endpoint** from the project's Settings page.
    - Under Overview → Platforms, add a **Web** platform for every address the site runs on: `localhost` for previews, the project's `*.manifestx.ai` staging and live addresses, and any custom domain. Without this, sign-in and data calls from the published site fail with an origin (CORS) error.
 
 2. **Wait for them to share the Project ID and Endpoint.** Don't proceed with placeholders — broken setup is worse than no setup.
@@ -43,8 +43,6 @@ The contributor must do the Appwrite-side parts in the Appwrite console themselv
      }
    }
    ```
-
-   Appwrite also offers optional dev keys for heavy local testing. If the contributor wants one, point them to the Appwrite Setup docs (below) and let them set it up themselves; never ask for the key in chat.
 
 5. **Verify in the preview panel.** Open the browser console and check for Appwrite connection errors.
 
@@ -189,7 +187,7 @@ When the contributor wants real-time "who's online" or activity tracking. Less c
 ## Further reading
 
 If the recipe above doesn't cover the situation, consult:
-- Appwrite Setup (credentials, dev key, plugin loading): https://manifestx.dev/docs/framework/appwrite-plugins/appwrite-setup
+- Appwrite Setup (project settings, plugin loading): https://manifestx.dev/docs/framework/appwrite-plugins/appwrite-setup
 - Users (sign-in methods, OAuth, magic links, guest sessions): https://manifestx.dev/docs/framework/appwrite-plugins/users
 - Teams (multi-tenant scoping, team management): https://manifestx.dev/docs/framework/appwrite-plugins/teams
 - Databases (CRUD methods, scope, queries, realtime): https://manifestx.dev/docs/framework/appwrite-plugins/databases
