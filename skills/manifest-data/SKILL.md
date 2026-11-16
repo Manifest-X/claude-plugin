@@ -48,7 +48,7 @@ When the user wants to add a *new* source (not edit existing):
    }
    ```
    - Nested namespaces are allowed: `"content": { "locales": "/locales.csv" }` → access as `$x.content.locales`.
-   - For APIs, `${VAR}` interpolates from `process.env` (build-time) or `window.env` (runtime). Always provide a `defaultValue` so the UI doesn't break on fetch failure.
+   - For APIs, `${VAR}` placeholders can fill in public settings such as a base URL per environment (see https://manifestx.dev/docs/framework/core-plugins/local-data). Always provide a `defaultValue` so the UI doesn't break on fetch failure.
 
 4. **Use it in HTML.** All standard JS array methods work on data arrays.
    ```html

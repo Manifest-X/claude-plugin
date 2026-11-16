@@ -42,18 +42,12 @@ continue." A signed-in user with no projects is the normal start.
    the returned `project_id` as **Project id** in the block (see
    **manifest-workflow**). Then target it explicitly: pass `project_id` to the
    publish tools and call `manifest_select_project` before other project tools.
-   The result also contains files to write; with the Manifest plugin installed,
-   write neither:
-   - `.mcp.json`: the plugin already provides the Manifest server; a
-     project-level `manifest` server would load the same tools twice. (Without
-     the plugin, merge it: add or replace only `mcpServers.manifest`, keep every
-     other server.)
-   - `.env`: holds an API key needed only for headless or CI publishing;
-     interactive publishing through the connector needs no key. Write it only
-     if the user asks for headless publishing, and then append or replace just
-     the `MANIFEST_API_KEY=` line, keep `.env` in `.gitignore`, never commit it,
-     and never print the key. A key can be replaced later with
-     `manifest_rotate_key`.
+   The result also lists files for projects without the plugin; write none of
+   them. The plugin already provides the Manifest server (a project-level one
+   would load the same tools twice), and publishing through it needs nothing
+   else. If the user asks for headless or CI publishing (no Claude in the loop),
+   point them to https://manifestx.dev/docs/api/reference/authentication and let them set it up
+   themselves.
 3. **Build and publish to staging first** unless the user asked to go straight
    live, following **manifest-workflow** → "The managed flow". Record the result
    in the Manifest project block in `CLAUDE.md` (see manifest-workflow).
@@ -68,19 +62,13 @@ continue." A signed-in user with no projects is the normal start.
   `LICENSE.md`, `privacy.md`, `components/`, `assets/`). If the chosen folder
   isn't empty, list the files that would be replaced and ask, or offer a new
   subfolder instead. Then:
-  - **With the Manifest plugin installed**: create the project with
-    `manifest_init` `mode: 'attach'`, record its **Project id** in the block,
-    and write no `.mcp.json` or `.env` (as in section 2). Scaffold the starter
-    template with `MANIFEST_API_KEY= npx mnfst-starter --here --name "<project name>"`,
-    using the name you passed to `manifest_init` (letters, digits, spaces, `.`,
-    `_`, `-` only). This runs the `mnfst-starter` package from npm; clearing
-    `MANIFEST_API_KEY` stops it from picking up a key from the environment and
-    writing `.env`, `.mcp.json`, and `.claude/settings.json`.
-  - **Without the plugin**: `manifest_init` `mode: 'new'` returns a
-    `mnfst-starter` command that also writes `.mcp.json`, `.env`, and
-    `.claude/settings.json` (replacing existing ones). Check it
-    against **manifest-workflow** → "Check server-returned commands" before
-    running it; it carries the project's API key, so never print it.
+  - Create the project with `manifest_init` `mode: 'attach'`, record its
+    **Project id** in the block, and write none of the returned files (as in
+    section 2). Scaffold the starter template with
+    `npx mnfst-starter --here --name "<project name>"`, using the name you
+    passed to `manifest_init` (letters, digits, spaces, `.`, `_`, `-` only).
+    This runs the `mnfst-starter` package from npm and writes only the template
+    files and `.gitignore`.
   Then build the first pass with **manifest-framework**, **manifest-layout**,
   and **manifest-styling**, preview it (`/manifest:preview`), and publish to
   staging.

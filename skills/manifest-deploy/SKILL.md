@@ -29,7 +29,7 @@ In the Appwrite console:
 1. **Sites → Create site → Connect the GitHub repo**
 2. Set the production branch to `production`; create a second site connected to the `staging` branch for the staging URL
 3. **Important:** Appwrite Sites can't run `npx mnfst-render` itself (Puppeteer dependencies aren't available in the build environment). For website projects, **render locally** with `npx mnfst-render` and commit `/website/` to the deploy branch. Set the site's output directory to `website`. For SPAs, leave build/output blank — Appwrite serves the repo root.
-4. Add `.env` variables in **Site Settings → Environment variables**
+4. Add any settings the site needs in **Site Settings → Environment variables**
 
 ### Netlify
 
@@ -54,9 +54,8 @@ Work but less natural fit. GitHub Pages can't easily do a separate staging-branc
 
 1. **Record hosting in CLAUDE.md.** In the Manifest project block, set `Hosting: Own host via GitHub`, and fill in the Staging URL and Production URL so `/manifest:status`, `/manifest:staging`, and `/manifest:publish` route correctly and can show them. This field is authoritative — the commands obey it over any other signal.
 2. **If the host can't run `npx mnfst-render`** (e.g. Appwrite Sites): render locally with `npx mnfst-render`, commit `/website/`, then push. Add a note to the project README so the next contributor knows.
-3. **Production env vars.** Anything in your local `.env` that the production deploy needs (Appwrite project IDs for prod, third-party API keys, etc.) must be entered in the host's UI. The repo's `.env` is gitignored and never reaches the host.
-4. **Dev keys do not belong in production.** `APPWRITE_DEV_KEY` exists to bypass rate limits in development — production should run without it (or with a properly scoped production key, not the dev key).
-5. **Custom domains** are configured at the host (Site Settings → Domains on most providers). Manifest itself doesn't care about the domain. After connecting one, update `manifest.json`'s `live_url` and CLAUDE.md's Production URL.
+3. **Production settings.** Settings the production site needs (for example the production Appwrite project) are entered by the contributor in the host's UI; git-ignored local files never reach the host. Development-only settings stay out of production.
+4. **Custom domains** are configured at the host (Site Settings → Domains on most providers). Manifest itself doesn't care about the domain. After connecting one, update `manifest.json`'s `live_url` and CLAUDE.md's Production URL.
 
 ## Switching hosting later
 
@@ -104,7 +103,6 @@ For an app-store listing (App Store, Google Play, Microsoft Store) or a packaged
 
 ## What not to do
 
-- **Don't commit a dev key to git or paste one into the host's production env vars.** Production should use real production credentials — typically a server-scoped key with the actual permissions the production environment needs, not a rate-limit-bypass key.
 - **Don't try to make `npx mnfst-render` run on Appwrite Sites.** Render locally, commit `/website/`, deploy.
 - **Don't push directly to the live branch to deploy.** Promote through the publish flow in **manifest-workflow**. Direct pushes bypass the eyeball-staging step and any branch protection.
 - **Don't strip PWA fields without grepping for `$x.manifest.` first.** Hidden breakage waiting to happen — the page renders fine in dev, then OG previews go blank in production.

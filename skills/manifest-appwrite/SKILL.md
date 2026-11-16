@@ -28,34 +28,25 @@ The contributor must do the Appwrite-side parts in the Appwrite console themselv
    - Sign up at https://appwrite.io (free) or self-host.
    - Create a project; pick any name and region.
    - Copy the **Project ID** and **API Endpoint** from Settings → API credentials.
-   - (Optional, dev only) Create a **Dev Key** under Overview → Dev keys to bypass rate limits.
+   - Under Overview → Platforms, add a **Web** platform for every address the site runs on: `localhost` for previews, the project's `*.manifestx.ai` staging and live addresses, and any custom domain. Without this, sign-in and data calls from the published site fail with an origin (CORS) error.
 
-2. **Wait for them to share Project ID + Endpoint** (and optionally Dev Key). Don't proceed with placeholders — broken setup is worse than no setup.
+2. **Wait for them to share the Project ID and Endpoint.** Don't proceed with placeholders — broken setup is worse than no setup.
 
 3. **Add the Appwrite SDK script** to `index.html` before the `manifest.min.js` script (see above).
 
-4. **Add the credentials to `manifest.json`** under an `appwrite` block. **Project ID and endpoint are public** (per Appwrite's own docs — safe to commit). The **dev key is sensitive** (bypasses rate limits) and should NEVER be committed. Use `${VAR}` interpolation for it:
+4. **Add them to `manifest.json`** under an `appwrite` block. **Project ID and endpoint are public** (per Appwrite's own docs — safe to commit):
    ```json
    {
      "appwrite": {
        "projectId": "<from console>",
-       "endpoint": "<from console>",
-       "devKey": "${APPWRITE_DEV_KEY}"
+       "endpoint": "<from console>"
      }
    }
    ```
 
-5. **Set the env var** in a standard `.env` file at the project root:
-   ```
-   APPWRITE_DEV_KEY=<paste from console>
-   ```
-   Both `mnfst-run` (dev server) and `mnfst-render` (prerender) read `.env` automatically. For runtime browser usage, the dev server serves a generated `/env.js` from this file — make sure `index.html` has `<script src="/env.js"></script>` before the `manifest.min.js` script tag (the starter template includes this by default).
+   Appwrite also offers optional dev keys for heavy local testing. If the contributor wants one, point them to the Appwrite Setup docs (below) and let them set it up themselves; never ask for the key in chat.
 
-   For **multiple Appwrite projects** in one Manifest project, name the variables per-project: `${APPWRITE_DEV_KEY_MARKETING}`, `${APPWRITE_DEV_KEY_DASHBOARD}`, etc., and reference each in the matching data-source's credentials block.
-
-6. **Confirm `.env` is in `.gitignore`** before the contributor commits anything. (Most starter templates include it; verify.)
-
-7. **Verify in the preview panel.** Open the browser console and check for Appwrite connection errors.
+5. **Verify in the preview panel.** Open the browser console and check for Appwrite connection errors.
 
 ## Auth
 
@@ -190,7 +181,6 @@ When the contributor wants real-time "who's online" or activity tracking. Less c
 ## What not to do
 
 - **Don't try to do Appwrite console steps via CLI.** Project, table, bucket creation and permissions are GUI actions. Tell the contributor what to do; don't pretend you've done it.
-- **Don't commit a `devKey` to git, ever.** Use `${APPWRITE_DEV_KEY}` interpolation backed by a gitignored `.env` file at the project root. Dev keys bypass rate limits and shouldn't ship.
 - **Don't skip permissions in the Appwrite console.** A registered table with no `Create` permission will silently fail on `$create()`.
 - **Don't put auth methods in `manifest.json` that aren't enabled in Appwrite** (and vice versa) — they must match.
 - **Don't store secrets, API keys, or third-party tokens in Appwrite documents** unless the table is properly scoped — Appwrite's permission model is the security boundary.
@@ -199,8 +189,8 @@ When the contributor wants real-time "who's online" or activity tracking. Less c
 ## Further reading
 
 If the recipe above doesn't cover the situation, consult:
-- Appwrite Setup (credentials, dev key, plugin loading): https://manifestx.dev/docs/appwrite-plugins/appwrite-setup
-- Users (sign-in methods, OAuth, magic links, guest sessions): https://manifestx.dev/docs/appwrite-plugins/users
-- Teams (multi-tenant scoping, team management): https://manifestx.dev/docs/appwrite-plugins/teams
-- Databases (CRUD methods, scope, queries, realtime): https://manifestx.dev/docs/appwrite-plugins/databases
-- Storage (file upload/download/preview): https://manifestx.dev/docs/appwrite-plugins/storage
+- Appwrite Setup (credentials, dev key, plugin loading): https://manifestx.dev/docs/framework/appwrite-plugins/appwrite-setup
+- Users (sign-in methods, OAuth, magic links, guest sessions): https://manifestx.dev/docs/framework/appwrite-plugins/users
+- Teams (multi-tenant scoping, team management): https://manifestx.dev/docs/framework/appwrite-plugins/teams
+- Databases (CRUD methods, scope, queries, realtime): https://manifestx.dev/docs/framework/appwrite-plugins/databases
+- Storage (file upload/download/preview): https://manifestx.dev/docs/framework/appwrite-plugins/storage

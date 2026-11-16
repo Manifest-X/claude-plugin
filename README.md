@@ -173,16 +173,12 @@ permission settings):
   Claude runs it only if it has the expected form (an upload address on
   `mcp.manifestx.dev`, then `npx mnfst-publish` with `--env`, `--source`, and
   optionally `--output-dir`). It zips the project's files, leaving out
-  git-ignored files and any `.env` file, and uploads them.
+  git-ignored files, and uploads them.
 - `npx mnfst-starter`: creates a new Manifest project from the starter
   template, in an empty folder (it overwrites same-named files, so Claude asks
-  first if the folder isn't empty). With the plugin, Claude runs it as
-  `MANIFEST_API_KEY= npx mnfst-starter --here --name "<name>"`, which writes the
-  template files and `.gitignore` but no `.env`, `.mcp.json`, or Claude
-  settings. Without the plugin, `manifest_init` returns the command, which also
-  carries the project's API key and writes `.env`, `.mcp.json`, and
-  `.claude/settings.json`; Claude checks it has the expected form before
-  running it, as with `mnfst-publish`, and never prints the key.
+  first if the folder isn't empty). Claude runs it as
+  `npx mnfst-starter --here --name "<name>"`, which writes only the template
+  files and `.gitignore`.
 - `npx mnfst-run`: local preview server.
 - `npx mnfst-render`: pre-renders a Manifest website.
 - `npm install`, `npx --no-install cap`, and `npx --no-install
@@ -204,7 +200,7 @@ permission settings):
 - a short Manifest project block in `CLAUDE.md` (project id, hosting choice,
   site URLs, last published versions) so later sessions pick up where you left
   off;
-- `.gitignore` entries that keep `.env` and other secrets out of git;
+- `.gitignore` entries that keep secrets out of git;
 - for a native app (`manifest-native`): `capacitor.config.json` (merged into an
   existing one, never overwritten); `package.json` scripts (merged, keeping
   yours), with `package-lock.json` and `node_modules/` from the installs; the
@@ -215,14 +211,9 @@ permission settings):
 - `.claude/launch.json` preview settings in a folder holding several Manifest
   projects, and in each child project's own `.claude/launch.json`
   (`manifest-workspace`);
-- `.env` entries: a Manifest API key only if you ask for headless or CI
-  publishing (interactive publishing needs no key), and Appwrite settings such
-  as a development key if you set up Appwrite (`manifest-appwrite`);
-- `.mcp.json`: never with the plugin installed (it already provides the
-  connector). When tying an existing folder to a project without the plugin,
-  Claude merges in the Manifest entry and keeps your other servers. On a new
-  project without the plugin, the starter command writes `.mcp.json`, `.env`,
-  and `.claude/settings.json` itself.
+- never `.env` or `.mcp.json`: the plugin provides the connector, and
+  publishing through it needs no key. Headless or CI publishing is set up by
+  you, outside the plugin: https://manifestx.dev/docs/api/reference/authentication.
 
 The plugin itself stores nothing elsewhere.
 
