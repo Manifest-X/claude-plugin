@@ -66,13 +66,11 @@ Two facts that make this clean:
 
 ## Publishing and project tools from a parent folder
 
-A parent folder has no single project, so Manifest tools fall back to the
-project chosen with `manifest_select_project`, and that choice is shared by
-every window on the account: two chats here, each working on a different
-child, keep changing it under each other. Check the `project` field in each
-result before trusting it. For two or more sites worked on at once, open each
-session in its own child folder, whose committed `.mcp.json` pins the project
-with an `X-Manifest-Project` header.
+A parent folder has no single project. Name it in every Manifest tool call
+(`project_id`, from the child's `CLAUDE.md` project block) rather than relying
+on `manifest_select_project`: that choice is shared by every window on the
+account, so two chats here working on different children change it under each
+other. Check the `project` field in each result before trusting it.
 
 ## What not to do
 

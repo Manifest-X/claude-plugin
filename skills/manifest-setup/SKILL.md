@@ -39,8 +39,8 @@ continue." A signed-in user with no projects is the normal start.
    (`X-Manifest-Project`), use it. Otherwise, with the user's go-ahead, create
    one with `manifest_init` `mode: 'attach'` and the project's name, and record
    the returned `project_id` as **Project id** in the block (see
-   **manifest-workflow**). Then target it explicitly: pass `project_id` to the
-   publish tools and call `manifest_select_project` before other project tools.
+   **manifest-workflow**). Then target it explicitly: pass `project_id` to
+   every project tool.
    The result also contains files to write; with the Manifest plugin installed,
    write neither:
    - `.mcp.json`: the plugin already provides the Manifest server; a
