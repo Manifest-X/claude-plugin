@@ -197,7 +197,13 @@ or build your own upload.
    `manifest_set_subdomain`, `manifest_remove_domain`, `manifest_rotate_key`).
    Other project tools (deployments, domains, members, analytics) act on the
    chat's focused project: call `manifest_select_project` with the id once per
-   chat before using them. If a tool answers `needs_project`, follow its
+   chat before using them. That selection is shared by every window on the
+   account, so another chat can change it: check the `project` field (name
+   and id) in each result before trusting it, and if a result says this chat
+   never chose that project, don't report its details as this site's. In a
+   parent folder holding several Manifest projects, suggest running each
+   project's session from its own folder, with a committed `.mcp.json` that
+   pins it (`X-Manifest-Project`). If a tool answers `needs_project`, follow its
    `how_to_proceed`; ask by project name only when two or more genuinely fit. A new site gets a new project (`manifest_init`,
    see **manifest-setup**), never a publish over an existing one. Name the site
    you're acting on as you do it.

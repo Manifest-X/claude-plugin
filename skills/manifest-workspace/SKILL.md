@@ -64,6 +64,16 @@ Two facts that make this clean:
    simplest path is to **open the Claude session directly in the child repo** —
    its own `.claude/launch.json` is then unambiguous.
 
+## Publishing and project tools from a parent folder
+
+A parent folder has no single project, so Manifest tools fall back to the
+project chosen with `manifest_select_project`, and that choice is shared by
+every window on the account: two chats here, each working on a different
+child, keep changing it under each other. Check the `project` field in each
+result before trusting it. For two or more sites worked on at once, open each
+session in its own child folder, whose committed `.mcp.json` pins the project
+with an `X-Manifest-Project` header.
+
 ## What not to do
 
 - **Don't hardcode/assign fixed ports to dodge collisions** — that just moves the
