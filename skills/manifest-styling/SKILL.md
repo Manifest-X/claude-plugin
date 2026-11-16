@@ -114,6 +114,7 @@ Last resort — only when no element primitive, semantic class, or utility fits.
 ## What not to do
 
 - **No inline `style="..."`** for anything that could use a utility class or theme variable.
+- **No `<style>` blocks** in HTML or components. Dynamic `:style` / `x-bind:style` bindings are fine.
 - **No hardcoded colors** (`color: #ff0000`, `bg-[#ff0000]`). Always use a theme variable or the `brand`/`accent`/`negative`/`positive` classes.
 - **No hand-rolled markup + CSS for a primitive Manifest already ships** (avatar, switch, tooltip, accordion, presence, …). Use the primitive (see the catalog under Layer 1) — a "wide button" is not an avatar.
 - **No new component** for a one-off styled element. Components are for *reuse* — see the `manifest-component` skill.

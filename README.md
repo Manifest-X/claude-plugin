@@ -39,8 +39,6 @@ Manifest Pro also adds all-time analytics and removes the Manifest badge.
   `/manifest:publish`, `/manifest:status`. In Claude chat they load as skills,
   so plain language works the same ("put it on the web to review", "take it
   live").
-- **Two hooks** (Claude Code and Cowork only) that add guidance in Manifest
-  projects. See [Hooks](#hooks).
 
 The skills and commands act only in Manifest projects: a project with a
 Manifest `.mcp.json`, Manifest hosting recorded in its `CLAUDE.md`, a Manifest
@@ -125,22 +123,6 @@ Authoring (projects built on the Manifest framework):
 - `/manifest:publish`: take it live.
 - `/manifest:status`: a short summary of what's live, staged, and unsaved.
 
-## Hooks
-
-Claude Code and Cowork run two small hooks from `hooks/`. They run locally and
-send nothing anywhere. They only add guidance to Claude's context; they never
-approve or block anything, so your normal permission prompts still apply.
-Outside their scope they exit immediately with no output.
-
-- `ui-guard`, in Manifest framework projects: when a request is clearly about
-  UI or styling, reminds Claude to load the design skills first, and notes
-  inline `<style>` blocks or `style="..."` attributes written into HTML.
-- `git-guard`, in projects whose `CLAUDE.md` records Manifest's shared-branch
-  GitHub workflow: when a command creates a git branch or switches to one other
-  than the shared ones (`staging`, `production`, or the default and live
-  branches recorded in `CLAUDE.md`), reminds Claude to stay on the shared branch
-  unless you asked for one.
-
 ## What it runs and sends
 
 **Destinations.**
@@ -192,7 +174,6 @@ permission settings):
 - `curl` to fetch a page you asked to rebuild, and `curl -sI
   https://<domain>/.well-known/<file>` to check a native app's deep-link files
   on your live domain (`manifest-native`).
-- `node`, to run the two hooks.
 
 **Files Claude may write in your project**:
 

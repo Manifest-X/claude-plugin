@@ -11,7 +11,7 @@ When you're unsure about Manifest syntax, attributes, directives, plugins, or AP
 
 You don't need to read this whole framework section to make small edits. Skip ahead if the user just asked for a copy change or color tweak.
 
-> **Before building or restructuring any UI** — a page, section, layout, or reusable component — **load the `manifest-layout` and `manifest-styling` skills first** (and `manifest-component` when extracting something reusable), and **design the structure before writing code**. The condensed rules below are a pointer, not a substitute: they're just enough to feel unstuck and they skew you toward hand-rolled CSS. This is a precondition of *authoring*, not a QA step — non-idiomatic markup (a `<style>` block, bespoke classes, wrapper-div soup) caught *after* the user's visual review is too late to fix cheaply. In Claude Code and Cowork a `ui-guard` hook reminds you of this when a request looks visual; don't wait for it.
+> **Before building or restructuring any UI** — a page, section, layout, or reusable component — **load the `manifest-layout` and `manifest-styling` skills first** (and `manifest-component` when extracting something reusable), and **design the structure before writing code**. The condensed rules below are a pointer, not a substitute: they're just enough to feel unstuck and they skew you toward hand-rolled CSS. This is a precondition of *authoring*, not a QA step — non-idiomatic markup (a `<style>` block, bespoke classes, wrapper-div soup) caught *after* the user's visual review is too late to fix cheaply.
 
 ## Project type
 

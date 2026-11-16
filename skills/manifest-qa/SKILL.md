@@ -24,7 +24,7 @@ duplicate them): **manifest-seo** owns crawlability/metadata, and rendering
 Whether the markup is idiomatic (no `<style>` blocks, semantic classes over
 bespoke CSS, theme tokens, minimal markup) is decided when the UI is written —
 `manifest-layout`/`manifest-styling` loaded up front, per the authoring
-precondition in **manifest-framework** and the `ui-guard` hook. By QA time the user has likely already
+precondition in **manifest-framework**. By QA time the user has likely already
 reviewed and approved the look, so treating QA as the place to catch non-idiomatic
 code is backwards: you'd be unwinding approved work. If you *do* spot a flagrant
 idiom violation here (e.g. a hand-rolled `<style>` block), flag it as a backstop —
