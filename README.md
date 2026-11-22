@@ -1,13 +1,13 @@
-# Manifest for Claude
+# Manifest
 
-Build and publish websites and apps live with Claude, just by asking.
+Build and publish websites and apps live with your AI assistant, just by asking.
 
 Includes free hosting with your custom domains, preview links to share before
 going live, and visitor analytics. Works with frameworks like React, plain
 HTML, or the open-source Manifest framework that's optimized for SEO/AEO,
 localization, and performance.
 
-What you can ask Claude to do:
+What you can ask your assistant to do:
 
 - Build a new site or app and share a preview link
 - Publish live to the web or prepare it for app stores
@@ -16,7 +16,7 @@ What you can ask Claude to do:
 - Roll back to an earlier version and invite teammates (Manifest Pro)
 - Publish any project that builds to static files: Manifest, React, Vite,
   Astro, plain HTML, and more
-- Works in both Claude Code and Chat/Cowork. Your free Manifest account is
+- Works in a chat app or a coding agent. Your free Manifest account is
   created the first time you connect.
 
 Manifest Pro also adds all-time analytics and removes the Manifest badge.
@@ -33,19 +33,27 @@ Manifest Pro also adds all-time analytics and removes the Manifest badge.
 - **The Manifest connector**, a remote MCP server at
   `https://mcp.manifestx.dev/mcp`. It provides the publishing, hosting, domain,
   and team tools.
-- **Skills** that tell Claude when and how to use those tools, plus authoring
+- **Skills** that tell the assistant when and how to use those tools, plus authoring
   skills for projects built on the Manifest framework.
 - **Commands**: `/manifest:preview`, `/manifest:sync`, `/manifest:staging`,
-  `/manifest:publish`, `/manifest:status`. In Claude chat they load as skills,
-  so plain language works the same ("put it on the web to review", "take it
-  live").
+  `/manifest:publish`, `/manifest:status`. Plain language works the same ("put
+  it on the web to review", "take it live").
 
 The skills and commands act only in Manifest projects: a project with a
-Manifest `.mcp.json`, Manifest hosting recorded in its `CLAUDE.md`, a Manifest
+Manifest `.mcp.json`, Manifest hosting recorded in its instructions file (`CLAUDE.md` or
+`AGENTS.md`), a Manifest
 framework `manifest.json` or `manifest.theme.css`, or when you ask for Manifest
 by name. Having the connector installed isn't enough to trigger them.
 
-## Install
+## Get started
+
+Interactive use needs no API key. Once the plugin is installed and connected,
+ask your assistant to "get started with Manifest" and the `manifest-setup`
+skill walks through the first publish or first build.
+
+## In Claude
+
+### Install
 
 - **Claude (web and desktop):** open **Customize > Plugins > Discover**, find
   **Manifest**, and add it. If Discover doesn't show it, open
@@ -60,7 +68,7 @@ by name. Having the connector installed isn't enough to trigger them.
   /plugin install manifest@manifest
   ```
 
-## Connect and sign in
+### Connect and sign in
 
 - **Claude chat and Cowork:** in **Customize > Plugins > Manifest**, open the
   **Connectors** tab and connect Manifest. A browser sign-in follows; if you
@@ -69,8 +77,13 @@ by name. Having the connector installed isn't enough to trigger them.
   organization first.
 - **Claude Code:** run `/mcp`, choose the Manifest server, and authenticate.
 
-Interactive use needs no API key. Ask Claude to "get started with Manifest" and
-the `manifest-setup` skill walks through the first publish or first build.
+### Commands and publishing
+
+In Claude chat the commands load as skills. In Claude Code, publishing uploads
+the project's build from your computer. In Claude chat, where there is no
+shell, Claude builds in its code sandbox and sends the files in the publish
+call; larger projects need the Code tab in the Claude desktop app, or Claude
+Code.
 
 ## What Manifest hosts
 
@@ -79,10 +92,10 @@ apps. It does not run server code such as server-side rendering, API routes, or
 backends; an existing backend keeps running where it is, and the published site
 calls it as before. Native apps are packaged from the same project.
 
-In Claude Code, publishing uploads the project's build from your computer. In
-Claude chat, where there is no shell, Claude builds in its code sandbox and
-sends the files in the publish call; larger projects need the Code tab in the
-Claude desktop app, or Claude Code.
+With a shell on your computer, publishing uploads the project's build from it.
+In a chat app with no shell, the assistant builds in its code sandbox and
+sends the files in the publish call; larger projects need an agent with a shell
+and the project folder.
 
 ## Skills
 
@@ -134,51 +147,51 @@ Authoring (projects built on the Manifest framework):
 - **The Manifest team** receives a request only when you ask for a person to
   build or finish your project (`manifest-help`): the project summary, what you
   want done, budget and timeline if you give them, and your name and contact
-  email. Claude shows you what will be sent and waits for your go-ahead.
+  email. The assistant shows you what will be sent and waits for your go-ahead.
 - **A teammate's email address** goes to Manifest when you invite them to a
   Manifest project (`manifest_invite`, part of Manifest Pro), so Manifest can
   email them a link to join.
-- **npm** serves the Manifest command-line packages below when Claude runs them
+- **npm** serves the Manifest command-line packages below when the assistant runs them
   with `npx`, and the Capacitor packages if you package a native app.
 - **CocoaPods or Swift Package Manager, GitHub, and Gradle repositories** serve
   the iOS and Android dependencies that `cap add` and `cap sync` download when
   you package a native app (`manifest-native`).
 - **GitHub** is used only if you choose a GitHub workflow (`git`, `gh`).
-- **A website you name** is fetched only when you ask Claude to rebuild or take
+- **A website you name** is fetched only when you ask the assistant to rebuild or take
   inspiration from it (`manifest-clone`).
 - **Your own host or Appwrite project**, only if you set one up.
 
-**Commands Claude may run** (in Claude Code or Cowork, subject to your
-permission settings):
+**Commands the assistant may run** (where it has a shell on your computer,
+subject to your permission settings):
 
 - `npx mnfst-publish`: the publish command returned by `manifest_publish`.
-  Claude runs it only if it has the expected form (an upload address on
+  The assistant runs it only if it has the expected form (an upload address on
   `mcp.manifestx.dev`, then `npx mnfst-publish` with `--env`, `--source`, and
   optionally `--output-dir`). It zips the project's files, leaving out
   git-ignored files, and uploads them.
 - `npx mnfst-starter`: creates a new Manifest project from the starter
-  template, in an empty folder (it stops if same-named files exist; Claude asks
-  before adding `--force` to replace them). Claude runs it as
+  template, in an empty folder (it stops if same-named files exist; the assistant
+  asks before adding `--force` to replace them). It runs as
   `npx mnfst-starter --here --name "<name>"`, which writes only the template
   files and `.gitignore`.
 - `npx mnfst-run`: local preview server.
 - `npx mnfst-render`: pre-renders a Manifest website.
 - `npm install`, `npx --no-install cap`, and `npx --no-install
   @capacitor/assets` when you package a project as a native app
-  (`manifest-native`). Claude lists the packages and asks before installing
+  (`manifest-native`). The assistant lists the packages and asks before installing
   them, and asks before the assets step replaces existing icons and splash
   screens.
 - Your project's own build and dev commands (for example `npm run build`).
-- `git`, and `gh` (the GitHub CLI) for the GitHub workflow. Claude asks before
+- `git`, and `gh` (the GitHub CLI) for the GitHub workflow. The assistant asks before
   installing `gh`.
 - `curl` to fetch a page you asked to rebuild, and `curl -sI
   https://<domain>/.well-known/<file>` to check a native app's deep-link files
   on your live domain (`manifest-native`).
 
-**Files Claude may write in your project**:
+**Files the assistant may write in your project**:
 
 - the site's own files, including the Manifest starter template for a new project;
-- a short Manifest project block in `CLAUDE.md` (project id, hosting choice,
+- a short Manifest project block in the instructions file (project id, hosting choice,
   site URLs, last published versions) so later sessions pick up where you left
   off;
 - `.gitignore` entries that keep secrets out of git;
@@ -189,7 +202,7 @@ permission settings):
   and permission edits to `AndroidManifest.xml`; generated icons and splash
   screens; `.gitignore` lines (`node_modules/`, `.app-www*`); and
   `.manifestignore` lines that keep the native files off the published site;
-- `.claude/launch.json` preview settings in a folder holding several Manifest
+- in Claude Code, `.claude/launch.json` preview settings in a folder holding several Manifest
   projects, and in each child project's own `.claude/launch.json`
   (`manifest-workspace`);
 - never `.env` or `.mcp.json`: the plugin provides the connector, and

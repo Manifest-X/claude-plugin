@@ -17,7 +17,7 @@ This is the more common task. When the user says "add Sarah to the team", "fix t
 2. **Match the existing format** (CSV columns, JSON shape, YAML structure). Keep the existing style — quoting, indentation, key order.
 3. **Edit the file.** For CSVs, preserve the column order; for JSON/YAML, place new entries near similar ones unless the user specified order.
 4. **No HTML changes are needed** — the page automatically reflects the new data on reload, because templates iterate the source via `$x.<source>`.
-5. **Verify in the preview panel.** Confirm the new/edited entry appears.
+5. **Verify in the preview.** Confirm the new/edited entry appears.
 
 ## Connecting a new data source
 
@@ -90,7 +90,7 @@ When the user wants to add a *new* source (not edit existing):
 
 5. **Markdown content** doesn't go in `data`. Use `<section x-markdown="'/path/to/file.md'"></section>` (note the apostrophes) to render a markdown file. Or store the path in a data source field and render with `x-markdown="$x.posts.$route('slug').body"`.
 
-6. **Verify in the preview panel.** Confirm the data renders. Open the browser console and look for fetch errors (404, CORS) — surface them in plain terms if present.
+6. **Verify in the preview.** Confirm the data renders. Open the browser console and look for fetch errors (404, CORS) — surface them in plain terms if present.
 
 ## What not to do
 

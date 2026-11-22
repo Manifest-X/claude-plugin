@@ -1,6 +1,6 @@
 ---
 name: manifest-workflow
-description: "Only for projects published with Manifest: a .mcp.json pointing at mcp.manifestx.dev, Manifest hosting recorded in the project's CLAUDE.md, a Manifest manifest.json or manifest.theme.css, a Manifest publish earlier in this conversation, or the user naming Manifest. The connector being available is not enough; SKIP otherwise. How publishing works: detecting the pipeline (Manifest hosting, own host via GitHub, or external), publishing to staging or production, promoting, publishing without a shell, and recording state in the project's CLAUDE.md. Load before any Manifest command (preview, sync, staging, publish, status) and for requests like \"put it on the web to review\", \"take it live\", \"what's live right now\"."
+description: "Only for projects published with Manifest: a .mcp.json pointing at mcp.manifestx.dev, Manifest hosting recorded in the project's instructions file (CLAUDE.md or AGENTS.md), a Manifest manifest.json or manifest.theme.css, a Manifest publish earlier in this conversation, or the user naming Manifest. The connector being available is not enough; SKIP otherwise. How publishing works: detecting the pipeline (Manifest hosting, own host via GitHub, or external), publishing to staging or production, promoting, publishing without a shell, and recording state in the project's instructions file. Load before any Manifest command (preview, sync, staging, publish, status) and for requests like \"put it on the web to review\", \"take it live\", \"what's live right now\"."
 ---
 
 # Manifest workflow: publishing and hosting
@@ -10,8 +10,8 @@ description: "Only for projects published with Manifest: a .mcp.json pointing at
 Treat a project as a Manifest project only when at least one of these holds:
 
 - a `.mcp.json` whose server URL is `https://mcp.manifestx.dev/mcp`;
-- a Manifest project block in the project's `CLAUDE.md` (below), or a legacy
-  `Project` section recording `Hosting: Manifest managed`;
+- a Manifest project block in the project's instructions file (below), or a
+  legacy `Project` section recording `Hosting: Manifest managed`;
 - a Manifest framework project: `manifest.theme.css`, or a `manifest.json` that
   registers components or data (a browser extension's `manifest.json`, with
   `manifest_version`, doesn't count);
@@ -37,15 +37,16 @@ to review" = staging, "take it live" = publish, "pull the latest" = sync,
 | `/manifest:publish` | Take it live. |
 | `/manifest:status` | Plain-English summary of where things stand. |
 
-From the Manifest plugin the commands carry the `manifest:` prefix. Commands
-installed into the project instead (`.claude/commands/`) have no prefix
-(`/publish`). If a command reports "unknown command", neither is installed; the
-plain-language request works regardless.
+From the Manifest plugin the commands carry the `manifest:` prefix. In Claude
+Code, commands installed into the project instead (`.claude/commands/`) have
+no prefix (`/publish`). If a command reports "unknown command", neither is
+installed; the plain-language request works regardless.
 
-## Project state: the Manifest block in CLAUDE.md
+## Project state: the Manifest block in the instructions file
 
 Logic lives in this skill; per-project **state** lives in one fenced block in
-the project's `CLAUDE.md`:
+the project's instructions file: `CLAUDE.md` or `AGENTS.md`, whichever the
+project already has (if both, the one the current client reads):
 
 ```markdown
 <!-- manifest:project -->
@@ -74,11 +75,12 @@ Rules:
   `## Project` heading as Manifest state.
 - **Write** only between the markers, one line per field, updating a line in
   place (never appending a second `Last published (staging)`). Include only the
-  fields you know. If there's no block, append one at the end of `CLAUDE.md`;
-  if there's no `CLAUDE.md`, create it with just the block. Never touch any
-  other part of the file.
-- When a tool result asks you to record something in "CLAUDE.md's `## Project`
-  block", record it in this block.
+  fields you know. If there's no block, append one at the end of the
+  instructions file; if the project has neither file, create the one the
+  current client reads (`CLAUDE.md` in Claude, `AGENTS.md` in Codex and other
+  agents) with just the block. Never touch any other part of the file.
+- When a tool result asks you to record something in a `## Project` block,
+  record it in this block.
 - Fields: **Hosting** is `Manifest managed`, `Own host via GitHub`, `External
   (self-managed)`, or absent. **Project id** is the Manifest project this folder
   publishes to (not a secret). **Repo** is the GitHub URL, if any. **Build command / Output dir** only for projects
@@ -148,17 +150,16 @@ Rules:
 
 ## Is there a shell on the user's computer?
 
-- **Yes** (Claude Code in the terminal, IDE, or desktop Code tab; Cowork with
-  the project folder): use `manifest_publish`, then run the returned command
-  after the check below.
-- **No** (Claude chat on the web, desktop, or mobile, including chat's code
-  sandbox, and Claude's Free plan): use `manifest_publish_files`. Build in the
+- **Yes** (an agent with a shell and the project folder): use
+  `manifest_publish`, then run the returned command after the check below.
+- **No** (a chat app with no shell on the user's computer, including one with
+  its own code sandbox): use `manifest_publish_files`. Build in the
   code sandbox if the project needs it, then pass the **final** site files in
   the call: paths relative to the site root, `index.html` at the root, text as
   `utf8`, images and fonts as `base64`. Never include `.env`, keys, tokens, or
   other secrets. Each publish replaces the whole site, so send every file. The
-  tool states its own size limits; a larger site needs the Code tab or Claude
-  Code, where `manifest_publish` uploads the whole build.
+  tool states its own size limits; a larger site needs an agent with a shell
+  and the project folder, where `manifest_publish` uploads the whole build.
 - If the publish command can't reach the network, fall back to
   `manifest_publish_files`.
 

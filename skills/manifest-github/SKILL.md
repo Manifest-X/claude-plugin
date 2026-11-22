@@ -1,6 +1,6 @@
 ---
 name: manifest-github
-description: "Only for projects published with Manifest: a .mcp.json pointing at mcp.manifestx.dev, Manifest hosting recorded in the project's CLAUDE.md, a Manifest manifest.json or manifest.theme.css, a Manifest publish earlier in this conversation, or the user naming Manifest. The connector being available is not enough; SKIP otherwise. Use for the one-time GitHub setup of such a project, or to bring a teammate onto one: no git remote yet, or the user wants to back up, collaborate, or hand the project over. Triggers on \"set up GitHub\", \"back this up\", \"put this on GitHub\", \"add a teammate\", \"let X work on this with me\", \"join the project\", \"I don't know git\". SKIP if a GitHub remote already exists and the user only wants to commit or sync."
+description: "Only for projects published with Manifest: a .mcp.json pointing at mcp.manifestx.dev, Manifest hosting recorded in the project's instructions file (CLAUDE.md or AGENTS.md), a Manifest manifest.json or manifest.theme.css, a Manifest publish earlier in this conversation, or the user naming Manifest. The connector being available is not enough; SKIP otherwise. Use for the one-time GitHub setup of such a project, or to bring a teammate onto one: no git remote yet, or the user wants to back up, collaborate, or hand the project over. Triggers on \"set up GitHub\", \"back this up\", \"put this on GitHub\", \"add a teammate\", \"let X work on this with me\", \"join the project\", \"I don't know git\". SKIP if a GitHub remote already exists and the user only wants to commit or sync."
 ---
 
 # Setting up GitHub for a Manifest project
@@ -28,7 +28,7 @@ Use when `git remote -v` shows no `origin`.
    - `git branch -M staging`
    - `gh repo create <project-name> --private --source=. --remote=origin --push` (creates the repo, pushes `staging`, sets it as default)
    - `git push origin staging:production` (create the `production` branch from the same commit)
-3. **Record it in CLAUDE.md.** In the Manifest project block (see **manifest-workflow**), set **Repo** to the repo URL, `Default branch: staging`, `Live branch: production`. This is what `/manifest:sync`, `/manifest:staging`, and `/manifest:publish` read.
+3. **Record it in the project's instructions file.** In the Manifest project block (see **manifest-workflow**), set **Repo** to the repo URL, `Default branch: staging`, `Live branch: production`. This is what `/manifest:sync`, `/manifest:staging`, and `/manifest:publish` read.
 4. **Report plainly:** "Your project is now backed up on GitHub (private). You're working on the `staging` branch; `production` is what goes live when you publish."
 
 ## Path B — add a teammate to this project (owner side)
@@ -38,7 +38,7 @@ Use when `git remote -v` shows no `origin`.
    - `gh api -X PUT "repos/<owner>/<repo>/collaborators/<username>" -f permission=push`
    - This sends them a GitHub invite to accept.
 3. **Also add them to the Manifest project** so their build tools work (part of Manifest Pro) — use the `manifest_invite` tool with their email (that's the Manifest side; the GitHub step above is the files side). Mention both are done.
-4. **Tell the teammate what to do next:** accept the GitHub invite, then open Claude in a new folder and say "join my Manifest project" (Path C).
+4. **Tell the teammate what to do next:** accept the GitHub invite, then open their assistant in a new folder and say "join my Manifest project" (Path C).
 
 ## Path C — join an existing project (teammate side, their machine)
 
@@ -46,8 +46,8 @@ Use when someone was added to a repo and wants to start working.
 
 1. Make sure `gh` is signed in (Prerequisites above).
 2. Accept the GitHub invite if not already (`gh api user/repository_invitations` lists pending ones; `gh api -X PATCH user/repository_invitations/<id>` accepts — or just accept it from the GitHub email).
-3. **Clone into a fresh folder and open it:** `gh repo clone <owner>/<repo> <folder>`. The Manifest project block in the committed `CLAUDE.md` (its **Project id**), or a committed `.mcp.json`, identifies the Manifest project; signing in to the Manifest connector (a one-time browser prompt) gives access via team membership — no key needed.
-4. **Make sure the workflow commands are available.** With the Manifest plugin installed they already are (`/manifest:sync`, `/manifest:staging`, `/manifest:publish`, `/manifest:status`, `/manifest:preview`). Without the plugin, a fresh clone may lack them, since per-project commands live under `.claude/`, which often isn't committed: run `manifest_install_skills` (or say "install the Manifest commands"); per-project commands have no prefix (`/sync`, `/publish`). Plain-language requests ("take it live") work either way.
+3. **Clone into a fresh folder and open it:** `gh repo clone <owner>/<repo> <folder>`. The Manifest project block in the committed instructions file (its **Project id**), or a committed `.mcp.json`, identifies the Manifest project; signing in to the Manifest connector (a one-time browser prompt) gives access via team membership — no key needed.
+4. **Make sure the workflow commands are available.** With the Manifest plugin installed they already are (`/manifest:sync`, `/manifest:staging`, `/manifest:publish`, `/manifest:status`, `/manifest:preview`). Without the plugin, a fresh clone may lack them, since in Claude Code per-project commands live under `.claude/`, which often isn't committed: run `manifest_install_skills` (or say "install the Manifest commands"); per-project commands have no prefix (`/sync`, `/publish`). Plain-language requests ("take it live") work either way.
 5. From then on, `/manifest:sync` pulls teammates' latest and `/manifest:staging` shares your work.
 
 ## Guardrails

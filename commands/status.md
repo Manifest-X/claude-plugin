@@ -6,10 +6,10 @@ Give the contributor a quick "where am I?" view. It applies only to Manifest pro
 
 ## Steps
 
-1. **Project info** from the Manifest project block in the project's CLAUDE.md, if present: Default branch (fallback `staging`), Live branch (fallback `production`), Staging URL, Production URL, **Hosting**.
+1. **Project info** from the Manifest project block in the project's instructions file (CLAUDE.md or AGENTS.md), if present: Default branch (fallback `staging`), Live branch (fallback `production`), Staging URL, Production URL, **Hosting**.
 
 2. **Two independent axes** (manifest-workflow → "How publishing works"):
-   - **Source control**: `git remote get-url origin 2>/dev/null` → GitHub or local-only. With no shell (Claude chat), skip the git checks.
+   - **Source control**: `git remote get-url origin 2>/dev/null` → GitHub or local-only. With no shell, skip the git checks.
    - **Hosting**: Manifest managed (Hosting field, a `*.manifestx.ai` URL, or `manifest_deployments` returns rows), own host via GitHub, external, or not published yet. For Manifest hosting, `manifest_deployments` shows which version is live in each environment and when it was published; the staging and live URLs come from the project block (recorded from publish results), and `manifest_domain_status` lists custom domains.
 
 3. **On GitHub**, run in parallel where possible: `git branch --show-current`; `git status --porcelain` (count changed files); `git fetch origin <default> <live>`; `git rev-list --left-right --count <default>...origin/<default>`; `git rev-list --left-right --count origin/<live>...origin/<default>`.

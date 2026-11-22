@@ -22,7 +22,7 @@ Also check `index.html` for the Appwrite SDK script tag — it must come **befor
 
 ## Setup (first time)
 
-The contributor must do the Appwrite-side parts in the Appwrite console themselves — Claude cannot create projects, tables, or configure auth providers via CLI.
+The contributor must do the Appwrite-side parts in the Appwrite console themselves — the assistant cannot create projects, tables, or configure auth providers via CLI.
 
 1. **Tell the contributor what they need to do in Appwrite:**
    - Sign up at https://appwrite.io (free) or self-host.
@@ -44,7 +44,7 @@ The contributor must do the Appwrite-side parts in the Appwrite console themselv
    }
    ```
 
-5. **Verify in the preview panel.** Open the browser console and check for Appwrite connection errors.
+5. **Verify in the preview.** Open the browser console and check for Appwrite connection errors.
 
 ## Auth
 

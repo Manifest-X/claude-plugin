@@ -5,7 +5,7 @@ description: "Manifest framework projects only: SKIP unless the project has a Ma
 
 # Localizing content in a Manifest project
 
-Manifest has built-in i18n via the localization plugin. Translation files are registered in `manifest.json` and accessed via `$x` like any other data source. **Manifest itself is not a translation engine — Claude is.** That makes you the right tool for the actual translation work, not just the file plumbing.
+Manifest has built-in i18n via the localization plugin. Translation files are registered in `manifest.json` and accessed via `$x` like any other data source. **Manifest itself is not a translation engine — the assistant is.** That makes you the right tool for the actual translation work, not just the file plumbing.
 
 ## Step 0 — find the existing setup
 
@@ -30,7 +30,7 @@ If no translation sources exist, the project isn't localized yet. Use the "Set u
 
 ### Translating existing content
 
-This is what Claude is best at. The contributor probably won't ask for it directly — they'll say "the French is missing for the new pricing copy" or "fill in Spanish for the FAQ".
+This is what the assistant is best at. The contributor probably won't ask for it directly — they'll say "the French is missing for the new pricing copy" or "fill in Spanish for the FAQ".
 
 1. **Open the translation file.** Identify which locale columns/files have values and which are empty for the keys in question.
 2. **Translate** to the target locales. Stay faithful to:
@@ -52,7 +52,7 @@ This is what Claude is best at. The contributor probably won't ask for it direct
    }
    ```
 4. **Add a language switcher** if the project doesn't already have one (see "Adding a switcher" below).
-5. **Verify in the preview panel.** Switch to the new locale and confirm content renders. Test RTL layout if applicable.
+5. **Verify in the preview.** Switch to the new locale and confirm content renders. Test RTL layout if applicable.
 
 ### Adding a new translatable string
 
@@ -109,7 +109,7 @@ For URL-based switching (`/fr/about`), use plain `<a href="/fr/about">` links �
 - **Don't expand short labels into long sentences** — UI breaks. If a literal translation would overflow, propose a shorter alternative.
 - **Don't translate brand names, product names, or proper nouns** unless the project explicitly does so.
 - **Don't leave a locale partially translated** — fall back to default locale is silent and produces mixed-language UI in production.
-- **Don't forget RTL.** If adding Arabic, Hebrew, Farsi, etc., visually verify the layout in the preview panel — `dir="rtl"` is automatic but some visual elements (icon directionality, custom spacing) may need manual fixes.
+- **Don't forget RTL.** If adding Arabic, Hebrew, Farsi, etc., visually verify the layout in the preview — `dir="rtl"` is automatic but some visual elements (icon directionality, custom spacing) may need manual fixes.
 
 ## Further reading
 

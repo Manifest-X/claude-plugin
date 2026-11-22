@@ -44,7 +44,7 @@ Components in Manifest are plain HTML files registered in `manifest.json`. The f
 
 7. **Editing an existing component**: just edit the file — all instances update on next page load.
 
-8. **Verify in the preview panel.** Confirm the component renders, attributes flow through, and there are no console errors about a missing component.
+8. **Verify in the preview.** Confirm the component renders, attributes flow through, and there are no console errors about a missing component.
 
 ## What not to do
 

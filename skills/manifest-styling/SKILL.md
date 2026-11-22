@@ -109,7 +109,7 @@ Last resort — only when no element primitive, semantic class, or utility fits.
 1. **Read the surrounding HTML** to see what styling layer the file already uses (semantic classes? Tailwind? Mix?). Match the existing convention.
 2. **Pick the lowest layer that works.** Don't reach for Tailwind if a semantic class fits. Don't reach for a semantic class if a raw `<button>` is enough.
 3. **Apply.** Edit the class attribute (or wrap in the right element).
-4. **Verify in the preview panel.** Confirm visually. Test both light and dark mode if the change involves color.
+4. **Verify in the preview.** Confirm visually. Test both light and dark mode if the change involves color.
 
 ## What not to do
 

@@ -63,7 +63,7 @@ There are two flavours of page to recognise:
 
 8. **Removing a page**: delete the routed element, remove nav links, and delete any orphan markdown/component files it referenced.
 
-9. **Verify in the preview panel.** After the edit, navigate to the route and confirm the page renders. Report what the user will see.
+9. **Verify in the preview.** After the edit, navigate to the route and confirm the page renders. Report what the user will see.
 
 ## Template pages (dynamic content from a data source)
 

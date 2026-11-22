@@ -1,13 +1,13 @@
 ---
 name: manifest-deploy
-description: "Only for projects published with Manifest: a .mcp.json pointing at mcp.manifestx.dev, Manifest hosting recorded in the project's CLAUDE.md, a Manifest manifest.json or manifest.theme.css, a Manifest publish earlier in this conversation, or the user naming Manifest. The connector being available is not enough; SKIP otherwise. Use to set up or CHANGE production hosting: Manifest hosting or the user's own host (Appwrite Sites, Netlify, Cloudflare Pages), switching between them, build/output settings, production environment variables, custom domains, or whether a Manifest site is installable as a PWA. Triggers on \"host this on my own Cloudflare/Netlify\", \"move this to GitHub\", \"switch hosting\", \"go back to Manifest hosting\", \"add a custom domain\", \"make this installable as an app\". For everyday publishing use manifest-workflow. SKIP for routine commits and content edits."
+description: "Only for projects published with Manifest: a .mcp.json pointing at mcp.manifestx.dev, Manifest hosting recorded in the project's instructions file (CLAUDE.md or AGENTS.md), a Manifest manifest.json or manifest.theme.css, a Manifest publish earlier in this conversation, or the user naming Manifest. The connector being available is not enough; SKIP otherwise. Use to set up or CHANGE production hosting: Manifest hosting or the user's own host (Appwrite Sites, Netlify, Cloudflare Pages), switching between them, build/output settings, production environment variables, custom domains, or whether a Manifest site is installable as a PWA. Triggers on \"host this on my own Cloudflare/Netlify\", \"move this to GitHub\", \"switch hosting\", \"go back to Manifest hosting\", \"add a custom domain\", \"make this installable as an app\". For everyday publishing use manifest-workflow. SKIP for routine commits and content edits."
 ---
 
 # Choosing & wiring up production hosting
 
-A project's **Hosting** (recorded in the Manifest project block in `CLAUDE.md`) decides where `/manifest:staging` and `/manifest:publish` send things. This skill covers picking it, *changing* it later, and the one-time host setup — plus related project-shape decisions (PWA install behaviour, custom domains).
+A project's **Hosting** (recorded in the Manifest project block in the project's instructions file) decides where `/manifest:staging` and `/manifest:publish` send things. This skill covers picking it, *changing* it later, and the one-time host setup — plus related project-shape decisions (PWA install behaviour, custom domains).
 
-**Always set the Hosting field when you finish.** The workflow commands trust it as the source of truth (see the **manifest-workflow** skill → "Detecting the pipeline"). If the project's CLAUDE.md has no Manifest project block yet, create the minimal one that skill describes. The values are `Manifest managed`, `Own host via GitHub`, and `External (self-managed)` (the user deploys by their own means — Manifest builds but doesn't publish; set this when someone explicitly brings their own host/CI that we don't drive).
+**Always set the Hosting field when you finish.** The workflow commands trust it as the source of truth (see the **manifest-workflow** skill → "Detecting the pipeline"). If the instructions file has no Manifest project block yet, create the minimal one that skill describes. The values are `Manifest managed`, `Own host via GitHub`, and `External (self-managed)` (the user deploys by their own means — Manifest builds but doesn't publish; set this when someone explicitly brings their own host/CI that we don't drive).
 
 ## Pick a host
 
@@ -21,7 +21,7 @@ For anyone who "just wants it online" — especially solo, non-technical users. 
 
 The own-host options below connect a Git repo so a team can collaborate through branches and the host rebuilds on push. Use them when the project has outgrown solo managed hosting.
 
-> **Own-host options need a GitHub repo.** Set that up first with the **manifest-github** skill (it creates the private repo, the `staging`/`production` branches, and pushes). Come back here once the repo exists. When you finish wiring any own-host provider below, **set `Hosting: Own host via GitHub` in CLAUDE.md** (step 1 of "After wiring up").
+> **Own-host options need a GitHub repo.** Set that up first with the **manifest-github** skill (it creates the private repo, the `staging`/`production` branches, and pushes). Come back here once the repo exists. When you finish wiring any own-host provider below, **set `Hosting: Own host via GitHub` in the instructions file** (step 1 of "After wiring up").
 
 ### Appwrite Sites (Manifest's default suggestion)
 
@@ -52,10 +52,10 @@ Work but less natural fit. GitHub Pages can't easily do a separate staging-branc
 
 ## After wiring up
 
-1. **Record hosting in CLAUDE.md.** In the Manifest project block, set `Hosting: Own host via GitHub`, and fill in the Staging URL and Production URL so `/manifest:status`, `/manifest:staging`, and `/manifest:publish` route correctly and can show them. This field is authoritative — the commands obey it over any other signal.
+1. **Record hosting in the instructions file.** In the Manifest project block, set `Hosting: Own host via GitHub`, and fill in the Staging URL and Production URL so `/manifest:status`, `/manifest:staging`, and `/manifest:publish` route correctly and can show them. This field is authoritative — the commands obey it over any other signal.
 2. **If the host can't run `npx mnfst-render`** (e.g. Appwrite Sites): render locally with `npx mnfst-render`, commit `/website/`, then push. Add a note to the project README so the next contributor knows.
 3. **Production settings.** Settings the production site needs (for example the production Appwrite project) are entered by the contributor in the host's UI; git-ignored local files never reach the host. Development-only settings stay out of production.
-4. **Custom domains** are configured at the host (Site Settings → Domains on most providers). Manifest itself doesn't care about the domain. After connecting one, update `manifest.json`'s `live_url` and CLAUDE.md's Production URL.
+4. **Custom domains** are configured at the host (Site Settings → Domains on most providers). Manifest itself doesn't care about the domain. After connecting one, update `manifest.json`'s `live_url` and the instructions file's Production URL.
 
 ## Switching hosting later
 
