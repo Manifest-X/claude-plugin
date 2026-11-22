@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Builds dist/manifestx-<version>.zip for OpenAI's plugin directory.
+// Builds dist/<name>-<version>.zip for OpenAI's plugin directory.
 // Pass --final to also require the demo recording URL.
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync } from 'node:fs';

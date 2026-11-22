@@ -1,6 +1,6 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
-  "name": "manifestx",
+  "name": "manifest",
   "version": "0.1.4",
   "description": "Publish websites and apps you build with your AI assistant. Includes hosting, custom domains, preview links, and analytics.",
   "author": {
@@ -24,9 +24,9 @@
   "extensions": {
     "com.openai": {
       "interface": {
-        "displayName": "Manifest X",
+        "displayName": "Manifest",
         "shortDescription": "Publish sites and apps live",
-        "longDescription": "Publish the website or app you are building and get a live URL. Share a staging link for review, promote it to production, connect your own domain with HTTPS, see visitor analytics, and invite teammates. Works with any project that builds to static files, including React, Vite, Astro, plain HTML and the open-source Manifest framework. Manifest X only accesses the projects on your connected Manifest account.",
+        "longDescription": "Publish the website or app you are building and get a live URL. Share a staging link for review, promote it to production, connect your own domain with HTTPS, see visitor analytics, and invite teammates. Works with any project that builds to static files, including React, Vite, Astro, plain HTML and the open-source Manifest framework. Manifest only accesses the projects on your connected Manifest account.",
         "developerName": "Manifest",
         "category": "Developer Tools",
         "capabilities": [
