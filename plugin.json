@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "manifest",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Publish websites and apps you build with your AI assistant. Includes hosting, custom domains, preview links, and analytics.",
   "author": {
     "name": "Manifest",
