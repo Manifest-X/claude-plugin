@@ -59,10 +59,10 @@
               "expected_behavior": "Lists the projects on the connected account by name, including Review Demo."
             },
             {
-              "description": "Report what is live",
-              "prompt": "What is live and what is in staging on my Review Demo site?",
-              "tools_triggered": "manifest_list_projects, manifest_status",
-              "expected_behavior": "Names the Review Demo project and reports its production and staging URLs and latest deployments."
+              "description": "List recent deployments",
+              "prompt": "Show me the recent deployments of my Review Demo site.",
+              "tools_triggered": "manifest_list_projects, manifest_deployments",
+              "expected_behavior": "Names the Review Demo project and lists its recent deployments with environment and time."
             },
             {
               "description": "Publish a page to staging",
@@ -73,7 +73,7 @@
             {
               "description": "Promote staging to production",
               "prompt": "Promote the staging build of Review Demo to production.",
-              "tools_triggered": "manifest_deployments, manifest_promote",
+              "tools_triggered": "manifest_list_projects, manifest_deployments, manifest_promote",
               "expected_behavior": "Asks for confirmation, promotes the current staging deployment of Review Demo, and returns the production URL."
             },
             {

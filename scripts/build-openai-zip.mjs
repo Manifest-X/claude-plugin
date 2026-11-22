@@ -54,7 +54,7 @@ check((cases.negative ?? []).every((c) => c.description && c.prompt), 'negative 
 if (process.argv.includes('--final')) {
   check(/^https:\/\//.test(oai.review?.demo_recording_url ?? ''), 'review.demo_recording_url is required for submission');
 }
-for (const dir of readdirSync(root + 'skills')) {
+for (const dir of readdirSync(root + 'skills').filter((d) => !d.startsWith('.'))) {
   check(existsSync(`${root}skills/${dir}/SKILL.md`), `skills/${dir}/SKILL.md missing`);
 }
 
@@ -66,5 +66,5 @@ if (errors.length) {
 mkdirSync(root + 'dist', { recursive: true });
 const out = `dist/${portable.name}-${portable.version}.zip`;
 rmSync(root + out, { force: true });
-execFileSync('zip', ['-rqX', out, 'plugin.json', 'mcp.json', 'skills', 'icon.png', 'LICENSE', 'README.md', '-x', '*.DS_Store'], { cwd: root });
+execFileSync('zip', ['-rqX', out, 'plugin.json', 'mcp.json', 'skills', 'icon.png', 'LICENSE', '-x', '*.DS_Store'], { cwd: root });
 console.log(`✓ ${out}`);
