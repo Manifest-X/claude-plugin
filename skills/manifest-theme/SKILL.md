@@ -34,7 +34,7 @@ All theme values live in `manifest.theme.css` as CSS custom properties. **Always
 
 5. **Don't add new utility classes for theming.** Manifest auto-generates utility classes from CSS variables. If `--color-brand-surface` exists, then `bg-brand-surface`, `text-brand-surface`, `border-brand-surface` all just work in HTML — no need to define them.
 
-6. **Verify in the preview panel** in both light and dark mode (toggle the `.dark` class on `<html>` to test). Confirm contrast is still readable.
+6. **Verify in the preview** in both light and dark mode (toggle the `.dark` class on `<html>` to test). Confirm contrast is still readable.
 
 ## What not to do
 

@@ -9,12 +9,12 @@ Optional commit message from the user: $ARGUMENTS (if present, use it verbatim i
 
 ## Run
 
-0. **Read state and detect the pipeline** (manifest-workflow → "Detecting the pipeline"). Read the Manifest project block in the project's CLAUDE.md if there is one. Then:
+0. **Read state and detect the pipeline** (manifest-workflow → "Detecting the pipeline"). Read the Manifest project block in the project's instructions file (CLAUDE.md or AGENTS.md) if there is one. Then:
    - **Manifest managed**: a managed publish, not a git push.
      - Build if the project needs it (manifest-workflow → "What kind of project is it?"): nothing for a Manifest SPA (`source='spa'`); for a Manifest website, `source='render'` (the publish command renders it); the project's own **Build command** for another framework (`source='spa'`, `output_dir` = **Output dir**).
      - Run the pre-publish checks (step 4a below). For a Manifest website, render only if you're running the SEO check on fresh output, then append `--no-render` to the publish command.
      - **With a shell**: call `manifest_publish` with `env='staging'`, the `source`, `output_dir` when set, the project, and `based_on` on team projects without git. Check the returned `command` against the expected shape (manifest-workflow → "Check server-returned commands before running them"), then run it from the project root; if it doesn't match, stop and tell the user.
-     - **No shell** (Claude chat, Claude's Free plan), or the command can't reach the network: call `manifest_publish_files` with `env='staging'` and the final site files (manifest-workflow → "Is there a shell on the user's computer?").
+     - **No shell**, or the command can't reach the network: call `manifest_publish_files` with `env='staging'` and the final site files (manifest-workflow → "Is there a shell on the user's computer?").
      - Record `Hosting`, `Staging URL`, and `Last published (staging)` in the Manifest project block (create it if absent, per manifest-workflow). Report the staging URL. **Skip every git step below.** Done.
    - **External (self-managed)**: don't deploy. Say: "This project publishes through your own host, so staging doesn't apply here. I can commit your changes (and sync if you have a repo), or set up Manifest or GitHub hosting if you'd like me to handle publishing." Stop after the user chooses.
    - **Own host via GitHub** (or a git `origin` remote and nothing managed): continue with steps 1–8.

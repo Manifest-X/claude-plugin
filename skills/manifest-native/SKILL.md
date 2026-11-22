@@ -31,7 +31,7 @@ PWABuilder can also produce an iOS package. Only offer it if the user insists, a
 
 ## 2. Who does what
 
-| Claude | The user |
+| The assistant | The user |
 |---|---|
 | Writes `capacitor.config.json`, the npm scripts, and the `.gitignore` and `.manifestignore` lines | Creates and pays for the developer accounts |
 | Runs `npm install`, `npx --no-install cap add`, and `npm run app:build`, once the user agrees | Opens Xcode or Android Studio, sets the signing team or keystore, runs on a device |

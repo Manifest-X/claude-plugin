@@ -54,14 +54,14 @@ Two facts that make this clean:
    it defaults) or giving distinct ones — autoPort handles either.
    - **Critical:** if the command passes the port as a CLI flag in `runtimeArgs`
      (e.g. `["serve.mjs", "--port", "5001"]`), **remove that flag** when enabling
-     autoPort. Claude provides the chosen free port via the `PORT` env var, and a
+     autoPort. Claude Code provides the chosen free port via the `PORT` env var, and a
      CLI `--port` flag overrides it — so the server binds one port while the panel
      watches another. Keep the port only in the config's `"port"` field (as the
      preferred), not as a runtimeArgs flag.
 
 4. **Tell the user how to pick.** In the preview panel they choose which config
    (project) to run. If the panel won't let them choose among configs, the
-   simplest path is to **open the Claude session directly in the child repo** —
+   simplest path is to **open the session directly in the child repo** —
    its own `.claude/launch.json` is then unambiguous.
 
 ## What not to do

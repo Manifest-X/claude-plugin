@@ -4,7 +4,7 @@ description: "Manifest: pull the latest changes from teammates on GitHub into a 
 
 You are helping a (possibly non-technical) contributor sync their local copy with the latest on the shared branch. It applies only to Manifest projects (manifest-workflow → "Is this a Manifest project?"; the connector being available is not enough); in any other project, say this command is for Manifest projects and stop. Load the **manifest-workflow** skill for the rules. Speak plainly; don't dump raw git output unless something goes wrong.
 
-## No shell (Claude chat)
+## No shell
 
 There's no local copy to sync from a chat. Say so in one sentence. If the user wants to know what's live, `manifest_deployments` shows the published versions.
 
@@ -12,7 +12,7 @@ There's no local copy to sync from a chat. Say so in one sentence. If the user w
 
 0. **Is the project on GitHub?** `git remote get-url origin 2>/dev/null`. Sync pulls teammates' changes from GitHub; it's independent of where the site is hosted. If there's no repo or no `origin`: "You're working solo on this copy, so there's nothing to sync. Syncing pulls in a teammate's changes, which needs GitHub. Want me to set that up?" If yes, follow **manifest-github**. If no, stop politely; publishing still works without it.
 
-1. **Default branch.** Read **Default branch** from the Manifest project block in the project's CLAUDE.md; fall back to `staging`. A project with its own git conventions (feature branches, pull requests) syncs its current branch instead.
+1. **Default branch.** Read **Default branch** from the Manifest project block in the project's instructions file (CLAUDE.md or AGENTS.md); fall back to `staging`. A project with its own git conventions (feature branches, pull requests) syncs its current branch instead.
 
 2. **Current branch.** `git branch --show-current`. If it isn't the default branch on a Manifest shared-branch project, say which branch they're on and offer to switch: "You're on `<branch>`, not `<default>`. The team works from `<default>`. Switch now?" If yes, `git checkout <default>` (git refuses on conflict; see step 7).
 

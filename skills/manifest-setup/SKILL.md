@@ -1,6 +1,6 @@
 ---
 name: manifest-setup
-description: "Getting started with Manifest. Use when the user wants to connect or sign in to Manifest, put a site online with Manifest for the first time, build a new site or app \"with Manifest\", or when a Manifest tool reports that sign-in is needed. Covers connecting the Manifest connector (Claude chat, Cowork, Claude Code), the first publish of an existing project, the first build from scratch, and publishing from a chat with no shell (including Claude's Free plan). SKIP when Manifest is already connected and the project has published before (use manifest-workflow), and in projects unrelated to Manifest."
+description: "Getting started with Manifest. Use when the user wants to connect or sign in to Manifest, put a site online with Manifest for the first time, build a new site or app \"with Manifest\", or when a Manifest tool reports that sign-in is needed. Covers connecting the Manifest connector, the first publish of an existing project, the first build from scratch, and publishing from a chat with no shell. SKIP when Manifest is already connected and the project has published before (use manifest-workflow), and in projects unrelated to Manifest."
 ---
 
 # Getting started with Manifest
@@ -17,12 +17,12 @@ Check first: call `manifest_status` (or `manifest_list_projects`). If it
 answers, the connection works. If Manifest tools are missing or a result says
 `auth_required`:
 
-- **Claude chat and Cowork**: open **Customize > Plugins**, select **Manifest**,
+- **In Claude chat and Cowork**: open **Customize > Plugins**, select **Manifest**,
   and connect the Manifest connector on its **Connectors** tab. A browser
   sign-in follows; it creates a Manifest account if the user has none. On Team
   and Enterprise plans an Owner may need to add the connector for the
   organization first.
-- **Claude Code**: run `/mcp`, choose the Manifest server, and authenticate.
+- **In Claude Code**: run `/mcp`, choose the Manifest server, and authenticate.
   The browser sign-in opens.
 
 There are no sign-in tools and no API key to paste for interactive use. Tell the
@@ -36,7 +36,8 @@ continue." A signed-in user with no projects is the normal start.
    build step, or something that needs a server (explain the limit before going
    further).
 2. **Tie the folder to a Manifest project.** If the Manifest project block in
-   `CLAUDE.md` has a **Project id**, or the folder's `.mcp.json` pins one
+   the project's instructions file (CLAUDE.md or AGENTS.md) has a
+   **Project id**, or the folder's `.mcp.json` pins one
    (`X-Manifest-Project`), use it. Otherwise, with the user's go-ahead, create
    one with `manifest_init` `mode: 'attach'` and the project's name, and record
    the returned `project_id` as **Project id** in the block (see
@@ -45,19 +46,19 @@ continue." A signed-in user with no projects is the normal start.
    Ignore the result's `files` and `instructions`; write no file from it. The
    plugin already provides the Manifest server (a project-level one would load
    the same tools twice), and publishing through it needs nothing else. Headless
-   or CI publishing (no Claude in the loop) is set up by the user outside the
+   or CI publishing (no assistant in the loop) is set up by the user outside the
    plugin, with a project key kept in their CI's secret settings; point them to
    https://manifestx.dev/docs/api/reference/authentication.
 3. **Build and publish to staging first** unless the user asked to go straight
    live, following **manifest-workflow** → "The managed flow". Record the result
-   in the Manifest project block in `CLAUDE.md` (see manifest-workflow).
+   in the Manifest project block in the instructions file (see manifest-workflow).
 4. **Report the URL** in one line, and offer the next step: review, then "take
    it live".
 
 ## 3. First build from scratch
 
 - **"With Manifest", or no framework named**: build on the Manifest framework.
-  In Claude Code (or any session with a shell), the project needs an **empty
+  In a session with a shell, the project needs an **empty
   folder**: the starter stops if same-named files exist (`index.html`,
   `README.md`, `LICENSE.md`, `privacy.md`, `components/`, `assets/`). If the
   chosen folder isn't empty, list the files that would be replaced and ask, or
@@ -83,11 +84,10 @@ If the Manifest skills are already available in this session (for example from
 the Manifest plugin), don't also install them into the project with
 `manifest_install_skills`: each skill would load twice.
 
-## 4. No shell: Claude chat, including Claude's Free plan
+## 4. No shell: a chat app
 
-Without a shell on the user's computer, Claude builds in the chat's code
-sandbox and publishes with `manifest_publish_files`, which takes the files in
-the call.
+Without a shell on the user's computer, build in the chat's code sandbox and
+publish with `manifest_publish_files`, which takes the files in the call.
 
 1. **Create the project** with `manifest_init` `mode: 'attach'`. Use only the
    returned `project_id` and ignore the rest of the result; there's no folder
@@ -104,7 +104,7 @@ the call.
    later updates; each publish replaces the whole site.
 
 Larger projects (more files or bytes than `manifest_publish_files` accepts)
-need the Code tab in the Claude desktop app, or Claude Code, where
+need an agent with a shell and the project folder, where
 `manifest_publish` uploads the whole build from the user's computer.
 
 ## Help

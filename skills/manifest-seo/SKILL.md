@@ -102,7 +102,7 @@ For **SPAs** (no render step), there's no auto-sitemap — search engines crawl 
 When `/manifest:staging` or `/manifest:publish` renders a **website** project (`npx mnfst-render`),
 do a quick SEO pass on the rendered `/website` output **before pushing** —
 catching problems while they're still cheap to fix and before crawlers see
-them. SPAs skip this (no prerender step). You (Claude) do this analysis directly
+them. SPAs skip this (no prerender step). You do this analysis directly
 from the rendered files — you know the conventions above and it's far more
 accurate than any canned analyzer.
 
