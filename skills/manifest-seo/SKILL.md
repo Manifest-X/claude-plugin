@@ -135,6 +135,6 @@ ship anyway — but make the issues visible.
 ## Further reading
 
 If the recipe above doesn't cover the situation, consult:
-- Components & `<template data-head>` (full head-injection mechanics): https://manifestx.dev/docs/core-plugins/components
-- Router (route matching, including `*` wildcards for template pages): https://manifestx.dev/docs/core-plugins/router
+- Components & `<template data-head>` (full head-injection mechanics): https://manifestx.dev/docs/framework/core-modules/components
+- Router (route matching, including `*` wildcards for template pages): https://manifestx.dev/docs/framework/core-modules/router
 - Websites publishing (prerender, sitemap, robots): https://manifestx.dev/docs/publishing/websites

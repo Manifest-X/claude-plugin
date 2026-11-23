@@ -8,7 +8,7 @@ description: "Only when the result will be a Manifest framework project: the use
 This skill turns a reference (a URL, a page, a section, a screenshot, or pasted
 HTML) into a Manifest project. It is an **orchestrator**: it figures out *what*
 the user wants, *acquires* the source, then *rebuilds* it using the normal
-Manifest building blocks (routes, components, data, theme, plugins) — leaning on
+Manifest building blocks (routes, components, data, theme, modules) — leaning on
 the other `manifest-*` skills for the actual construction.
 
 The output is always **Manifest-native** — semantic HTML, components, theme
@@ -85,7 +85,7 @@ defer to the named skill for specifics:
 
 - **Don't paste the source's raw HTML/CSS into the project.** Always reinterpret into Manifest semantic markup, components, and theme variables.
 - **Don't hand-build N near-identical pages** when one template + a data source captures them. Spot the repetition first.
-- **Don't reproduce a bespoke widget** when a Manifest pre-styled element or plugin matches — check the styling/layout/form skills first.
+- **Don't reproduce a bespoke widget** when a Manifest pre-styled element or module matches — check the styling/layout/form skills first.
 - **Don't hotlink or re-publish third-party images, fonts, copy, or branding** as the user's own.
 - **Don't silently cap a whole-site crawl** — if it's large, say so and agree on scope.
 - **Don't guess intent when it materially changes the output** — one short question on scope/fidelity beats rebuilding the wrong thing.

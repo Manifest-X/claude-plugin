@@ -5,7 +5,7 @@ description: "Manifest framework projects only: SKIP unless the project has a Ma
 
 # Working with Appwrite in Manifest
 
-Appwrite is Manifest's recommended backend for anything that needs persistence, auth, or real users. Open-source, generous free cloud tier, configured via `manifest.json`. All four Appwrite plugins (auth, database, storage, presence) share the same setup and access patterns.
+Appwrite is Manifest's recommended backend for anything that needs persistence, auth, or real users. Open-source, generous free cloud tier, configured via `manifest.json`. All four Appwrite modules (auth, database, storage, presence) share the same setup and access patterns.
 
 ## Step 0 — detect setup state
 
@@ -48,7 +48,7 @@ The contributor must do the Appwrite-side parts in the Appwrite console themselv
 
 ## Auth
 
-When the contributor wants sign-in/signup. Manifest's auth plugin handles unrecognized-user account creation automatically — no separate signup flow needed.
+When the contributor wants sign-in/signup. Manifest's auth module handles unrecognized-user account creation automatically — no separate signup flow needed.
 
 1. **In `manifest.json`**, add an `auth.methods` array to the `appwrite` block:
    ```json
@@ -170,11 +170,11 @@ When the contributor wants users to upload files (avatars, attachments, images).
    }
    ```
 
-3. **Upload via `$x.uploads.$create(file)` from a file input.** See the Appwrite storage plugin docs for full upload/download/preview methods. (This skill stays brief; cite docs for specifics.)
+3. **Upload via `$x.uploads.$create(file)` from a file input.** See the Appwrite storage module docs for full upload/download/preview methods. (This skill stays brief; cite docs for specifics.)
 
 ## Presence
 
-When the contributor wants real-time "who's online" or activity tracking. Less common; cite the presence plugin docs.
+When the contributor wants real-time "who's online" or activity tracking. Less common; cite the presence module docs.
 
 ## What not to do
 
@@ -187,8 +187,8 @@ When the contributor wants real-time "who's online" or activity tracking. Less c
 ## Further reading
 
 If the recipe above doesn't cover the situation, consult:
-- Appwrite Setup (project settings, plugin loading): https://manifestx.dev/docs/framework/appwrite-plugins/appwrite-setup
-- Users (sign-in methods, OAuth, magic links, guest sessions): https://manifestx.dev/docs/framework/appwrite-plugins/users
-- Teams (multi-tenant scoping, team management): https://manifestx.dev/docs/framework/appwrite-plugins/teams
-- Databases (CRUD methods, scope, queries, realtime): https://manifestx.dev/docs/framework/appwrite-plugins/databases
-- Storage (file upload/download/preview): https://manifestx.dev/docs/framework/appwrite-plugins/storage
+- Appwrite Setup (project settings, module loading): https://manifestx.dev/docs/framework/appwrite-modules/appwrite-setup
+- Users (sign-in methods, OAuth, magic links, guest sessions): https://manifestx.dev/docs/framework/appwrite-modules/users
+- Teams (multi-tenant scoping, team management): https://manifestx.dev/docs/framework/appwrite-modules/teams
+- Databases (CRUD methods, scope, queries, realtime): https://manifestx.dev/docs/framework/appwrite-modules/databases
+- Storage (file upload/download/preview): https://manifestx.dev/docs/framework/appwrite-modules/storage

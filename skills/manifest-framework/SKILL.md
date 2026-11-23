@@ -5,9 +5,9 @@ description: "Manifest framework projects only: SKIP unless the project has a Ma
 
 # Manifest framework primer
 
-A Manifest project is built on the [Manifest framework](https://manifestx.dev). Manifest is an Alpine.js-based framework that runs directly in the browser — no build step. Edit HTML, CSS, and data files. It's HTML-first but not frontend-only: it also has plugins for dynamic data (REST/GraphQL APIs) and an Appwrite-backed backend (auth, databases, storage), so backend needs are in scope.
+A Manifest project is built on the [Manifest framework](https://manifestx.dev). Manifest is an Alpine.js-based framework that runs directly in the browser — no build step. Edit HTML, CSS, and data files. It's HTML-first but not frontend-only: it also has modules for dynamic data (REST/GraphQL APIs) and an Appwrite-backed backend (auth, databases, storage), so backend needs are in scope.
 
-When you're unsure about Manifest syntax, attributes, directives, plugins, or APIs, consult the AI-crawlable docs rather than guessing: **https://manifestx.dev/llms.txt** (index), **https://manifestx.dev/llms-full.txt** (full text), or **https://manifestx.dev/docs**.
+When you're unsure about Manifest syntax, attributes, directives, modules, or APIs, consult the AI-crawlable docs rather than guessing: **https://manifestx.dev/llms.txt** (index), **https://manifestx.dev/llms-full.txt** (full text), or **https://manifestx.dev/docs**.
 
 You don't need to read this whole framework section to make small edits. Skip ahead if the user just asked for a copy change or color tweak.
 

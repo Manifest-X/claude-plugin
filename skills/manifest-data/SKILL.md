@@ -5,7 +5,7 @@ description: "Manifest framework projects only: SKIP unless the project has a Ma
 
 # Working with data sources in Manifest
 
-Data sources are external content (CSV, JSON, YAML, API) registered in `manifest.json` and accessed in HTML templates via the `$x` magic property. The Manifest data plugin handles fetching, parsing, and reactive updates.
+Data sources are external content (CSV, JSON, YAML, API) registered in `manifest.json` and accessed in HTML templates via the `$x` magic property. The Manifest data module handles fetching, parsing, and reactive updates.
 
 This skill covers two related tasks: **connecting a new data source** and **editing data in an existing source**.
 
@@ -94,14 +94,14 @@ When the user wants to add a *new* source (not edit existing):
 
 ## What not to do
 
-- **Don't import data via `<script>`** or fetch it manually with `fetch()` — register it in `manifest.json` instead. The data plugin handles caching and reactivity.
+- **Don't import data via `<script>`** or fetch it manually with `fetch()` — register it in `manifest.json` instead. The data module handles caching and reactivity.
 - **Don't put secrets in registered data sources** — they are fetched from the browser, so anything there is public. For private data, use Appwrite (see the `manifest-appwrite` skill if available) or a server-side proxy.
-- **Don't try to write back to API data sources.** The core data plugin is **read-only** for APIs today: only GET requests are fully supported (POST/PUT/DELETE accept the method but request bodies aren't sent). For full CRUD, real-time updates, and auth-scoped data, switch to Appwrite databases.
+- **Don't try to write back to API data sources.** The core data module is **read-only** for APIs today: only GET requests are fully supported (POST/PUT/DELETE accept the method but request bodies aren't sent). For full CRUD, real-time updates, and auth-scoped data, switch to Appwrite databases.
 - **Don't forget the `data` key in `manifest.json`** — the source will silently fail to load.
 - **Don't add a CSV/JSON file just for "settings" or "config"** if you can put the value in `manifest.json` directly (already accessible as `$x.manifest.fieldName`).
 
 ## Further reading
 
 If the recipe above doesn't cover the situation, consult:
-- Local Data (covers file sources, API sources, environment variables, `$query` operators, `$route`, array methods): https://manifestx.dev/docs/core-plugins/local-data
-- Markdown (rendering markdown files referenced from data fields): https://manifestx.dev/docs/core-plugins/markdown
+- Local Data (covers file sources, API sources, environment variables, `$query` operators, `$route`, array methods): https://manifestx.dev/docs/framework/core-modules/local-data
+- Markdown (rendering markdown files referenced from data fields): https://manifestx.dev/docs/framework/core-modules/markdown

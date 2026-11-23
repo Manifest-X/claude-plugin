@@ -91,6 +91,6 @@ Alpine.data('inbox', () => ({
 ## Further reading
 
 - Performance overview, warming, measuring: https://manifestx.dev/docs/getting-started/performance
-- Computed values: https://manifestx.dev/docs/core-plugins/computed
-- Virtual lists (tables, grids, galleries, masonry): https://manifestx.dev/docs/core-plugins/virtual
+- Computed values: https://manifestx.dev/docs/framework/core-modules/computed
+- Virtual lists (tables, grids, galleries, masonry): https://manifestx.dev/docs/framework/core-modules/virtual
 - Dropdowns — closed menus, `x-defer.priority`: https://manifestx.dev/docs/elements/dropdowns#closed-menus-cost-nothing

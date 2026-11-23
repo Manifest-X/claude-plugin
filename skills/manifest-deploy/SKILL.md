@@ -95,7 +95,7 @@ This is desirable for most projects. But for a marketing site or simple landing 
    rg '\$x\.manifest\.' --type=html
    ```
    Starter projects commonly reference `$x.manifest.name` (OG title), `$x.manifest.live_url` (canonical URL, OG URL), and `$x.manifest.author` (meta author). Don't strip a field that's still referenced — either replace those references with hardcoded values or move them to a different data source first.
-2. **Are there PWA-related tags in `<head>`?** Look for `<meta name="theme-color">` and the `<link rel="manifest">` line. The `<link rel="manifest">` should stay (Manifest's data plugin needs it to load `manifest.json` as a config file too); the `<meta name="theme-color">` can go if you don't care about the address-bar color.
+2. **Are there PWA-related tags in `<head>`?** Look for `<meta name="theme-color">` and the `<link rel="manifest">` line. The `<link rel="manifest">` should stay (Manifest's data module needs it to load `manifest.json` as a config file too); the `<meta name="theme-color">` can go if you don't care about the address-bar color.
 
 Even for non-PWA projects, keep `name`, `description`, `start_url`, and `live_url` — they're often referenced by SEO tags, sitemap generation, and Manifest's own auto-detection logic.
 

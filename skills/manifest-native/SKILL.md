@@ -5,7 +5,7 @@ description: "Manifest framework projects only: SKIP unless the project has a Ma
 
 # Packaging a Manifest project as a native app
 
-One codebase serves the website, the installed PWA and the packaged app. Native is a packaging layer **beside** the project, never a fork of it: no iOS-only copy, no second set of pages. Plugins already degrade to the web, and the [Device plugin](https://manifestx.dev/docs/framework/core-plugins/device) switches to Capacitor inside the app.
+One codebase serves the website, the installed PWA and the packaged app. Native is a packaging layer **beside** the project, never a fork of it: no iOS-only copy, no second set of pages. Capacitor plugins already degrade to the web, and the [Device module](https://manifestx.dev/docs/framework/core-modules/device) switches to Capacitor inside the app.
 
 **Manifest configures the app; the user runs the native toolchain.** No Manifest tool builds, signs or submits an app, and you can't operate Xcode, Android Studio or the store consoles for the user.
 
@@ -163,11 +163,11 @@ A valid build isn't an approved one. Run this before the user submits, and repor
 - [ ] The branded splash and a theme-matched status bar mean launch never flashes white.
 
 **Do something native**
-- [ ] At least one real device capability through the Device plugin: Face ID (`$biometric`), push (`$push`), haptics, share or camera. If there's none, propose the one that fits the app.
+- [ ] At least one real device capability through the Device module: Face ID (`$biometric`), push (`$push`), haptics, share or camera. If there's none, propose the one that fits the app.
 - [ ] That capability is named in the review notes so the reviewer finds it. Draft the notes for the user.
 
 **Payments**
-- [ ] Physical goods and services may sell in the app through the [Payments plugin](https://manifestx.dev/docs/framework/core-plugins/payments).
+- [ ] Physical goods and services may sell in the app through the [Payments module](https://manifestx.dev/docs/framework/core-modules/payments).
 - [ ] Digital goods and subscriptions used in the app must go through Apple In-App Purchase. Manifest has no In-App Purchase integration and no native Apple Pay adapter. If the app sells digital content, raise it with the user before they submit.
 
 **Compliance**
@@ -191,5 +191,5 @@ A valid build isn't an approved one. Run this before the user submits, and repor
 
 - Native apps (paths per OS, Passing review): https://manifestx.dev/docs/framework/publishing/native-apps
 - Web apps (PWA fields, install, offline): https://manifestx.dev/docs/framework/publishing/web-apps
-- Device plugin (magics, Capacitor plugin mapping): https://manifestx.dev/docs/framework/core-plugins/device
+- Device module (magics, Capacitor plugin mapping): https://manifestx.dev/docs/framework/core-modules/device
 - Capacitor: https://capacitorjs.com/docs · PWABuilder: https://www.pwabuilder.com

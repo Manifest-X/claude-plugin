@@ -5,7 +5,7 @@ description: "Manifest framework projects only: SKIP unless the project has a Ma
 
 # Localizing content in a Manifest project
 
-Manifest has built-in i18n via the localization plugin. Translation files are registered in `manifest.json` and accessed via `$x` like any other data source. **Manifest itself is not a translation engine — the assistant is.** That makes you the right tool for the actual translation work, not just the file plumbing.
+Manifest has built-in i18n via the localization module. Translation files are registered in `manifest.json` and accessed via `$x` like any other data source. **Manifest itself is not a translation engine — the assistant is.** That makes you the right tool for the actual translation work, not just the file plumbing.
 
 ## Step 0 — find the existing setup
 
@@ -86,7 +86,7 @@ For URL-based switching (`/fr/about`), use plain `<a href="/fr/about">` links �
 
 ### Setting up localization (first time)
 
-1. **Add the localization plugin context.** It loads automatically with the default `manifest.min.js` script — no extra setup needed in `index.html`. The plugin requires the `router` and `data` plugins, which are also default.
+1. **Add the localization module context.** It loads automatically with the default `manifest.min.js` script — no extra setup needed in `index.html`. The module requires the `router` and `data` modules, which are also default.
 2. **Set the default locale** in `index.html`'s `<html lang="en">` attribute.
 3. **Create a translation file.** Recommend CSV for non-technical contributors (they can edit it in Excel/Numbers/Sheets). Format:
    ```csv
@@ -114,5 +114,5 @@ For URL-based switching (`/fr/about`), use plain `<a href="/fr/about">` links �
 ## Further reading
 
 If the recipe above doesn't cover the situation, consult:
-- Localization (URL paths, `$locale` magic, full RTL language list, language detection priority): https://manifestx.dev/docs/core-plugins/localization
-- Local Data (CSV format, registration, `$x` access — same as translation files): https://manifestx.dev/docs/core-plugins/local-data
+- Localization (URL paths, `$locale` magic, full RTL language list, language detection priority): https://manifestx.dev/docs/framework/core-modules/localization
+- Local Data (CSV format, registration, `$x` access — same as translation files): https://manifestx.dev/docs/framework/core-modules/local-data

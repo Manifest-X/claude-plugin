@@ -82,7 +82,7 @@ Or redirect to a separate `/thanks` route.
 
 ### 5. Send in place with `x-submit`
 
-Add `x-submit` to the same form. Nothing else changes; the plugin loads on its own when the attribute appears.
+Add `x-submit` to the same form. Nothing else changes; the module loads on its own when the attribute appears.
 
 ```html
 <form x-submit action="/_forms/contact" method="post" class="contact">
@@ -131,12 +131,12 @@ Write the messages in the project's own voice. Don't surface raw error codes to 
 - **Don't add script validation that duplicates native attributes.** Reach for `pattern`, `type`, `minlength` first.
 - **Don't expect the hosted endpoint to validate or render anything.** It accepts, protects, stores and delivers. Validation and confirmation live in the page.
 - **Don't send files** to the hosted endpoint; it accepts text fields only.
-- **Don't put secrets, passwords or payment details in a form.** Payments use the Payments plugin; sign-in uses manifest-appwrite.
+- **Don't put secrets, passwords or payment details in a form.** Payments use the Payments module; sign-in uses manifest-appwrite.
 - **Don't wrap inputs in extra `<div>`s** or rebuild controls from `<div role=...>`. Manifest styles the native elements.
 
 ## Further reading
 
 - Forms (structure, validation styling): https://manifestx.dev/docs/framework/elements/forms
-- Submissions (`x-submit`): https://manifestx.dev/docs/framework/core-plugins/submissions
-- URL parameters (`$url`): https://manifestx.dev/docs/framework/core-plugins/url-parameters
+- Submissions (`x-submit`): https://manifestx.dev/docs/framework/core-modules/submissions
+- URL parameters (`$url`): https://manifestx.dev/docs/framework/core-modules/url-parameters
 - Toasts: https://manifestx.dev/docs/framework/elements/toasts

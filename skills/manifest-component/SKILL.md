@@ -56,5 +56,5 @@ Components in Manifest are plain HTML files registered in `manifest.json`. The f
 ## Further reading
 
 If the recipe above doesn't cover the situation, consult:
-- Components (full `$modify` semantics, `<template data-head>`, edge cases): https://manifestx.dev/docs/core-plugins/components
-- Markdown (placing components inside markdown files): https://manifestx.dev/docs/core-plugins/markdown
+- Components (full `$modify` semantics, `<template data-head>`, edge cases): https://manifestx.dev/docs/framework/core-modules/components
+- Markdown (placing components inside markdown files): https://manifestx.dev/docs/framework/core-modules/markdown

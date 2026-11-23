@@ -101,7 +101,7 @@ With each item having a `slug` field (the URL segment to match):
 **How it works:**
 - `x-route="blog/*"` matches `/blog/anything`
 - `$x.posts.$route('slug')` searches `posts` for an item whose `slug` field matches a URL segment — returns the matching item, or empty if none
-- The `body` field can be inline markdown OR a path to a `.md` file (the markdown plugin handles both)
+- The `body` field can be inline markdown OR a path to a `.md` file (the markdown module handles both)
 
 **Recipe:**
 
@@ -134,6 +134,6 @@ With each item having a `slug` field (the URL segment to match):
 ## Further reading
 
 If the recipe above doesn't cover the situation, consult:
-- Router (full route grammar, `$route` magic): https://manifestx.dev/docs/core-plugins/router
-- Components (used as page-level layouts): https://manifestx.dev/docs/core-plugins/components
-- Markdown (for markdown-driven pages): https://manifestx.dev/docs/core-plugins/markdown
+- Router (full route grammar, `$route` magic): https://manifestx.dev/docs/framework/core-modules/router
+- Components (used as page-level layouts): https://manifestx.dev/docs/framework/core-modules/components
+- Markdown (for markdown-driven pages): https://manifestx.dev/docs/framework/core-modules/markdown
