@@ -271,6 +271,20 @@ updates **Hosting**, so every command routes to the new backend from then on.
 The old site keeps serving until it's explicitly removed, so there's no
 downtime.
 
+## A leftover `manifest` server in `.mcp.json`
+
+Older projects list a server named `manifest` in `.mcp.json` (at
+`mcp.manifestx.dev` or a `manifest-mcp` `workers.dev` address). With the
+plugin installed it's a duplicate: it shows as needing sign-in and never
+connects. Use the plugin's Manifest tools, don't ask the user to sign in to it,
+and pass the project id on every project call (its pin does nothing).
+
+Offer to remove it, in plain words, and edit only after the user agrees: delete
+only `mcpServers.manifest`, keep any other servers, and delete the file only if
+nothing else is left. Leave it if the project publishes headless or from CI
+with an API key: check the entry's headers, `.env` and any CI config for
+`MANIFEST_API_KEY` first. If the project uses git, commit the change.
+
 ## Talking to the user
 
 The contributor is a builder, not necessarily an engineer.
@@ -287,3 +301,8 @@ The contributor is a builder, not necessarily an engineer.
 - If Manifest tools fail repeatedly, it's most likely a lapsed connector
   sign-in rather than an outage. Say: "I've lost the connection to Manifest.
   Please reconnect the Manifest connector, then tell me to continue," and wait.
+- If a skill names a Manifest tool you don't have, the app's tool list is
+  stale; the feature isn't missing or gated. Ask the user to refresh the
+  Manifest connector (Claude: Settings → Connectors → Manifest, or
+  **Customize > Plugins > Manifest > Connectors**; Claude Code: `/mcp`), then
+  start a new session.

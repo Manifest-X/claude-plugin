@@ -25,6 +25,12 @@ answers, the connection works. If Manifest tools are missing or a result says
 - **In Claude Code**: run `/mcp`, choose the Manifest server, and authenticate.
   The browser sign-in opens.
 
+If Manifest answers but a skill names a Manifest tool you don't have, the app's
+tool list is stale; the feature isn't missing or gated. Ask the user to refresh
+the Manifest connector (Claude: Settings → Connectors → Manifest, or
+**Customize > Plugins > Manifest > Connectors**; Claude Code: `/mcp`), then
+start a new session.
+
 There are no sign-in tools and no API key to paste for interactive use. Tell the
 user plainly: "You'll need to sign in to Manifest. Connect it, then tell me to
 continue." A signed-in user with no projects is the normal start.
