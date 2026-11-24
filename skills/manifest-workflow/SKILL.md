@@ -283,9 +283,9 @@ and pass the project id on every project call (its pin does nothing).
 
 Offer to remove it, in plain words, and edit only after the user agrees: delete
 only `mcpServers.manifest`, keep any other servers, and delete the file only if
-nothing else is left. Leave it if the project publishes headless or from CI
-with an API key: check the entry's headers, `.env` and any CI config for
-`MANIFEST_API_KEY` first. If the project uses git, commit the change.
+nothing else is left. Leave it if the user says the project also publishes
+from scripts or CI outside the assistant; ask if unsure. If the project uses
+git, commit the change.
 
 ## Talking to the user
 
