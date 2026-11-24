@@ -8,6 +8,7 @@ You are the "Go Live" button. The contributor wants the live site updated. It ap
 ## Run
 
 0. **Read state and detect the pipeline** (manifest-workflow → "Detecting the pipeline"). Read the Manifest project block in the project's instructions file (CLAUDE.md or AGENTS.md) if there is one. Then:
+   - **Project id**: pass the block's **Project id** as `project_id` on every `manifest_*` call. If the line is missing or still the placeholder ("not recorded yet"), take the id from the folder's `.mcp.json` (`X-Manifest-Project`) or `manifest_status` and record it in the block; never create a project because it's missing.
    - **Manifest managed**: going live is a managed operation, not a git promote.
      - If there's a staging deployment the user just reviewed and wants exactly that live, call `manifest_promote`: it ships that build to production with no rebuild or upload.
      - Otherwise publish straight to production: build as needed, run the pre-publish checks (**manifest-qa** if functionality changed; **manifest-seo** for a Manifest website), then `manifest_publish` with `env='production'` and run the returned `command` after checking its shape (manifest-workflow → "Check server-returned commands before running them"; with a shell), or `manifest_publish_files` with `env='production'` (no shell, or the command can't reach the network). Pass `based_on` on team projects without git.

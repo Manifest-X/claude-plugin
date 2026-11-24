@@ -10,6 +10,7 @@ Optional commit message from the user: $ARGUMENTS (if present, use it verbatim i
 ## Run
 
 0. **Read state and detect the pipeline** (manifest-workflow → "Detecting the pipeline"). Read the Manifest project block in the project's instructions file (CLAUDE.md or AGENTS.md) if there is one. Then:
+   - **Project id**: pass the block's **Project id** as `project_id` on every `manifest_*` call. If the line is missing or still the placeholder ("not recorded yet"), take the id from the folder's `.mcp.json` (`X-Manifest-Project`) or `manifest_status` and record it in the block; never create a project because it's missing.
    - **Manifest managed**: a managed publish, not a git push.
      - Build if the project needs it (manifest-workflow → "What kind of project is it?"): nothing for a Manifest SPA (`source='spa'`); for a Manifest website, `source='render'` (the publish command renders it); the project's own **Build command** for another framework (`source='spa'`, `output_dir` = **Output dir**).
      - Run the pre-publish checks (step 4a below). For a Manifest website, render only if you're running the SEO check on fresh output, then append `--no-render` to the publish command.

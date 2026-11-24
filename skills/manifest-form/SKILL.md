@@ -42,7 +42,7 @@ Wrap each control in a `<label>`. Give every field a `name` (that is what gets s
 
 Ask if it isn't obvious: "Where should entries go: your email, a Slack/Discord/Teams channel, or your own system?"
 
-- **Manifest-hosted project** (published on Manifest; see `## Project` → Hosting in the project's instructions file (CLAUDE.md or AGENTS.md)): use the hosted endpoint. Run the connector tool `manifest_setup_forms` for the project. It enables forms, sets destinations (a verified email address, a webhook, Slack, Discord, Teams), and returns the endpoint path and the reserved field names. It does not return markup: you write the form in the project's own style. Email destinations stay inactive until the owner clicks the confirmation link sent to that address; tell the user to check their inbox.
+- **Manifest-hosted project** (published on Manifest; see **Hosting** in the Manifest project block in the project's instructions file (CLAUDE.md or AGENTS.md)): use the hosted endpoint. Run the connector tool `manifest_setup_forms` for the project. It enables forms, sets destinations (a verified email address, a webhook, Slack, Discord, Teams), and returns the endpoint path and the reserved field names. It does not return markup: you write the form in the project's own style. Email destinations stay inactive until the owner clicks the confirmation link sent to that address; tell the user to check their inbox.
 - **Appwrite configured**: store entries with the Appwrite SDK. Use **manifest-appwrite**.
 - **A form service** (Formspree, Web3Forms, Basin) or the user's own API: put its URL in `action`. Everything below works the same.
 

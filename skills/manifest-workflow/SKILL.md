@@ -69,21 +69,22 @@ project already has (if both, the one the current client reads):
 Rules:
 
 - **Read** the block if present. A project set up earlier by
-  `manifest_install_skills` may instead have a `Project` section with the same
+  `manifest_install_skills` may instead have a `# Project` section with the same
   bold fields (`**Hosting:**`, `**Live branch:**`); read that one and update it
   in place rather than adding a second block. Never treat an unrelated
-  `## Project` heading as Manifest state.
+  `Project` heading as Manifest state.
 - **Write** only between the markers, one line per field, updating a line in
   place (never appending a second `Last published (staging)`). Include only the
   fields you know. If there's no block, append one at the end of the
   instructions file; if the project has neither file, create the one the
   current client reads (`CLAUDE.md` in Claude, `AGENTS.md` in Codex and other
   agents) with just the block. Never touch any other part of the file.
-- When a tool result asks you to record something in a `## Project` block,
-  record it in this block.
+- When a tool result asks you to record something in the `# Project` block
+  (for example the project id as **Project id:**), record it in this block.
 - Fields: **Hosting** is `Manifest managed`, `Own host via GitHub`, `External
   (self-managed)`, or absent. **Project id** is the Manifest project this folder
-  publishes to (not a secret). **Repo** is the GitHub URL, if any. **Build command / Output dir** only for projects
+  publishes to (not a secret); a placeholder ("not recorded yet") counts as
+  missing. **Repo** is the GitHub URL, if any. **Build command / Output dir** only for projects
   not built on the Manifest framework (`(root)` = served from the project
   root). **Default / Live branch** fall back to `staging` / `production`.
 - **URLs** come from publish, promote, and rollback results (and
@@ -189,14 +190,15 @@ or build your own upload.
 
 ## The managed flow
 
-1. **Choose the project.** Use the block's **Project id**, or the id a folder
-   `.mcp.json` pins (`X-Manifest-Project`), or the project the user names.
-   Pass it as `project_id` to the tools that take one (`manifest_publish`,
+1. **Choose the project.** Use the block's **Project id**; if it's missing or
+   the placeholder, the id a folder `.mcp.json` pins (`X-Manifest-Project`),
+   `manifest_status`, or the project the user names, and record it as
+   **Project id** in the block. Never create a project because the id is
+   missing. Pass it as `project_id` on every `manifest_*` call that takes one;
+   the tools that change a live site (`manifest_publish`,
    `manifest_publish_files`, `manifest_promote`, `manifest_rollback`,
-   `manifest_set_subdomain`, `manifest_remove_domain`).
-   Other project tools (deployments, domains, members, analytics) act on the
-   chat's focused project: call `manifest_select_project` with the id once per
-   chat before using them. If a tool answers `needs_project`, follow its
+   `manifest_set_subdomain`, `manifest_remove_domain`) act only on the project
+   the call names. If a tool answers `needs_project`, follow its
    `how_to_proceed`; ask by project name only when two or more genuinely fit. A new site gets a new project (`manifest_init`,
    see **manifest-setup**), never a publish over an existing one. Name the site
    you're acting on as you do it.

@@ -6,7 +6,7 @@ Give the contributor a quick "where am I?" view. It applies only to Manifest pro
 
 ## Steps
 
-1. **Project info** from the Manifest project block in the project's instructions file (CLAUDE.md or AGENTS.md), if present: Default branch (fallback `staging`), Live branch (fallback `production`), Staging URL, Production URL, **Hosting**.
+1. **Project info** from the Manifest project block in the project's instructions file (CLAUDE.md or AGENTS.md), if present: Default branch (fallback `staging`), Live branch (fallback `production`), Staging URL, Production URL, **Hosting**, **Project id** (pass it as `project_id` to `manifest_deployments` and `manifest_domain_status`; if it's missing or the placeholder, use the folder's `.mcp.json` `X-Manifest-Project` value or `manifest_status`).
 
 2. **Two independent axes** (manifest-workflow → "How publishing works"):
    - **Source control**: `git remote get-url origin 2>/dev/null` → GitHub or local-only. With no shell, skip the git checks.

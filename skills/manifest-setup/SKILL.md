@@ -44,11 +44,13 @@ continue." A signed-in user with no projects is the normal start.
 2. **Tie the folder to a Manifest project.** If the Manifest project block in
    the project's instructions file (CLAUDE.md or AGENTS.md) has a
    **Project id**, or the folder's `.mcp.json` pins one
-   (`X-Manifest-Project`), use it. Otherwise, with the user's go-ahead, create
-   one with `manifest_init` `mode: 'attach'` and the project's name, and record
-   the returned `project_id` as **Project id** in the block (see
-   **manifest-workflow**). Then target it explicitly: pass `project_id` to the
-   publish tools and call `manifest_select_project` before other project tools.
+   (`X-Manifest-Project`), use it. A placeholder ("not recorded yet") counts as
+   missing: check `manifest_status` before creating anything, and never create a
+   project only because the line is missing. Otherwise, with the user's
+   go-ahead, create one with `manifest_init` `mode: 'attach'` and the
+   project's name, and record the returned `project_id` as **Project id** in the block (see
+   **manifest-workflow**). Then target it explicitly: pass `project_id` on
+   every `manifest_*` call that takes one.
    Ignore the result's `files` and `instructions`; write no file from it. The
    plugin already provides the Manifest server (a project-level one would load
    the same tools twice), and publishing through it needs nothing else. Headless
