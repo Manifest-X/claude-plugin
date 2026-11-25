@@ -3,7 +3,7 @@ description: "Manifest: put the current work on a reviewable staging URL for a p
 argument-hint: "[commit message]"
 ---
 
-You are the "Publish to Staging" button. The contributor wants their work on the staging site. It applies only to Manifest projects (manifest-workflow → "Is this a Manifest project?"; the connector being available is not enough); in any other project, say this command is for Manifest projects and stop. Load the **manifest-workflow** skill: it holds the pipeline logic and the project-state rules this command relies on. Run end to end and report when done. The user's request is the confirmation: don't ask between steps. Staging never changes the live site; if the user actually asked to go live, follow the publish flow in manifest-workflow instead (the user can also run `/manifestx:publish`). Stop only on errors or the guardrails below.
+You are the "Publish to Staging" button. The contributor wants their work on the staging site. It applies only to Manifest projects (manifest-workflow → "Is this a Manifest project?"; the connector being available is not enough); in any other project, say this command is for Manifest projects and stop. Load the **manifest-workflow** skill: it holds the pipeline logic and the project-state rules this command relies on. Run end to end and report when done. The user's request is the confirmation: don't ask between steps. Staging never changes the live site; if the user actually asked to go live, follow the publish flow in manifest-workflow instead (the user can also run `/mnfst:publish`). Stop only on errors or the guardrails below.
 
 Optional commit message from the user: $ARGUMENTS (if present, use it verbatim instead of generating one).
 
@@ -23,9 +23,9 @@ Optional commit message from the user: $ARGUMENTS (if present, use it verbatim i
 
 1. **Project info** from the Manifest project block: Default branch (fallback `staging`), Staging URL (may be absent; omit it from the report), project type (Manifest website if `manifest.json` has a `prerender` block or a `/website` folder exists).
 
-2. **Branch check.** `git branch --show-current`. If not on the default branch, stop: "You're on `<branch>`, not `<default>`. Switch to `<default>` first." Switching is for `/manifestx:sync`.
+2. **Branch check.** `git branch --show-current`. If not on the default branch, stop: "You're on `<branch>`, not `<default>`. Switch to `<default>` first." Switching is for `/mnfst:sync`.
 
-3. **Sync if behind.** `git fetch origin <default>`, then `git rev-list --count <default>..origin/<default>`. If > 0: set uncommitted work aside safely, following every step of manifest-workflow → "Setting work aside to pull" (never a bare `git stash`; skip the restore if nothing was stashed), `git pull --rebase origin <default>`, restore it by SHA and drop the entry, and report briefly ("Synced N new commits first."). On any conflict, stop and hand off to `/manifestx:sync`.
+3. **Sync if behind.** `git fetch origin <default>`, then `git rev-list --count <default>..origin/<default>`. If > 0: set uncommitted work aside safely, following every step of manifest-workflow → "Setting work aside to pull" (never a bare `git stash`; skip the restore if nothing was stashed), `git pull --rebase origin <default>`, restore it by SHA and drop the entry, and report briefly ("Synced N new commits first."). On any conflict, stop and hand off to `/mnfst:sync`.
 
 4. **Pre-render (Manifest website projects only).** Collect changed files (`git diff --name-only HEAD` plus `git ls-files --others --exclude-standard`). Render only if a changed file outside `/website/` is `.html`, `.css`, `.json`, `.yaml`, `.yml`, `.csv`, or `.md`; otherwise skip and say why. To render, run `npx mnfst-render` in the background and stream short progress updates. On error, stop and explain; don't commit.
 
@@ -44,7 +44,7 @@ Optional commit message from the user: $ARGUMENTS (if present, use it verbatim i
 - Not on the default branch.
 - `mnfst-render` or the project's build fails: don't commit or publish.
 - Staged files that look like secrets (`.env`, `*.key`, `*.pem`, `credentials*`): stop and warn.
-- Merge conflict during auto-sync: hand off to `/manifestx:sync`.
+- Merge conflict during auto-sync: hand off to `/mnfst:sync`.
 - Unexpected git state (detached HEAD, merge or rebase in progress, wrong remote): stop and explain.
 
 Everything else is fire-and-forget. The contributor pressed a button; respect that.

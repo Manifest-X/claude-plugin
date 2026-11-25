@@ -128,7 +128,7 @@ With each item having a `slug` field (the URL segment to match):
 
 - **Don't assume the starter layout.** Check what the project actually does first.
 - **Don't add JavaScript routers**, `history.pushState` handlers, or build-step routing — Manifest's router is purely the `x-route` attribute.
-- **Don't pre-render manually** — `/manifestx:staging` handles render for website projects.
+- **Don't pre-render manually** — `/mnfst:staging` handles render for website projects.
 - **Don't create a separate HTML file per page** unless the project already does so via a layout-component pattern (in which case use **manifest-component** to add it).
 
 ## Further reading
