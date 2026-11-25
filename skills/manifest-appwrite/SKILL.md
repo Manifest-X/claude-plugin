@@ -181,8 +181,8 @@ When the contributor wants real-time "who's online" or activity tracking. Less c
 - **Don't try to do Appwrite console steps via CLI.** Project, table, bucket creation and permissions are GUI actions. Tell the contributor what to do; don't pretend you've done it.
 - **Don't skip permissions in the Appwrite console.** A registered table with no `Create` permission will silently fail on `$create()`.
 - **Don't put auth methods in `manifest.json` that aren't enabled in Appwrite** (and vice versa) — they must match.
-- **Don't store secrets, API keys, or third-party tokens in Appwrite documents** unless the table is properly scoped — Appwrite's permission model is the security boundary.
-- **Don't proceed with placeholder credentials** (`"<your-project-id>"`). The contributor must paste real values from the Appwrite console first.
+- **Don't store private data in Appwrite documents** unless the table is properly scoped — Appwrite's permission model is the security boundary.
+- **Don't proceed with placeholder values** (`"<your-project-id>"`). The contributor must paste the real Project ID from the Appwrite console first.
 
 ## Further reading
 

@@ -5,7 +5,7 @@ description: "Manifest framework projects only: SKIP unless the project has a Ma
 
 # Manifest framework primer
 
-A Manifest project is built on the [Manifest framework](https://manifestx.dev). Manifest is an Alpine.js-based framework that runs directly in the browser — no build step. Edit HTML, CSS, and data files. It's HTML-first but not frontend-only: it also has plugins for dynamic data (REST/GraphQL APIs) and an Appwrite-backed backend (auth, databases, storage), so backend needs are in scope.
+A Manifest project is built on the [Manifest framework](https://manifestx.dev). Manifest is an Alpine.js-based framework that runs directly in the browser — no build step. Edit HTML, CSS, and data files. It's HTML-first but not frontend-only: it also has plugins for dynamic data (REST/GraphQL APIs) and an Appwrite-backed backend (sign-in, databases, storage), so backend needs are in scope.
 
 When you're unsure about Manifest syntax, attributes, directives, plugins, or APIs, consult the AI-crawlable docs rather than guessing: **https://manifestx.dev/llms.txt** (index), **https://manifestx.dev/llms-full.txt** (full text), or **https://manifestx.dev/docs**.
 
@@ -82,7 +82,7 @@ When a non-technical user says "make it more rounded" or "use a warmer brand col
 - `$x.sourceName` — registered data source
 - `$url.paramName.value/.set()/.add()/.remove()` — URL query params (filters, search)
 - `$x.source.$route('field')` — find data item matching current URL segment
-- `$auth` — Appwrite auth (only if Appwrite is configured)
+- `$auth` — Appwrite sign-in (only if Appwrite is configured)
 
 For client-side state persistence (e.g. game saves, draft form state), Alpine has `$persist`. For cloud persistence, use Appwrite (see the `manifest-appwrite` skill).
 
