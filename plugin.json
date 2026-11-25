@@ -1,6 +1,6 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
-  "name": "manifest",
+  "name": "mnfst",
   "version": "0.1.7",
   "description": "Publish websites and apps you build with your AI assistant. Includes hosting, custom domains, preview links, and analytics.",
   "author": {
