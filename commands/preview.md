@@ -6,7 +6,7 @@ You are starting a local preview of the user's project so they can see it while 
 
 ## No shell
 
-There is no local preview here: nothing can run on the user's computer from this conversation. Say so in one sentence and offer the reviewable alternative: "I can publish it to a private staging link instead, so you can open it in your browser." If they agree, follow `/manifest:staging` (it publishes with `manifest_publish_files`).
+There is no local preview here: nothing can run on the user's computer from this conversation. Say so in one sentence and offer the reviewable alternative: "I can publish it to a private staging link instead, so you can open it in your browser." If they agree, follow `/manifestx:staging` (it publishes with `manifest_publish_files`).
 
 ## With a shell
 

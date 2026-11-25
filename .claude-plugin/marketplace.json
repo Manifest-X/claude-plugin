@@ -1,5 +1,5 @@
 {
-  "name": "manifest",
+  "name": "manifestx",
   "description": "Publish websites and apps you build with Claude. Includes free hosting, custom domains, preview links, and analytics.",
   "owner": {
     "name": "Manifest X",
@@ -8,7 +8,7 @@
   },
   "plugins": [
     {
-      "name": "manifest",
+      "name": "manifestx",
       "source": "./",
       "description": "Publish websites and apps you build with Claude. Includes free hosting, custom domains, preview links, and analytics."
     }
