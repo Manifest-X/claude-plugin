@@ -1,14 +1,14 @@
 {
-  "name": "manifest",
+  "name": "mnfst",
   "description": "Publish websites and apps you build with Claude. Includes free hosting, custom domains, preview links, and analytics.",
   "owner": {
-    "name": "Manifest X",
+    "name": "MNFST OÜ",
     "email": "team@manifestx.dev",
     "url": "https://manifestx.dev"
   },
   "plugins": [
     {
-      "name": "manifest",
+      "name": "mnfst",
       "source": "./",
       "description": "Publish websites and apps you build with Claude. Includes free hosting, custom domains, preview links, and analytics."
     }

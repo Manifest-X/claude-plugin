@@ -31,11 +31,11 @@ to review" = staging, "take it live" = publish, "pull the latest" = sync,
 
 | Command | Does |
 |---|---|
-| `/manifest:preview` | Start a local preview. Nothing is published. |
-| `/manifest:sync` | Pull teammates' latest changes (git projects). |
-| `/manifest:staging` | Put the work on a reviewable staging URL. |
-| `/manifest:publish` | Take it live. |
-| `/manifest:status` | Plain-English summary of where things stand. |
+| `/mnfst:preview` | Start a local preview. Nothing is published. |
+| `/mnfst:sync` | Pull teammates' latest changes (git projects). |
+| `/mnfst:staging` | Put the work on a reviewable staging URL. |
+| `/mnfst:publish` | Take it live. |
+| `/mnfst:status` | Plain-English summary of where things stand. |
 
 From the Manifest plugin the commands carry the `manifest:` prefix. In Claude
 Code, commands installed into the project instead (`.claude/commands/`) have
@@ -63,7 +63,7 @@ project already has (if both, the one the current client reads):
 - **Output dir:** dist
 - **Default branch:** staging
 - **Live branch:** production
-<!-- /manifest:project -->
+<!-- /mnfst:project -->
 ```
 
 Rules:

@@ -34,12 +34,12 @@ but the fix belongs at the start of the funnel, not this end of it.
 
 - **During a feature:** build → self-drive → catch → fix → re-test, before you
   report it done. Loop until it's clean.
-- **Before publishing:** as part of `/manifest:staging` and `/manifest:publish` (alongside the
+- **Before publishing:** as part of `/mnfst:staging` and `/mnfst:publish` (alongside the
   manifest-seo pre-publish check), do a verify pass so nothing broken ships.
 
 ## The pass (drive it, don't just read it)
 
-Open the preview (start it with `/manifest:preview` if it isn't running; in a
+Open the preview (start it with `/mnfst:preview` if it isn't running; in a
 chat with no shell, publish to staging and check the staging URL instead), then check:
 
 1. **Routes load.** Visit every `x-route` (the main pages). Each renders real

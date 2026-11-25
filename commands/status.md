@@ -29,11 +29,11 @@ Live site:         <production URL>                ← omit if none
 ```
 
 5. **One plain-English next step:**
-   - Manifest hosting with unsaved edits: "Run `/manifest:staging` (or say 'put it on the web to review') to update the preview, or `/manifest:publish` to take it live."
-   - GitHub with unsaved edits: "Run `/manifest:staging` when you're ready to see these changes on the staging site."
-   - GitHub, default ahead of live: "Run `/manifest:publish` when you're ready to take the staging changes live."
-   - Behind origin: "Run `/manifest:sync` to pull in the latest from teammates."
-   - Not published yet: "Run `/manifest:publish` (or just say 'put it online') whenever you want it live. I can host it right away, or back it up to GitHub first for a team workflow."
+   - Manifest hosting with unsaved edits: "Run `/mnfst:staging` (or say 'put it on the web to review') to update the preview, or `/mnfst:publish` to take it live."
+   - GitHub with unsaved edits: "Run `/mnfst:staging` when you're ready to see these changes on the staging site."
+   - GitHub, default ahead of live: "Run `/mnfst:publish` when you're ready to take the staging changes live."
+   - Behind origin: "Run `/mnfst:sync` to pull in the latest from teammates."
+   - Not published yet: "Run `/mnfst:publish` (or just say 'put it online') whenever you want it live. I can host it right away, or back it up to GitHub first for a team workflow."
    - Everything in sync: "All caught up."
 
 ## Guardrails

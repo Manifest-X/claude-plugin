@@ -22,7 +22,7 @@ There's no local copy to sync from a chat. Say so in one sentence. If the user w
 
 5. **Compare.** `git rev-list --left-right --count <default>...origin/<default>`:
    - `0 0`: "Already up to date."
-   - `N 0` (local ahead): "You have N commits not yet published. Run `/manifest:staging` when ready."
+   - `N 0` (local ahead): "You have N commits not yet published. Run `/mnfst:staging` when ready."
    - `0 N` (remote ahead): `git merge --ff-only origin/<default>`, then summarize: "Pulled N new commits. Files updated: …" (short, from `git diff --stat <default>@{1} <default>`).
    - `M N` (diverged): `git pull --rebase origin <default>`. On success summarize as above; on conflict see step 7.
 

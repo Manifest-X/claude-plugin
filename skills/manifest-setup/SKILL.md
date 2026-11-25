@@ -80,7 +80,7 @@ continue." A signed-in user with no projects is the normal start.
     This runs the `mnfst-starter` package from npm and writes only the template
     files and `.gitignore`.
   Then build the first pass with **manifest-framework**, **manifest-layout**,
-  and **manifest-styling**, preview it (`/manifest:preview`), and publish to
+  and **manifest-styling**, preview it (`/mnfst:preview`), and publish to
   staging.
 - **Another framework named** ("a React app", "with Astro"): use it. Manifest
   doesn't change how it's authored. Scaffold it with that framework's own tools,

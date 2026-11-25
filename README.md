@@ -24,9 +24,9 @@ Manifest Pro also adds all-time analytics and removes the Manifest badge.
 ## Try it
 
 - "Build a landing page for my product and put it online with Manifest."
-- "Build this Vite app and give me a Manifest preview link to share." Then `/manifest:publish` to take it live.
+- "Build this Vite app and give me a Manifest preview link to share." Then `/mnfst:publish` to take it live.
 - "Connect www.example.com to my Manifest site."
-- `/manifest:status` for a plain-English summary of what's live and what's in preview.
+- `/mnfst:status` for a plain-English summary of what's live and what's in preview.
 
 ## What it installs
 
@@ -35,8 +35,8 @@ Manifest Pro also adds all-time analytics and removes the Manifest badge.
   and team tools.
 - **Skills** that tell the assistant when and how to use those tools, plus authoring
   skills for projects built on the Manifest framework.
-- **Commands**: `/manifest:preview`, `/manifest:sync`, `/manifest:staging`,
-  `/manifest:publish`, `/manifest:status`. Plain language works the same ("put
+- **Commands**: `/mnfst:preview`, `/mnfst:sync`, `/mnfst:staging`,
+  `/mnfst:publish`, `/mnfst:status`. Plain language works the same ("put
   it on the web to review", "take it live").
 
 The skills and commands act only in Manifest projects: a project with a
@@ -65,7 +65,7 @@ skill walks through the first publish or first build.
 
   ```
   /plugin marketplace add Manifest-X/claude-plugin
-  /plugin install manifest@manifest
+  /plugin install mnfst@mnfst
   ```
 
 ### Connect and sign in
@@ -130,11 +130,11 @@ Authoring (projects built on the Manifest framework):
 
 ## Commands
 
-- `/manifest:preview`: start a local preview (in chat, offers a staging link instead).
-- `/manifest:sync`: pull teammates' latest changes from GitHub.
-- `/manifest:staging`: put your work on a reviewable staging link.
-- `/manifest:publish`: take it live.
-- `/manifest:status`: a short summary of what's live, staged, and unsaved.
+- `/mnfst:preview`: start a local preview (in chat, offers a staging link instead).
+- `/mnfst:sync`: pull teammates' latest changes from GitHub.
+- `/mnfst:staging`: put your work on a reviewable staging link.
+- `/mnfst:publish`: take it live.
+- `/mnfst:status`: a short summary of what's live, staged, and unsaved.
 
 ## What it runs and sends
 
