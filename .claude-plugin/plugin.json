@@ -1,6 +1,6 @@
 {
   "name": "mnfst",
-  "displayName": "Manifest X",
+  "displayName": "Manifest Hosting",
   "version": "0.1.7",
   "description": "Publish websites and apps you build with Claude. Includes free hosting, custom domains, preview links, and analytics.",
   "author": {

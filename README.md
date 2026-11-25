@@ -1,4 +1,4 @@
-# Manifest X
+# Manifest Hosting
 
 Build and publish websites and apps live with your AI assistant, just by asking.
 
