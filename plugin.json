@@ -1,0 +1,104 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "manifest",
+  "version": "0.1.7",
+  "description": "Publish websites and apps you build with your AI assistant. Includes hosting, custom domains, preview links, and analytics.",
+  "author": {
+    "name": "Manifest",
+    "email": "team@manifestx.dev",
+    "url": "https://manifestx.dev"
+  },
+  "homepage": "https://manifestx.dev/docs/ai",
+  "repository": "https://github.com/Manifest-X/claude-plugin",
+  "license": "MIT",
+  "keywords": [
+    "hosting",
+    "publishing",
+    "websites",
+    "web-apps",
+    "custom-domains",
+    "analytics",
+    "react",
+    "html"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Manifest",
+        "shortDescription": "Publish sites and apps live",
+        "longDescription": "Publish the website or app you are building and get a live URL. Share a staging link for review, promote it to production, connect your own domain with HTTPS, see visitor analytics, and invite teammates. Works with any project that builds to static files, including React, Vite, Astro, plain HTML and the open-source Manifest framework. Manifest only accesses the projects on your connected Manifest account.",
+        "developerName": "Manifest",
+        "category": "Developer Tools",
+        "capabilities": [
+          "Publish sites to staging and production",
+          "Promote and roll back deployments",
+          "Connect custom domains",
+          "Read visitor analytics",
+          "Invite teammates"
+        ],
+        "websiteURL": "https://manifestx.dev",
+        "supportURL": "https://manifestx.dev/support",
+        "privacyPolicyURL": "https://manifestx.dev/legal/privacy",
+        "termsOfServiceURL": "https://manifestx.dev/legal/terms",
+        "defaultPrompt": [
+          "Publish this site with Manifest and give me a link to share.",
+          "Connect www.example.com to my Manifest site.",
+          "How many people visited my Manifest site this week?"
+        ],
+        "composerIcon": "./icon.png",
+        "logo": "./icon.png"
+      },
+      "review": {
+        "commerce": false,
+        "test_cases": {
+          "positive": [
+            {
+              "description": "List the account's projects",
+              "prompt": "Which Manifest projects do I have?",
+              "tools_triggered": "manifest_list_projects",
+              "expected_behavior": "Lists the projects on the connected account by name, including Review Demo."
+            },
+            {
+              "description": "List recent deployments",
+              "prompt": "Show me the recent deployments of my Review Demo site.",
+              "tools_triggered": "manifest_list_projects, manifest_deployments",
+              "expected_behavior": "Names the Review Demo project and lists its recent deployments with environment and time."
+            },
+            {
+              "description": "Publish a page to staging",
+              "prompt": "Make a one-page site that says Hello from Manifest and publish it to staging on my Review Demo project.",
+              "tools_triggered": "manifest_list_projects, manifest_publish_files",
+              "expected_behavior": "Asks for confirmation, publishes index.html to the Review Demo staging environment, and returns the staging URL, which loads the page."
+            },
+            {
+              "description": "Promote staging to production",
+              "prompt": "Promote the staging build of Review Demo to production.",
+              "tools_triggered": "manifest_list_projects, manifest_deployments, manifest_promote",
+              "expected_behavior": "Asks for confirmation, promotes the current staging deployment of Review Demo, and returns the production URL."
+            },
+            {
+              "description": "Read visitor analytics",
+              "prompt": "How many people visited my Review Demo site this week?",
+              "tools_triggered": "manifest_analytics",
+              "expected_behavior": "Returns visitor and page-view counts for Review Demo for the last 7 days, or says there is no traffic yet."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Unrelated general question",
+              "prompt": "What will the weather be in Tallinn tomorrow?"
+            },
+            {
+              "description": "Coding help with nothing to publish",
+              "prompt": "Write a Python function that reverses a string."
+            },
+            {
+              "description": "A site hosted elsewhere",
+              "prompt": "Summarise the latest post on my WordPress blog."
+            }
+          ]
+        }
+      }
+    }
+  }
+}
